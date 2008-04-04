@@ -1,7 +1,8 @@
 #ifndef __YINSPIRE__NEURON__
 #define __YINSPIRE__NEURON__
 
-#include "NeuralEntity.h"
+#include "Core/Common.h"
+#include "Core/NeuralEntity.h"
 #include "Algorithms/Array.h"
 
 namespace Yinspire {

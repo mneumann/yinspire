@@ -1,17 +1,18 @@
-#include "Common.h"
-#include "Synapse.h"
-#include "Neuron.h"
+#include "Core/Synapse.h"
+#include "Core/Neuron.h"
+#include <assert.h>
 
 namespace Yinspire {
 
   void Synapse::connect(NeuralEntity *target)
   {
-    dynamic_cast<Neuron*>(target)->pre_synapses.push(this);
-    post_neuron = target;
+    post_neuron = dynamic_cast<Neuron*>(target);
+    post_neuron->pre_synapses.push(this);
   }
 
   void Synapse::disconnect(NeuralEntity *target)
   {
+    assert(target == post_neuron);
     dynamic_cast<Neuron*>(target)->pre_synapses.remove(this);
     post_neuron = NULL;
   }
@@ -23,7 +24,6 @@ namespace Yinspire {
    * 
    * NOTE: We ignore the weight parameter that is passed by the Neuron.
    */
-
   void Synapse::stimulate(real at, real weight, NeuralEntity *source)
   {
     if (source != post_neuron)

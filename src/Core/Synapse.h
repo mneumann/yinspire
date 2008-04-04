@@ -1,7 +1,8 @@
 #ifndef __YINSPIRE__SYNAPSE__
 #define __YINSPIRE__SYNAPSE__
 
-#include "NeuralEntity.h"
+#include "Core/Common.h"
+#include "Core/NeuralEntity.h"
 
 namespace Yinspire {
 

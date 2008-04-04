@@ -1,6 +1,6 @@
 CFLAGS=-c -I.
 
-all: ScheduleEntity.o Scheduler.o NeuralEntity.o
+all: ScheduleEntity.o Scheduler.o NeuralEntity.o Neuron.o Synapse.o
 
 clean: 
 	rm -f *.o
@@ -8,3 +8,5 @@ clean:
 ScheduleEntity.o: Core/ScheduleEntity.cc
 Scheduler.o: Core/Scheduler.cc
 NeuralEntity.o: Core/NeuralEntity.cc
+Neuron.o: Core/Neuron.cc
+Synapse.o: Core/Synapse.cc

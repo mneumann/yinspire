@@ -19,7 +19,7 @@ class Array
       } 
 
     inline void
-      push(T& i)
+      push(const T& i)
       {
         this->array.push_back(i);
       }
@@ -36,6 +36,12 @@ class Array
       operator[](int i)
       {
         return this->array[i];
+      }
+
+    inline void
+      remove(const T& e)
+      {
+        // FIXME!!!
       }
 
     inline void
