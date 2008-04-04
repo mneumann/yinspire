@@ -57,6 +57,12 @@ namespace Yinspire {
           stimulate_post_synapses(at, weight);
         }
 
+      inline real
+        delta()
+        {
+          return schedule_at - last_fire_time - abs_refr_duration;
+        }
+
    };
 
 } /* namespace Yinspire */

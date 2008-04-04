@@ -4,3 +4,4 @@
 #include "Allocators/MemoryAllocator.h"
 typedef unsigned int uint;
 typedef float real;
+#define real_exp expf

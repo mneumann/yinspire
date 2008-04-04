@@ -1,11 +1,13 @@
-#ifndef __YINSPIRE__NEURON_SRM02__
-#define __YINSPIRE__NEURON_SRM02__
+#ifndef __YINSPIRE__NEURON_SRM01__
+#define __YINSPIRE__NEURON_SRM01__
 
-#include "Common.h"
-#include "Neuron_Base.h"
+#include "Models/Neuron_Base.h"
 
 namespace Yinspire {
 
+  /*
+   * Formerly known as KernelbasedLIF
+   */
   class Neuron_SRM01 : public Neuron_Base
   {
     protected: 
@@ -33,7 +35,7 @@ namespace Yinspire {
         {
           if (at >= last_fire_time + abs_refr_duration)
           {
-            //simulator()->count_event();
+            //simulator()->count_event(); FIXME
             Neuron_Base::stimulate(at, weight, source);
           }
         }
@@ -46,50 +48,29 @@ namespace Yinspire {
           /*
            * Calculate new membrane potential
            */
-          mem_pot = weight + mem_pot * real_exp(-(schedule_at - last_spike_time)/tau_m);
+          mem_pot = weight + mem_pot * real_exp(-(schedule_at - last_spike_time) / tau_m);
           last_spike_time = schedule_at;
 
-          if (schedule_at >= last_fire_time + abs_refr_duration &&
-              mem_pot >= const_threshold + dynamic_reset())
+          /*
+           * Calculate dynamic threshold
+           */
+          const real dynamic_threshold = ref_weight * real_exp(-delta()/tau_ref);
+
+          if (mem_pot >= const_threshold + dynamic_threshold)
           {
-            fire(schedule_at, Infinity);
+            fire(schedule_at, Infinity); 
           }
         }
 
       inline void
         fire(real at, real weight)
         {
-          if (abs_refr_duration > 0.0)
-          {
-            schedule(at + abs_refr_duration);
-          }
-
-          if (isinf(mem_pot))
-          {
-            mem_pot = 0.0;
-            reset = u_reset;
-          }
-          else
-          {
-            reset = dynamic_reset() + u_reset;
-          }
+          mem_pot = 0.0;
           last_fire_time = at;
-
           simulator()->record_fire(at, weight, this);
           stimulate_synapses(at, weight);
         }
 
-      inline real
-        delta()
-        {
-          return schedule_at - last_fire_time - abs_refr_duration;
-        }
-
-      inline real
-        dynamic_reset()
-        {
-          return reset * real_exp(-delta()/tau_ref);
-        }
   };
 
 } /* namespace Yinspire */
