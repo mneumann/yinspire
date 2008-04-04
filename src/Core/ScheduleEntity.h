@@ -59,8 +59,8 @@ namespace Yinspire {
       /*
        * Constructor
        */
-      ScheduleEntity(Scheduler *scheduler_) : 
-        scheduler(scheduler_),
+      ScheduleEntity() : 
+        scheduler(NULL),
         schedule_index(0),
         schedule_at(Infinity),
         schedule_stepping_list_prev(NULL),
