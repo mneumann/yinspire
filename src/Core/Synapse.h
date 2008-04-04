@@ -52,6 +52,9 @@ namespace Yinspire {
       virtual void
         disconnect(NeuralEntity *target);
 
+      virtual void each_connection(
+          void (*yield)(NeuralEntity *self, NeuralEntity *conn));
+
       virtual void
         stimulate(real at, real weight, NeuralEntity *source);
 

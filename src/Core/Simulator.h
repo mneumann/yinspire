@@ -6,6 +6,8 @@
 
 namespace Yinspire {
 
+  class NeuralEntity; // Forward declaration
+
   class Simulator : public Scheduler
   {
     protected: 
@@ -25,6 +27,9 @@ namespace Yinspire {
 
       virtual void
         record_fire(real at, real weight, NeuralEntity *source) {};
+
+      virtual void
+        record_output_fire(real at, real weight, NeuralEntity *source) {};
 
       void
         run(real stop_at=Infinity)

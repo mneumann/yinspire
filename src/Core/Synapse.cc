@@ -17,6 +17,11 @@ namespace Yinspire {
     post_neuron = NULL;
   }
 
+  void Synapse::each_connection(void (*yield)(NeuralEntity *self, NeuralEntity *conn))
+  {
+    yield(this, post_neuron);
+  }
+
   /* 
    * Only propagate the stimulation if it doesn't originate from the
    * post Neuron.  Stimuli from a post Neuron are handled by a specific

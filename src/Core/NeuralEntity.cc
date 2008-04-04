@@ -4,6 +4,16 @@
 
 namespace Yinspire {
 
+  static void each(NeuralEntity *self, NeuralEntity *conn)
+  {
+    self->disconnect(conn);
+  }
+
+  void NeuralEntity::disconnect_all()
+  {
+    each_connection(each);
+  }
+
   void NeuralEntity::stimuli_add(real at, real weight)
   {
     Stimulus s; s.at = at; s.weight = weight;

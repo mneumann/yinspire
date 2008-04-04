@@ -71,7 +71,7 @@ namespace Yinspire {
        * Disconnect from all connections. Uses +each_connection+ and
        * +disconnect+.
        */
-      //void disconnect_all();
+      void disconnect_all();
 
       /*
        * Calls +yield+ for each outgoing connection.

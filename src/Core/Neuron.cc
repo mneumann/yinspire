@@ -17,6 +17,14 @@ namespace Yinspire {
     syn->pre_neuron = NULL;
   }
 
+  void Neuron::each_connection(void (*yield)(NeuralEntity *self, NeuralEntity *conn))
+  {
+    for (int i=0; i < post_synapses.size(); i++)
+    {
+      yield(this, post_synapses[i]);
+    }
+  }
+
   void Neuron::stimulate_pre_synapses(real at, real weight)
   {
     for (int i=0; i < pre_synapses.size(); i++)
