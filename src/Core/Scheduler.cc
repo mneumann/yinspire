@@ -1,4 +1,4 @@
-#include "Scheduler.h"
+#include "Core/Scheduler.h"
 #include <algorithm> // min()
 
 namespace Yinspire {
@@ -20,7 +20,7 @@ namespace Yinspire {
           break;
         schedule_current_time = top->schedule_at; 
         schedule_pq.pop();
-        top->process(top->schedule_at);
+        top->process();
       }
 
       if (schedule_current_time >= stop_at)

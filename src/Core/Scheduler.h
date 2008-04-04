@@ -1,8 +1,8 @@
 #ifndef __YINSPIRE__SCHEDULER__
 #define __YINSPIRE__SCHEDULER__
 
-#include "Common.h"
-#include "ScheduleEntity.h"
+#include "Core/Common.h"
+#include "Core/ScheduleEntity.h"
 
 namespace Yinspire {
 
@@ -56,9 +56,9 @@ namespace Yinspire {
         schedule_run(real stop_at);
 
       /*
-       * If a ScheduleEntity has changed it's scheduling time, 
-       * it has to call this method to reflect the change within
-       * the priority queue.
+       * If a ScheduleEntity has changed it's scheduling time, it has to
+       * call this method to reflect the change within the priority
+       * queue.
        */
       void
         schedule_update(ScheduleEntity *entity);

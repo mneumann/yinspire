@@ -1,7 +1,7 @@
 #ifndef __YINSPIRE__SCHEDULE_ENTITY__
 #define __YINSPIRE__SCHEDULE_ENTITY__
 
-#include "Common.h"
+#include "Core/Common.h"
 #include "Algorithms/IndexedBinaryHeap.h"
 
 namespace Yinspire {
@@ -50,7 +50,7 @@ namespace Yinspire {
        * would have to allocate memory, which we overcome with this
        * approach.
        *
-       * This is only used by the simulator!
+       * This is only used by the Scheduler!
        */
       ScheduleEntity *schedule_stepping_list_internal_next;
 
@@ -79,7 +79,7 @@ namespace Yinspire {
        * Overwrite it if you need this behaviour.
        */
       virtual void
-        process(real at) {} 
+        process() {} 
 
       /*
        * This method is called in each time-step, if a ScheduleEntity
@@ -136,7 +136,8 @@ namespace Yinspire {
           return self->schedule_index;
         }
 
-      typedef IndexedBinaryHeap<ScheduleEntity*, MemoryAllocator<ScheduleEntity*>, ScheduleEntity> PQ;
+      typedef IndexedBinaryHeap<ScheduleEntity*, 
+              MemoryAllocator<ScheduleEntity*>, ScheduleEntity> PQ;
   };
 
 } /* namespace Yinspire */
