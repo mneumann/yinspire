@@ -1,13 +1,13 @@
 #ifndef __YINSPIRE__NEURAL_ENTITY__
 #define __YINSPIRE__NEURAL_ENTITY__
 
-#include "ScheduleEntity.h"
-#include "Stimulus.h"
+#include "Core/ScheduleEntity.h"
+#include "Core/Stimulus.h"
 #include <string>
 
 namespace Yinspire {
 
-  using namespace std;
+  class Simulator; // Forward declaration
 
   /*
    * NeuralEntity is the base class of all entities in a neural net,
@@ -23,7 +23,7 @@ namespace Yinspire {
        * SHOULD NOT be changed, because it is used as a key in
        * the Simulator.
        */
-      string id;
+      std::string id;
 
       /*
        * Each NeuralEntity has it's own local stimuli priority queue.

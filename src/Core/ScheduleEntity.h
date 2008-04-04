@@ -6,7 +6,7 @@
 
 namespace Yinspire {
 
-  class Scheduler; // Forward reference
+  class Scheduler; // Forward declaration
 
   class ScheduleEntity
   {

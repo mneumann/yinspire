@@ -10,6 +10,8 @@ namespace Yinspire {
   {
     protected: 
 
+      friend class NeuralEntity;
+
       /*
        * The tolerance (time difference) up to which local stimuli are
        * accumulated.
@@ -19,7 +21,7 @@ namespace Yinspire {
     public:
 
       Simulator() :
-        stimuli_tolerance(Infinity) {};
+        stimuli_tolerance(Infinity) {}
 
       virtual void
         record_fire(real at, real weight, NeuralEntity *source) {};
