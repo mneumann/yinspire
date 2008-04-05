@@ -17,15 +17,13 @@ namespace Yinspire {
   {
     protected: 
 
-      friend class NeuralNet;
-
       /*
        * Each NeuralEntity has an +id+ associated which uniquely
        * identifies itself within a Simulator instance. This +id+ 
        * SHOULD NOT be changed, because it is used as a key in
        * the Simulator.
        */
-      std::string id;
+      std::string id_;
 
       /*
        * Each NeuralEntity has it's own local stimuli priority queue.
@@ -37,6 +35,28 @@ namespace Yinspire {
       Stimulus::PQ stimuli_pq;
 
     public:
+
+      /*
+       * Returns the +id+ of the entity.
+       */
+      const std::string&
+        id()
+        {
+          return id_;
+        }
+
+      /*
+       * Initialize the NeuralEntity with an id and a simulator. 
+       *
+       * Doing the same in a constructor would lead to a lot of
+       * repetition in each subclass.
+       */
+      void
+        init(const std::string& id, Simulator *simulator)
+        {
+          id_ = id;
+          scheduler = (Scheduler*) simulator;
+        }
 
       /*
        * Load the internal state of a NeuralEntity

@@ -11,11 +11,29 @@ int main()
 {
   using namespace Yinspire;
 
-  Neuron *o  = new Neuron_Output;
-  Neuron *i  = new Neuron_Input;
-  Neuron *s1 = new Neuron_SRM01;
-  Neuron *s2 = new Neuron_SRM02;
-  Synapse *syn = new Synapse_Default;
+  NeuralNet nn;
+  Simulator simulator;
+  NeuralEntity *entity;
+
+  entity = new Neuron_Output;
+  entity->init("id1", &simulator);
+  nn.add(entity);
+
+  entity = new Neuron_Input;
+  entity->init("id2", &simulator);
+  nn.add(entity);
+
+  entity = new Neuron_SRM01;
+  entity->init("id3", &simulator);
+  nn.add(entity);
+
+  entity = new Neuron_SRM02;
+  entity->init("id4", &simulator);
+  nn.add(entity);
+
+  entity = new Synapse_Default;
+  entity->init("id5", &simulator);
+  nn.add(entity);
 
   return 0;
 }

@@ -28,7 +28,7 @@ namespace Yinspire {
         add(NeuralEntity *entity)
         {
           // TODO: Throw exception in case of a duplicate id.
-          entities[entity->id] = entity;
+          entities[entity->id()] = entity;
         }
 
       NeuralEntity *
