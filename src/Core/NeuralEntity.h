@@ -5,6 +5,18 @@
 #include "Core/Stimulus.h"
 #include <string>
 
+#define DECLARE_ENTITY(name)      \
+  public:                         \
+    static NeuralEntity* make() { \
+      return new name;            \
+    }                             \
+    static const char* ctype() {  \
+      return #name;               \
+    }                             \
+    virtual const char* type() {  \
+      return #name;               \
+    }
+
 namespace Yinspire {
 
   class Simulator; // Forward declaration
@@ -44,6 +56,13 @@ namespace Yinspire {
         {
           return id_;
         }
+
+      /*
+       * Returns the name of the type, e.g.  "Neuron_SRM01" or
+       * "Synapse_Default".
+       */
+      virtual const char *
+        type() = 0;
 
       /*
        * Initialize the NeuralEntity with an id and a simulator. 

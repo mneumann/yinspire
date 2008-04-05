@@ -10,6 +10,7 @@ namespace Yinspire {
    */
   class Synapse_Default : public Synapse_Base
   {
+    DECLARE_ENTITY(Synapse_Default);
   };
 
 } /* namespace Yinspire */

@@ -38,6 +38,7 @@ int main()
   nn.add(entity);
 
   cout << nn.get("id5")->id() << endl;
+  cout << nn.get("id4")->type() << endl;
 
   return 0;
 }

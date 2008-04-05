@@ -10,6 +10,8 @@ namespace Yinspire {
    */
   class Neuron_Output : public Neuron_InputOutput
   {
+    DECLARE_ENTITY(Neuron_Output);
+
     protected: 
 
       virtual void

@@ -10,6 +10,8 @@ namespace Yinspire {
    */
   class Neuron_SRM01 : public Neuron_Base
   {
+    DECLARE_ENTITY(Neuron_SRM01);
+
     protected: 
 
       real tau_m;
