@@ -17,6 +17,8 @@ namespace Yinspire {
   {
     protected: 
 
+      friend class NeuralNet;
+
       /*
        * Each NeuralEntity has an +id+ associated which uniquely
        * identifies itself within a Simulator instance. This +id+ 

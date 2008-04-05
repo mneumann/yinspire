@@ -1,5 +1,6 @@
 #include "Allocators/MemoryAllocator.h"
 #include "Core/Simulator.h"
+#include "Core/NeuralNet.h"
 #include "Models/Neuron_Output.h"
 #include "Models/Neuron_Input.h"
 #include "Models/Neuron_SRM01.h"
