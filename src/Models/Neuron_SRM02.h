@@ -5,6 +5,9 @@
 
 namespace Yinspire {
 
+  /*
+   * Formerly known as SpecialEKernel
+   */
   class Neuron_SRM02 : public Neuron_Base
   {
     protected: 
