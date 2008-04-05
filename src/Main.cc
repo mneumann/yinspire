@@ -1,6 +1,7 @@
 #include "Allocators/MemoryAllocator.h"
 #include "Core/Simulator.h"
 #include "Core/NeuralNet.h"
+#include "Core/NeuralFactory.h"
 #include "Models/Neuron_Output.h"
 #include "Models/Neuron_Input.h"
 #include "Models/Neuron_SRM01.h"
@@ -15,25 +16,32 @@ int main()
 
   NeuralNet nn;
   Simulator simulator;
+  NeuralFactory factory;
   NeuralEntity *entity;
 
-  entity = new Neuron_Output;
+  REGISTER_TYPE(factory, Neuron_Input);
+  REGISTER_TYPE(factory, Neuron_Output);
+  REGISTER_TYPE(factory, Neuron_SRM01);
+  REGISTER_TYPE(factory, Neuron_SRM02);
+  REGISTER_TYPE(factory, Synapse_Default);
+
+  entity = factory.create("Neuron_Output");
   entity->init("id1", &simulator);
   nn.add(entity);
 
-  entity = new Neuron_Input;
+  entity = factory.create("Neuron_Input");
   entity->init("id2", &simulator);
   nn.add(entity);
 
-  entity = new Neuron_SRM01;
+  entity = factory.create("Neuron_SRM01");
   entity->init("id3", &simulator);
   nn.add(entity);
 
-  entity = new Neuron_SRM02;
+  entity = factory.create("Neuron_SRM02");
   entity->init("id4", &simulator);
   nn.add(entity);
 
-  entity = new Synapse_Default;
+  entity = factory.create("Synapse_Default");
   entity->init("id5", &simulator);
   nn.add(entity);
 

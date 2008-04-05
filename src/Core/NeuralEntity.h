@@ -5,16 +5,16 @@
 #include "Core/Stimulus.h"
 #include <string>
 
-#define DECLARE_ENTITY(name)      \
-  public:                         \
-    static NeuralEntity* make() { \
-      return new name;            \
-    }                             \
-    static const char* ctype() {  \
-      return #name;               \
-    }                             \
-    virtual const char* type() {  \
-      return #name;               \
+#define DECLARE_ENTITY(name)        \
+  public:                           \
+    static NeuralEntity* create() { \
+      return new name;              \
+    }                               \
+    static const char* ctype() {    \
+      return #name;                 \
+    }                               \
+    virtual const char* type() {    \
+      return #name;                 \
     }
 
 namespace Yinspire {
