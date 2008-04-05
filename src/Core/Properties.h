@@ -4,6 +4,7 @@
 #include "Core/Common.h"
 #include <string>
 #include <map>
+#include <ostream>
 
 #define PROP_LOAD(properties, var) \
   properties.load(var, #var)
@@ -73,6 +74,38 @@ namespace Yinspire {
           prop.type = Property_Bool;
           prop.value.bool_value = variable; 
           properties[name] = prop; 
+        }
+
+      /*
+       * Erases all properties.
+       */
+      void
+        clear()
+        {
+          properties.clear();
+        }
+
+      void
+        output(std::ostream &s)
+        {
+          using namespace std;
+          for (map<string, Property>::iterator i=properties.begin();
+              i != properties.end(); i++)
+          {
+            s << i->first << " = "; 
+            switch (i->second.type)
+            {
+              case Property_Real:
+                s << i->second.value.real_value;
+                break;
+              case Property_Bool:
+                s << i->second.value.bool_value;
+                break;
+              default:
+                throw "Invalid Property Type";
+            };
+            s << endl;
+          }
         }
   };
 

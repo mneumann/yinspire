@@ -46,6 +46,10 @@ int main()
   entity->init("id5", &simulator);
   nn.add(entity);
 
+  Properties p;
+  nn.get("id5")->dump(p);
+  p.output(cout);
+
   cout << nn.get("id5")->id() << endl;
   cout << nn.get("id4")->type() << endl;
 
