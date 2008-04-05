@@ -35,7 +35,6 @@ namespace Yinspire {
         {
           if (at >= last_fire_time + abs_refr_duration)
           {
-            //simulator()->count_event(); FIXME
             Neuron_Base::stimulate(at, weight, source);
           }
         }
