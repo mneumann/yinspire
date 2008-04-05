@@ -4,6 +4,7 @@
 #include "Models/Neuron_Input.h"
 #include "Models/Neuron_SRM01.h"
 #include "Models/Neuron_SRM02.h"
+#include "Models/Synapse_Default.h"
 
 int main()
 {
@@ -13,6 +14,7 @@ int main()
   Neuron *i  = new Neuron_Input;
   Neuron *s1 = new Neuron_SRM01;
   Neuron *s2 = new Neuron_SRM02;
+  Synapse *syn = new Synapse_Default;
 
   return 0;
 }

@@ -45,7 +45,7 @@ namespace Yinspire {
       virtual void
         stimulate(real at, real weight, NeuralEntity *source)
         {
-          //simulator()->count_event();
+          simulator()->record_stimuli(at, weight, source);
           stimuli_add(at, weight);
         }
 

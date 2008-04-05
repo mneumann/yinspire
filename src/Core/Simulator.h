@@ -1,8 +1,8 @@
 #ifndef __YINSPIRE__SIMULATOR__
 #define __YINSPIRE__SIMULATOR__
 
-#include "Common.h"
-#include "Scheduler.h"
+#include "Core/Common.h"
+#include "Core/Scheduler.h"
 
 namespace Yinspire {
 
@@ -26,10 +26,13 @@ namespace Yinspire {
         stimuli_tolerance(Infinity) {}
 
       virtual void
-        record_fire(real at, real weight, NeuralEntity *source) {};
+        record_stimuli(real at, real weight, NeuralEntity *source) {}
 
       virtual void
-        record_output_fire(real at, real weight, NeuralEntity *source) {};
+        record_fire(real at, real weight, NeuralEntity *source) {}
+
+      virtual void
+        record_output_fire(real at, real weight, NeuralEntity *source) {}
 
       void
         run(real stop_at=Infinity)

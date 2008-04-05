@@ -11,7 +11,6 @@ namespace Yinspire {
   /*
    * Base class of all Synapses. Defines the structure that is special
    * for a Synapse, i.e. that a Synapse has a pre and a post-Neuron.
-   * Also each Synapse has a +weight+ and a +delay+.
    */
   class Synapse : public NeuralEntity
   {
@@ -22,16 +21,6 @@ namespace Yinspire {
       Neuron *pre_neuron;
       Neuron *post_neuron;
 
-      /*
-       * The fire weight of a Synapse.
-       */
-      real weight;
-
-      /*
-       * The propagation delay of a Synapse.
-       */
-      real delay;
-
     public:
 
       /*
@@ -39,9 +28,7 @@ namespace Yinspire {
        */
       Synapse() :
         pre_neuron(NULL),
-        post_neuron(NULL),
-        weight(0.0),
-        delay(0.0) {}
+        post_neuron(NULL) {}
 
       /*
        * Adding a pre synapse. Target must be a Neuron.
@@ -54,9 +41,6 @@ namespace Yinspire {
 
       virtual void each_connection(
           void (*yield)(NeuralEntity *self, NeuralEntity *conn));
-
-      virtual void
-        stimulate(real at, real weight, NeuralEntity *source);
 
   };
 
