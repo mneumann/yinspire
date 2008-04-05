@@ -32,7 +32,7 @@ namespace Yinspire {
         }
 
       NeuralEntity *
-        get(std::string& id)
+        get(const std::string& id)
         {
           return entities[id];
         }

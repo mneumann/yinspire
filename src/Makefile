@@ -1,9 +1,10 @@
 CFLAGS=-c -I.
 
 all: ScheduleEntity.o Scheduler.o NeuralEntity.o Neuron.o Synapse.o Main.o
+	${CXX} -o yinspire $>
 
 clean: 
-	rm -f *.o
+	rm -f *.o yinspire
 
 ScheduleEntity.o: Core/ScheduleEntity.cc
 Scheduler.o: Core/Scheduler.cc

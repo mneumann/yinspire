@@ -6,10 +6,12 @@
 #include "Models/Neuron_SRM01.h"
 #include "Models/Neuron_SRM02.h"
 #include "Models/Synapse_Default.h"
+#include <iostream>
 
 int main()
 {
   using namespace Yinspire;
+  using namespace std;
 
   NeuralNet nn;
   Simulator simulator;
@@ -34,6 +36,8 @@ int main()
   entity = new Synapse_Default;
   entity->init("id5", &simulator);
   nn.add(entity);
+
+  cout << nn.get("id5")->id() << endl;
 
   return 0;
 }
