@@ -17,11 +17,19 @@ namespace Yinspire {
     syn->pre_neuron = NULL;
   }
 
-  void Neuron::each_connection(void (*yield)(NeuralEntity *self, NeuralEntity *conn))
+  void Neuron::each_incoming_connection(connection_iter yield, void *data)
+  {
+    for (int i=0; i < pre_synapses.size(); i++)
+    {
+      yield(this, pre_synapses[i], data);
+    }
+  }
+
+  void Neuron::each_outgoing_connection(connection_iter yield, void *data)
   {
     for (int i=0; i < post_synapses.size(); i++)
     {
-      yield(this, post_synapses[i]);
+      yield(this, post_synapses[i], data);
     }
   }
 

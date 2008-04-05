@@ -30,8 +30,11 @@ namespace Yinspire {
       virtual void
         disconnect(NeuralEntity *target);
 
-      virtual void each_connection(
-          void (*yield)(NeuralEntity *self, NeuralEntity *conn));
+      virtual void
+        each_incoming_connection(connection_iter yield, void *data);
+
+      virtual void
+        each_outgoing_connection(connection_iter yield, void *data);
 
     protected:
 

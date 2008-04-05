@@ -3,6 +3,7 @@
 
 #include "Core/ScheduleEntity.h"
 #include "Core/Stimulus.h"
+#include "Core/Properties.h"
 #include <string>
 
 #define DECLARE_ENTITY(name)        \
@@ -78,23 +79,27 @@ namespace Yinspire {
         }
 
       /*
-       * Load the internal state of a NeuralEntity
-       * from +data+.
+       * Load the internal state of a NeuralEntity from +p+.
        *
-       * Note that loading does not neccessarily reset
-       * the internal state of the entity!
+       * Note that loading does not neccessarily reset the internal
+       * state of the entity!
        */
-      //virtual void
-        //load_properties(Properties *data); 
+      virtual void
+        load(Properties &p) = 0; 
 
       /*
-       * Dump the internal state of a NeuralEntity
-       * and return it. Internal state does not contain 
-       * the network connection (they have to be dumped
-       * separatly by the simulator using +each_connection+.
+       * Dump the internal state of a NeuralEntity into +p+. This does
+       * not include the connections and internal stimuli. 
        */ 
-      //virtual void
-        //dump_properties(Properties *into);
+      virtual void
+        dump(Properties &p) = 0;
+
+      /*
+       * Iterator function type used in the each_* methods.
+       */
+      typedef void (*connection_iter)(NeuralEntity* self, 
+                                      NeuralEntity* conn, 
+                                      void* data);
 
       /*
        * Connect with +target+.
@@ -109,16 +114,16 @@ namespace Yinspire {
         disconnect(NeuralEntity *target) = 0;
 
       /*
-       * Disconnect from all connections. Uses +each_connection+ and
-       * +disconnect+.
+       * Calls +yield+ for each incoming connection.
        */
-      void disconnect_all();
+      virtual void
+        each_incoming_connection(connection_iter yield, void *data) = 0;
 
       /*
        * Calls +yield+ for each outgoing connection.
        */
-      virtual void each_connection(
-          void (*yield)(NeuralEntity *self, NeuralEntity *conn)) = 0;
+      virtual void
+        each_outgoing_connection(connection_iter yield, void *data) = 0;
 
       /*
        * Stimulate an entity at a specific time with a specific weight.

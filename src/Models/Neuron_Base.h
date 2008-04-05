@@ -43,6 +43,24 @@ namespace Yinspire {
         hebb(false) {}
 
       virtual void
+        load(Properties &p)
+        {
+          PROP_LOAD(p, abs_refr_duration);
+          PROP_LOAD(p, last_spike_time);
+          PROP_LOAD(p, last_fire_time);
+          PROP_LOAD(p, hebb);
+        }
+
+      virtual void
+        dump(Properties &p)
+        {
+          PROP_DUMP(p, abs_refr_duration);
+          PROP_DUMP(p, last_spike_time);
+          PROP_DUMP(p, last_fire_time);
+          PROP_DUMP(p, hebb);
+        }
+
+      virtual void
         stimulate(real at, real weight, NeuralEntity *source)
         {
           simulator()->record_stimuli(at, weight, source);

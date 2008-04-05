@@ -17,9 +17,14 @@ namespace Yinspire {
     post_neuron = NULL;
   }
 
-  void Synapse::each_connection(void (*yield)(NeuralEntity *self, NeuralEntity *conn))
+  void Synapse::each_incoming_connection(connection_iter yield, void *data)
   {
-    yield(this, post_neuron);
+    yield(this, pre_neuron, data);
+  }
+
+  void Synapse::each_outgoing_connection(connection_iter yield, void *data)
+  {
+    yield(this, post_neuron, data);
   }
 
 } /* namespace Yinspire */

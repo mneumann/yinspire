@@ -25,6 +25,20 @@ namespace Yinspire {
         weight(0.0),
         delay(0.0) {}
 
+      virtual void
+        load(Properties &p)
+        {
+          PROP_LOAD(p, weight);
+          PROP_LOAD(p, delay);
+        }
+
+      virtual void
+        dump(Properties &p)
+        {
+          PROP_DUMP(p, weight);
+          PROP_DUMP(p, delay);
+        }
+
       /* 
        * Only propagate the stimulation if it doesn't originate from the
        * post-neuron. Stimuli from a post-neuron are handled by a specific

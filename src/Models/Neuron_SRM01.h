@@ -22,15 +22,34 @@ namespace Yinspire {
 
     public:
 
-      /*
-       * Constructor
-       */
       Neuron_SRM01() :
         tau_m(0.0),
         tau_ref(0.0),
         ref_weight(0.0),
         mem_pot(0.0),
         const_threshold(0.0) {}
+
+      virtual void
+        load(Properties &p)
+        {
+          Neuron_Base::load(p);
+          PROP_LOAD(p, tau_m);
+          PROP_LOAD(p, tau_ref);
+          PROP_LOAD(p, ref_weight);
+          PROP_LOAD(p, mem_pot);
+          PROP_LOAD(p, const_threshold);
+        }
+
+      virtual void
+        dump(Properties &p)
+        {
+          Neuron_Base::dump(p);
+          PROP_DUMP(p, tau_m);
+          PROP_DUMP(p, tau_ref);
+          PROP_DUMP(p, ref_weight);
+          PROP_DUMP(p, mem_pot);
+          PROP_DUMP(p, const_threshold);
+        }
 
       virtual void
         stimulate(real at, real weight, NeuralEntity *source)
