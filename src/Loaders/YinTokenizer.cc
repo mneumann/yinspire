@@ -31,6 +31,16 @@ void YinTokenizer::error(const char *str)
   throw(str);
 }
 
+bool YinTokenizer::is_delim(char ch)
+{
+  if (isspace(ch) || ch == '#' || 
+      ch == '=' || ch == '<' || ch == '@' || ch == ',' ||
+      ch == '{' || ch == '}' || ch == '!')
+    return true;
+  else
+    return false;
+}
+
 bool YinTokenizer::parse_token()
 {
   char ch;
@@ -55,8 +65,7 @@ bool YinTokenizer::parse_token()
 
         to_buf(ch);
 
-        if (ch == '=' || ch == '<' || ch == '@' || ch == ',' ||
-            ch == '{' || ch == '}')
+        if (is_delim(ch))
         {
           ++p;
           return true;
@@ -82,9 +91,7 @@ bool YinTokenizer::parse_token()
 
       case sw_value:
 
-        if (isspace(ch) || ch == '#' ||
-            ch == '=' || ch == '<' || ch == '@' || ch == ',' ||
-            ch == '{' || ch == '}')
+        if (is_delim(ch))
         {
           return true; 
         }
@@ -108,9 +115,7 @@ bool YinTokenizer::parse_token()
           return true;
         }
 
-        if (isspace(ch) || ch == '#' ||
-            ch == '=' || ch == '<' || ch == '@' || ch == ',' ||
-            ch == '{' || ch == '}')
+        if (is_delim(ch))
         {
           return true; 
         }

@@ -1,5 +1,6 @@
 #include "Loaders/YinParser.h"
 #include <stdlib.h>
+#include <iostream>
 
 namespace Yinspire {
 
@@ -104,10 +105,12 @@ void YinParser::parse_command()
       break;
 
     case cmd_CONNECT:
-      throw "not yet implemented";
+      parse_connect(ids);
+      break;
 
     case cmd_STIMULATE:
-      throw "not yet implemented";
+      parse_stimulate(ids);
+      break;
 
     default:
       throw "FATAL";
@@ -153,12 +156,82 @@ void YinParser::parse_entity(Array<string>& ids)
   }
 }
 
-void YinParser::assert_token_is_id()
+/*
+ * NOTE: Method destroys "ids"!
+ */
+void YinParser::parse_connect(Array<string>& ids)
 {
-  if (token == "," || token == "=" || token == "!" || 
-      token == "<" || token == "->" || token == "{" ||
-      token == "}" || token == "@")
-    parse_error("invalid id");
+  Array<string> ids2;
+  Array<string>& from_ids = ids;
+  Array<string>& to_ids = ids2;
+
+  while (true)
+  {
+    to_ids.clear();
+    parse_ids(to_ids);
+    if (to_ids.empty())
+      parse_error("non-empty id list expected");
+
+    for (int i = 0; i < from_ids.size(); i++)
+      for (int j = 0; j < to_ids.size(); j++)
+        visitor->on_connect(from_ids[i], to_ids[i]);
+
+    Array<string>& tmp = from_ids;
+    from_ids = to_ids;
+    to_ids = tmp;
+
+    if (token != "->")
+      break;
+
+    need_next_token();
+  }
+}
+
+void YinParser::parse_stimulus(Stimulus &s)
+{
+  s.weight = Infinity;
+  s.at = convert_float();
+  if (like_next_token() && token == "@")
+  {
+    need_next_token();
+    s.weight = s.at;
+    s.at = convert_float();
+    like_next_token();
+  }
+}
+
+void YinParser::parse_stimulate(Array<string>& ids)
+{
+  Stimulus s;
+
+  if (token == "{")
+  {
+    /*
+     * Multiple stimulis are given
+     */
+    need_next_token();
+    while (token != "}")
+    {
+      parse_stimulus(s);
+      for (int i=0; i < ids.size(); i++)
+      {
+        visitor->on_stimulate(ids[i], s);
+      }
+      if (at_end) parse_error("unexpected end");
+    }
+    like_next_token();
+  }
+  else
+  {
+    /*
+     * Only one stimuli
+     */
+    parse_stimulus(s);
+    for (int i=0; i < ids.size(); i++)
+    {
+      visitor->on_stimulate(ids[i], s);
+    }
+  }
 }
 
 void YinParser::parse_properties(Properties& p)
@@ -199,16 +272,7 @@ void YinParser::parse_properties(Properties& p)
     }
     else
     {
-      // token is assumed to be a float
-      char *endptr = NULL;
-      real res = strtod(token.c_str(), &endptr);
-
-      if (endptr != token.c_str() + token.size())  
-      {
-        parse_error("invalid float");
-      }
-
-      p.dump(res, key);
+      p.dump((real)convert_float(), key);
     }
 
     need_next_token();
@@ -241,6 +305,34 @@ void YinParser::parse_ids(Array<string>& ids)
     parse_error("id expected");
 }
 
+double YinParser::convert_float()
+{
+  char *endptr = NULL;
+  double res; 
+  
+  if (token == "," || token == "=" || token == "!" || 
+      token == "<" || token == "->" || token == "{" ||
+      token == "}" || token == "@")
+    parse_error("invalid float");
+
+  res = strtod(token.c_str(), &endptr);
+
+  if (endptr != token.c_str() + token.size())  
+  {
+    parse_error("invalid float");
+  }
+
+  return res;
+}
+
+void YinParser::assert_token_is_id()
+{
+  if (token == "," || token == "=" || token == "!" || 
+      token == "<" || token == "->" || token == "{" ||
+      token == "}" || token == "@")
+    parse_error("invalid id");
+}
+
 bool YinParser::like_next_token()
 {
   bool res = tokenizer->next_token(token);
@@ -264,6 +356,8 @@ void YinParser::parse_error(const char* reason)
 {
   string msg = "Parse error: ";
   msg += reason;
+  cerr << "ERROR: " << msg << endl;
+  cerr << "  at token: " << token << endl;
   throw msg;
 }
 

@@ -24,6 +24,17 @@ class MyYinVisitor : public Yinspire::YinVisitor
     p.output(cout);
     cout << "}" << endl;
   }
+
+  virtual void on_connect(string& from_id, string& to_id)
+  {
+    cout << from_id << " -> " << to_id << endl;
+  }
+
+  virtual void on_stimulate(string& id, Stimulus& s)
+  {
+    cout << id << " ! " << s.weight << " @ " << s.at << endl;
+  }
+
 };
 
 int main()

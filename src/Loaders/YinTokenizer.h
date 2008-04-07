@@ -47,6 +47,8 @@ namespace Yinspire {
        */
       virtual int wants_more() { return 0; }
 
+      bool is_delim(char ch);
+
     public:
 
       YinTokenizer(char *token_buf, int token_buf_sz);
