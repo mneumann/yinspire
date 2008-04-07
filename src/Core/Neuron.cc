@@ -6,15 +6,29 @@ namespace Yinspire {
   void Neuron::connect(NeuralEntity *target)
   {
     Synapse *syn = dynamic_cast<Synapse*>(target);
-    post_synapses.push(syn);
-    syn->pre_neuron = this;
+    if (syn)
+    {
+      post_synapses.push(syn);
+      syn->pre_neuron = this;
+    }
+    else
+    {
+      fail("Neuron::connect failed for ", target->id());
+    }
   }
 
   void Neuron::disconnect(NeuralEntity *target)
   {
     Synapse *syn = dynamic_cast<Synapse*>(target);
-    post_synapses.remove(syn);
-    syn->pre_neuron = NULL;
+    if (syn)
+    {
+      post_synapses.remove(syn);
+      syn->pre_neuron = NULL;
+    }
+    else
+    {
+      fail("Neuron::disconnect failed for ", target->id());
+    }
   }
 
   void Neuron::each_incoming_connection(connection_iter yield, void *data)
