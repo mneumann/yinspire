@@ -1,6 +1,7 @@
-CFLAGS=-c -I.
+CFLAGS=-c -I. -O3
 
-all: ScheduleEntity.o Scheduler.o NeuralEntity.o Neuron.o Synapse.o Main.o YinTokenizer.o YinParser.o
+all: ScheduleEntity.o Scheduler.o NeuralEntity.o Neuron.o Synapse.o \
+  YinTokenizer.o YinParser.o Loader_Yin.o Main.o
 	${CXX} -o yinspire $>
 
 clean: 
@@ -14,3 +15,4 @@ Synapse.o: Core/Synapse.cc
 Main.o: Main.cc
 YinTokenizer.o: Loaders/YinTokenizer.cc
 YinParser.o: Loaders/YinParser.cc
+Loader_Yin.o: Loaders/Loader_Yin.cc

@@ -1,4 +1,3 @@
-#include "Allocators/MemoryAllocator.h"
 #include "Core/Simulator.h"
 #include "Core/NeuralNet.h"
 #include "Core/NeuralFactory.h"
@@ -8,51 +7,28 @@
 #include "Models/Neuron_SRM01.h"
 #include "Models/Neuron_SRM02.h"
 #include "Models/Synapse_Default.h"
+#include "Loaders/Loader_Yin.h"
 
-#include "Loaders/YinParser.h"
-
-#include <iostream>
-
-using namespace Yinspire;
-using namespace std;
-
-class MyYinVisitor : public Yinspire::YinVisitor
+int main(int argc, char **argv)
 {
-  virtual void on_entity(string& id, string& type, Properties &p)
-  {
-    cout << id << " : " << type << "{" << endl;
-    p.output(cout);
-    cout << "}" << endl;
-  }
-
-  virtual void on_connect(string& from_id, string& to_id)
-  {
-    cout << from_id << " -> " << to_id << endl;
-  }
-
-  virtual void on_stimulate(string& id, Stimulus& s)
-  {
-    cout << id << " ! " << s.weight << " @ " << s.at << endl;
-  }
-
-};
-
-int main()
-{
-  YinParser parser;
-  parser.parse("out.yin", new MyYinVisitor);
+  using namespace Yinspire;
 
   NeuralNet nn;
   Simulator simulator;
   NeuralFactory factory;
-  NeuralEntity *entity;
 
   REGISTER_TYPE(factory, Neuron_Input);
   REGISTER_TYPE(factory, Neuron_Output);
   REGISTER_TYPE(factory, Neuron_SRM01);
   REGISTER_TYPE(factory, Neuron_SRM02);
   REGISTER_TYPE(factory, Synapse_Default);
+  REGISTER_TYPE_ALIAS(factory, Synapse, Synapse_Default);
 
+  Loader_Yin loader(&simulator, &factory, &nn);
+  loader.load(argv[1]);
+
+  /*
+  NeuralEntity *entity;
   entity = factory.create("Neuron_Output");
   entity->init("id1", &simulator);
   nn.add(entity);
@@ -79,6 +55,8 @@ int main()
 
   cout << nn.get("id5")->id() << endl;
   cout << nn.get("id4")->type() << endl;
+
+  */
 
   return 0;
 }
