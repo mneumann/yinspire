@@ -18,6 +18,12 @@ class Array
         return this->array.size();
       } 
 
+    inline bool
+      empty() const
+      {
+        return this->array.empty();
+      }
+
     inline void
       push(const T& i)
       {
