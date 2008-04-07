@@ -10,7 +10,7 @@ namespace Yinspire {
 
   class Simulator : public Scheduler
   {
-    protected: 
+    public: 
 
       friend class NeuralEntity;
 
@@ -23,7 +23,7 @@ namespace Yinspire {
     public:
 
       Simulator() :
-        stimuli_tolerance(Infinity) {}
+        stimuli_tolerance(0.0) {}
 
 #ifdef YINSPIRE__EXPENSIVE_RECORD
       virtual void
