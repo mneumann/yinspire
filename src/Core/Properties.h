@@ -85,6 +85,20 @@ namespace Yinspire {
           properties.clear();
         }
 
+      /*
+       * Overwrite properties from +p+.
+       */
+      void
+        update(Properties &p)
+        {
+          using namespace std;
+          for (map<string, Property>::iterator i=p.properties.begin();
+              i != p.properties.end(); i++)
+          {
+            properties[i->first] = i->second;   
+          }
+        }
+
       void
         output(std::ostream &s)
         {

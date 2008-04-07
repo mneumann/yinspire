@@ -1,12 +1,16 @@
 #ifndef __YINSPIRE__NEURAL_FACTORY__
 #define __YINSPIRE__NEURAL_FACTORY__
 
+#include "Core/Common.h"
 #include "Core/NeuralEntity.h"
 #include <string>
 #include <map>
 
 #define REGISTER_TYPE(factory, name) \
   factory.register_type(name::ctype(), name::create) 
+
+#define REGISTER_TYPE_ALIAS(factory, alias_name, name) \
+  factory.register_type(#alias_name, name::create) 
  
 namespace Yinspire {
 
@@ -39,7 +43,14 @@ namespace Yinspire {
       NeuralEntity*
         create(const std::string& type)
         {
-          return types[type]();
+          if (types.count(type) > 0)
+          {
+            return types[type]();
+          }
+          else
+          {
+            return NULL;
+          }
         }
 
   };

@@ -1,6 +1,7 @@
 #ifndef __YINSPIRE__NEURAL_NET__
 #define __YINSPIRE__NEURAL_NET__
 
+#include "Core/Common.h"
 #include "Core/NeuralEntity.h"
 #include <string>
 #include <map>
@@ -27,14 +28,23 @@ namespace Yinspire {
       void
         add(NeuralEntity *entity)
         {
-          // TODO: Throw exception in case of a duplicate id.
-          entities[entity->id()] = entity;
+          if (entities.count(entity->id()) == 0)
+          {
+            entities[entity->id()] = entity;
+          }
+          else
+          {
+            throw "Duplicate NeuralEntity id";
+          }
         }
 
       NeuralEntity *
         get(const std::string& id)
         {
-          return entities[id];
+          if (entities.count(id) == 0)
+            return NULL;
+          else
+            return entities[id];
         }
 
   };
