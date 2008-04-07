@@ -27,7 +27,6 @@ namespace Yinspire {
       };
 
       void to_buf(char ch);
-      void error(const char *str);
 
       /*
        * Returns +true+ is a token was parsed successfully.

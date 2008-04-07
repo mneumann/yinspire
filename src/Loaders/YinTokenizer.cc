@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string>
 #include <fcntl.h>
+#include "Core/Common.h"
 #include "Loaders/YinTokenizer.h"
 
 namespace Yinspire {
@@ -20,14 +21,8 @@ YinTokenizer::YinTokenizer(char *token_buf, int token_buf_sz)
 
 void YinTokenizer::to_buf(char ch)
 {
-  if (token_buf_pos >= token_buf_sz) error("TokenBuffer full!");
+  if (token_buf_pos >= token_buf_sz) fail("TokenBuffer full!");
   token_buf[token_buf_pos++] = ch;
-}
-
-void YinTokenizer::error(const char *str)
-{
-  printf("%s\n", str);
-  throw(str);
 }
 
 bool YinTokenizer::is_delim(char ch)
@@ -143,7 +138,7 @@ bool YinTokenizer::parse_token()
 
       default:
 
-        error("invalid character");
+        fail("invalid character");
 
     }
   }
@@ -187,7 +182,7 @@ bool YinTokenizer::next_token_()
   }
   else
   {
-    error("Fatal error");
+    fail("Fatal error");
   }
 }
 
@@ -204,7 +199,7 @@ int YinFileTokenizer::wants_more()
   int sz = read(fh, buffer, buffer_sz);
   if (sz < 0)
   {
-    error("file error");
+    fail("file error");
   }
   feed(buffer, buffer+sz);
   return sz;
@@ -222,7 +217,7 @@ void YinFileTokenizer::open(const char *filename)
 {
   fh = ::open(filename, O_RDONLY);
   if (fh < 0)
-    error("couldn't open file");
+    fail("couldn't open file");
 }
 
 void YinFileTokenizer::close()
