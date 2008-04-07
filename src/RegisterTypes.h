@@ -21,7 +21,6 @@ namespace Yinspire {
     REGISTER_TYPE(factory, Neuron_SRM01);
     REGISTER_TYPE(factory, Neuron_SRM02);
     REGISTER_TYPE(factory, Synapse_Default);
-    //REGISTER_TYPE_ALIAS(factory, Synapse, Synapse_Default);
   }
 
 } /* namespace Yinspire */
