@@ -34,7 +34,7 @@ namespace Yinspire {
           }
           else
           {
-            throw "Duplicate NeuralEntity id";
+            fail("Duplicate NeuralEntity id: ", entity->id());
           }
         }
 

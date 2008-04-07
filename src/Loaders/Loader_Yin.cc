@@ -1,120 +1,89 @@
+#include "Core/Common.h"
 #include "Loaders/Loader_Yin.h"
 #include "Loaders/YinParser.h"
-#include "Loaders/YinVisitor.h"
-
-using namespace std;
 
 namespace Yinspire {
 
-  class YinLoaderVisitor : public YinVisitor
+  void Loader_Yin::on_template(string& id, string& type, Properties &p)
   {
-    protected:
+    if (templates.count(id) == 0)
+    {
+      templates[id] = pair<string, Properties>(type, p);
+    }
+    else
+    {
+      fail("duplicate template name: ", id);
+    }
+  }
 
-      Simulator *simulator;
-      NeuralFactory *factory;
-      NeuralNet *net;
+  void Loader_Yin::on_entity(string& id, string& type, Properties &p)
+  {
+    if (templates.count(type) == 0) 
+    {
+      create_entity(id, type, p);
+    }
+    else
+    {
+      pair<string, Properties>& entry = templates[type];
 
-      // template type -> (type, Properties) mapping
-      map<string, pair<string, Properties> > templates;
+      // duplicate properties from template
+      Properties props = entry.second; 
 
-    public:
+      // and update with given properties
+      props.update(p);
 
-      YinLoaderVisitor(Simulator *simulator, NeuralFactory *factory, NeuralNet *net)
-      {
-        this->simulator = simulator;
-        this->factory = factory;
-        this->net = net;
-      }
+      // this allows recursive template types, where 
+      // a template inherits from another template.
+      on_entity(id, entry.first, props);
+    }
+  }
 
-      virtual void on_template(string& id, string& type, Properties &p)
-      {
-        if (templates.count(id) == 0)
-        {
-          templates[id] = pair<string, Properties>(type, p);
-        }
-        else
-        {
-          error("duplicate template name");
-        }
-      }
+  void Loader_Yin::on_connect(string& from_id, string& to_id)
+  {
+    NeuralEntity *from = net->get(from_id);
+    NeuralEntity *to = net->get(to_id);
 
-      virtual void on_entity(string& id, string& type, Properties &p)
-      {
-        if (templates.count(type) == 0) 
-        {
-          create_entity(id, type, p);
-        }
-        else
-        {
-          pair<string, Properties>& entry = templates[type];
+    if (from == NULL)
+      fail("unknown id in connect: ", from_id);
 
-          // duplicate properties from template
-          Properties props = entry.second; 
+    if (to == NULL)
+      fail("unknown id in connect: ", to_id);
 
-          // and update with given properties
-          props.update(p);
+    from->connect(to);
+  }
 
-          create_entity(id, entry.first, props);
-        }
-      }
+  void Loader_Yin::on_stimulate(string& id, Stimulus& s)
+  {
+    NeuralEntity *entity = net->get(id);
+    if (entity)
+    {
+      entity->stimulate(s.at, s.weight, NULL); 
+    }
+    else
+    {
+      fail("unknown id in stimulate: ", id);
+    }
+  }
 
-      virtual void on_connect(string& from_id, string& to_id)
-      {
-        NeuralEntity *from = net->get(from_id);
-        NeuralEntity *to = net->get(to_id);
-
-        if (from != NULL && to != NULL)
-        {
-          from->connect(to);
-        }
-        else
-        {
-          error("unknown id in connect");
-        }
-      }
-
-      virtual void on_stimulate(string& id, Stimulus& s)
-      {
-        NeuralEntity *entity = net->get(id);
-        if (entity)
-        {
-          entity->stimulate(s.at, s.weight, NULL); 
-        }
-        else
-        {
-          error("unknown id in stimulate");
-        }
-      }
-
-    protected:
-
-      void create_entity(string& id, string& type, Properties &p)
-      {
-        NeuralEntity *entity = factory->create(type); 
-        if (entity != NULL)
-        {
-          entity->init(id, simulator);
-          net->add(entity);
-          entity->load(p);
-        }
-        else
-        {
-          error("unknown entity type");
-        }
-      }
-
-      void error(const char* msg)
-      {
-        throw msg;
-      }
-
-  };
+  void Loader_Yin::create_entity(string& id, string& type, Properties &p)
+  {
+    NeuralEntity *entity = factory->create(type); 
+    if (entity != NULL)
+    {
+      entity->init(id, simulator);
+      net->add(entity);
+      entity->load(p);
+    }
+    else
+    {
+      fail("unknown entity type: ", type);
+    }
+  }
 
   void Loader_Yin::load(const char* filename)
   {
-    YinLoaderVisitor visitor(simulator, factory, net);
     YinParser parser;
-    parser.parse(filename, &visitor);
+    parser.parse(filename, this);
   }
 
 } /* namespace Yinspire */

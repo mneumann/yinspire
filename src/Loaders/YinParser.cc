@@ -1,6 +1,5 @@
 #include "Loaders/YinParser.h"
 #include <stdlib.h>
-#include <iostream>
 
 namespace Yinspire {
 
@@ -86,7 +85,7 @@ void YinParser::parse_command()
 
   if (cmd == cmd_unknown)
   {
-    throw "FATAL";
+    fail("FATAL");
   }
 
   need_next_token();
@@ -94,7 +93,7 @@ void YinParser::parse_command()
   switch (cmd)
   {
     case cmd_unknown:
-      throw "FATAL";
+      fail("FATAL");
 
     case cmd_TEMPLATE:
       parse_template(ids);
@@ -113,7 +112,7 @@ void YinParser::parse_command()
       break;
 
     default:
-      throw "FATAL";
+      fail("FATAL");
 
   }
 }
@@ -354,11 +353,9 @@ void YinParser::parse_error()
 
 void YinParser::parse_error(const char* reason)
 {
-  string msg = "Parse error: ";
-  msg += reason;
-  cerr << "ERROR: " << msg << endl;
-  cerr << "  at token: " << token << endl;
-  throw msg;
+  string msg = "Parse error";
+  msg += " (at token: " + token + "): " + reason;
+  fail(msg);
 }
 
 } /* namespace Yinspire */

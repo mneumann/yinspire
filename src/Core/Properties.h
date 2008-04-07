@@ -43,7 +43,7 @@ namespace Yinspire {
             return;
           Property &prop = properties[name]; 
           if (prop.type != Property_Real)
-            throw "Invalid Property Type";
+            fail("Invalid Property Type");
           variable = prop.value.real_value;
         }
 
@@ -54,7 +54,7 @@ namespace Yinspire {
             return;
           Property &prop = properties[name]; 
           if (prop.type != Property_Bool)
-            throw "Invalid Property Type";
+            fail("Invalid Property Type");
           variable = prop.value.bool_value;
         }
 
@@ -116,7 +116,7 @@ namespace Yinspire {
                 s << i->second.value.bool_value;
                 break;
               default:
-                throw "Invalid Property Type";
+                fail("Invalid Property Type");
             };
             s << endl;
           }
