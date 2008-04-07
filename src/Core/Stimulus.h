@@ -1,6 +1,7 @@
 #ifndef __YINSPIRE__STIMULUS__
 #define __YINSPIRE__STIMULUS__
 
+#include "Core/Common.h"
 #include "Algorithms/BinaryHeap.h"
 
 namespace Yinspire {
