@@ -73,7 +73,7 @@ namespace Yinspire {
 
     public:
 
-      YinFileTokenizer(int token_buf_sz=100, int buffer_sz=4096) :
+      YinFileTokenizer(int token_buf_sz=100, int buffer_sz=16*1024) :
         YinTokenizer(new char[token_buf_sz], token_buf_sz)
       {
         this->fh = -1;
