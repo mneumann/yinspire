@@ -1,6 +1,8 @@
 #ifndef __YINSPIRE__COMMON__
 #define __YINSPIRE__COMMON__
 
+#define YINSPIRE_VERSION "1.0"
+
 #include "Allocators/MemoryAllocator.h"
 #include <stdlib.h>
 #include <math.h>
