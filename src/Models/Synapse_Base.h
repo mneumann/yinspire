@@ -49,6 +49,9 @@ namespace Yinspire {
       virtual void 
         stimulate(real at, real weight, NeuralEntity *source)
         {
+#ifdef YINSPIRE__EXPENSIVE_RECORD
+          simulator()->record_stimulate(this, at, weight, source);
+#endif
           if (source != post_neuron)
           {
             post_neuron->stimulate(at + delay, weight, this);

@@ -80,6 +80,8 @@ namespace Yinspire {
           {
             fire(schedule_at, Infinity); 
           }
+
+          Neuron_Base::process();
         }
 
       inline void

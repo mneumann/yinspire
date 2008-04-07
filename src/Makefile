@@ -1,4 +1,4 @@
-CFLAGS=-c -I. -O3
+CFLAGS=-c -I. -O3 -DYINSPIRE__EXPENSIVE_RECORD
 
 all: ScheduleEntity.o Scheduler.o NeuralEntity.o Neuron.o Synapse.o \
   YinTokenizer.o YinParser.o Loader_Yin.o Main.o

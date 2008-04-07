@@ -25,8 +25,13 @@ namespace Yinspire {
       Simulator() :
         stimuli_tolerance(Infinity) {}
 
+#ifdef YINSPIRE__EXPENSIVE_RECORD
       virtual void
-        record_stimuli(real at, real weight, NeuralEntity *source) {}
+        record_stimulate(NeuralEntity *origin, real at, real weight, NeuralEntity *source) {}
+
+      virtual void
+        record_process(NeuralEntity *origin) {}
+#endif
 
       virtual void
         record_fire(real at, real weight, NeuralEntity *source) {}
