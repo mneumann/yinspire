@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string>
 #include <fcntl.h>
+#include <stdio.h>
 #include "Core/Common.h"
 #include "Loaders/YinTokenizer.h"
 
@@ -215,14 +216,17 @@ bool YinFileTokenizer::next_token(std::string& token)
 
 void YinFileTokenizer::open(const char *filename)
 {
-  fh = ::open(filename, O_RDONLY);
+  fh = (strcmp(filename, "-") == 0) ? 
+    fileno(stdin) : 
+    ::open(filename, O_RDONLY);
   if (fh < 0)
     fail("couldn't open file");
 }
 
 void YinFileTokenizer::close()
 {
-  ::close(this->fh);
+  if (fh != fileno(stdin))
+    ::close(fh);
 }
 
 } /* namespace Yinspire */
