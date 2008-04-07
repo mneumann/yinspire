@@ -1,8 +1,11 @@
 #include "Loaders/YinParser.h"
+#include <stdlib.h>
+
+namespace Yinspire {
 
 void YinParser::parse(const char *filename, YinVisitor *visitor)
 {
-  YinFileTokenizer t; 
+  YinFileTokenizer t;
   tokenizer = &t;
 
   this->visitor = visitor;
@@ -22,7 +25,7 @@ void YinParser::parse(const char *filename, YinVisitor *visitor)
 
 void YinParser::parse_command()
 {
-  vector<string> ids;
+  Array<string> ids;
   enum {
     cmd_unknown = 0,
     cmd_TEMPLATE,
@@ -112,34 +115,42 @@ void YinParser::parse_command()
   }
 }
 
-void YinParser::parse_template(vector<string>& ids)
+void YinParser::parse_template(Array<string>& ids)
 {
   string type;
-  map<string,string> args;
+  Properties p;
 
   assert_token_is_id();
   type = token;
 
   if (like_next_token() && token == "{")
   {
-    parse_arguments(args);
+    parse_properties(p);
   }
-  visitor->on_template(ids, type, args);
+
+  for (int i=0; i < ids.size(); i++)
+  {
+    visitor->on_template(ids[i], type, p);
+  }
 }
 
-void YinParser::parse_entity(vector<string>& ids)
+void YinParser::parse_entity(Array<string>& ids)
 {
   string type;
-  map<string,string> args;
+  Properties p;
 
   assert_token_is_id();
   type = token;
 
   if (like_next_token() && token == "{")
   {
-    parse_arguments(args);
+    parse_properties(p);
   }
-  visitor->on_entity(ids, type, args);
+
+  for (int i=0; i < ids.size(); i++)
+  {
+    visitor->on_entity(ids[i], type, p);
+  }
 }
 
 void YinParser::assert_token_is_id()
@@ -150,7 +161,7 @@ void YinParser::assert_token_is_id()
     parse_error("invalid id");
 }
 
-void YinParser::parse_arguments(map<string,string>& args)
+void YinParser::parse_properties(Properties& p)
 {
   string key;
 
@@ -174,14 +185,38 @@ void YinParser::parse_arguments(map<string,string>& args)
 
     need_next_token();
 
-    args[key] = token;
+    /*
+     * Convert string value to property
+     */
+
+    if (token == "true")
+    {
+      p.dump(true, key);
+    }
+    else if (token == "false")
+    {
+      p.dump(false, key);
+    }
+    else
+    {
+      // token is assumed to be a float
+      char *endptr = NULL;
+      real res = strtod(token.c_str(), &endptr);
+
+      if (endptr != token.c_str() + token.size())  
+      {
+        parse_error("invalid float");
+      }
+
+      p.dump(res, key);
+    }
 
     need_next_token();
   }
   like_next_token();
 }
 
-void YinParser::parse_ids(vector<string>& ids)
+void YinParser::parse_ids(Array<string>& ids)
 {
   bool expect_token = true;
 
@@ -189,7 +224,7 @@ void YinParser::parse_ids(vector<string>& ids)
     if (expect_token)
     {
       assert_token_is_id();
-      ids.push_back(token);
+      ids.push(token);
       expect_token = false;
     }
     else if (token == ",")
@@ -231,3 +266,5 @@ void YinParser::parse_error(const char* reason)
   msg += reason;
   throw msg;
 }
+
+} /* namespace Yinspire */

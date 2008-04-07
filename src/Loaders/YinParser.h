@@ -2,43 +2,46 @@
 #define __YINSPIRE__YIN_PARSER__
 
 #include <string>
-#include <vector>
-#include <map>
-
 #include "Loaders/YinTokenizer.h"
 #include "Loaders/YinVisitor.h"
+#include "Core/Properties.h"
+#include "Algorithms/Array.h"
 
-using namespace std;
+namespace Yinspire {
 
-class YinParser 
-{
-  protected:
+  using namespace std;
 
-    YinFileTokenizer *tokenizer;
-    YinVisitor *visitor;
-    string token;
-    bool at_end;
+  class YinParser 
+  {
+    protected:
 
-  public:
+      YinFileTokenizer *tokenizer;
+      YinVisitor *visitor;
+      string token;
+      bool at_end;
 
-    void parse(const char *filename, YinVisitor *visitor);
+    public:
 
-  protected:
+      void parse(const char *filename, YinVisitor *visitor);
 
-    void parse_command();
+    protected:
 
-    void parse_ids(vector<string>& ids);
-    void parse_arguments(map<string,string>& args);
+      void parse_command();
 
-    void parse_template(vector<string>& ids);
-    void parse_entity(vector<string>& ids);
+      void parse_ids(Array<string>& ids);
+      void parse_properties(Properties &p);
 
-    void assert_token_is_id();
-    bool like_next_token();
-    void need_next_token();
+      void parse_template(Array<string>& ids);
+      void parse_entity(Array<string>& ids);
 
-    void parse_error();
-    void parse_error(const char* reason);
-};
+      void assert_token_is_id();
+      bool like_next_token();
+      void need_next_token();
+
+      void parse_error();
+      void parse_error(const char* reason);
+  };
+
+} /* namespace Yinspire */
 
 #endif

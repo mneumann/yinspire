@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include "Loaders/YinTokenizer.h"
 
+namespace Yinspire {
+
 YinTokenizer::YinTokenizer(char *token_buf, int token_buf_sz)
 {
   this->state = 0; 
@@ -23,7 +25,7 @@ void YinTokenizer::to_buf(char ch)
   token_buf[token_buf_pos++] = ch;
 }
 
-void YinTokenizer::error(char *str)
+void YinTokenizer::error(const char *str)
 {
   printf("%s\n", str);
   throw(str);
@@ -223,3 +225,5 @@ void YinFileTokenizer::close()
 {
   ::close(this->fh);
 }
+
+} /* namespace Yinspire */

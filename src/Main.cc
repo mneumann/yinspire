@@ -8,12 +8,28 @@
 #include "Models/Neuron_SRM01.h"
 #include "Models/Neuron_SRM02.h"
 #include "Models/Synapse_Default.h"
+
+#include "Loaders/YinParser.h"
+
 #include <iostream>
+
+using namespace Yinspire;
+using namespace std;
+
+class MyYinVisitor : public Yinspire::YinVisitor
+{
+  virtual void on_entity(string& id, string& type, Properties &p)
+  {
+    cout << id << " : " << type << "{" << endl;
+    p.output(cout);
+    cout << "}" << endl;
+  }
+};
 
 int main()
 {
-  using namespace Yinspire;
-  using namespace std;
+  YinParser parser;
+  parser.parse("out.yin", new MyYinVisitor);
 
   NeuralNet nn;
   Simulator simulator;

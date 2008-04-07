@@ -2,20 +2,25 @@
 #define __YINSPIRE__YIN_VISITOR__
 
 #include <string>
-#include <vector>
-#include <map>
+#include "Algorithms/Array.h"
+#include "Core/Properties.h"
+#include "Core/Stimulus.h"
 
-using namespace std;
+namespace Yinspire {
 
-class YinVisitor
-{
-  public:
+  using namespace std;
 
-    virtual void on_template(vector<string>& ids, string& type, map<string,string>& args) = 0;
-    virtual void on_entity(vector<string>& ids, string& type, map<string,string>& args) = 0;
-    virtual void on_connect(vector<string>& from_ids, vector<string>& to_ids) = 0;
-    virtual void on_stimulate(vector<string>& ids, vector<string>& stimuli) = 0;  
+  class YinVisitor
+  {
+    public:
 
-};
+      virtual void on_template(string& id, string& type, Properties &p) {}
+      virtual void on_entity(string& id, string& type, Properties &p) {}
+      virtual void on_connect(string& from_id, string& to_id) {}
+      virtual void on_stimulate(string& id, Stimulus& stimulus) {}
+
+  };
+
+} /* namespace Yinspire */
 
 #endif

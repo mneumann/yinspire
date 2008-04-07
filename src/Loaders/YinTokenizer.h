@@ -3,91 +3,95 @@
 
 #include <string>
 
-class YinTokenizer
-{
-  protected:
+namespace Yinspire {
 
-    int state;
-    char *p;
-    char *last;
+  class YinTokenizer
+  {
+    protected:
 
-    char *token_buf;
-    int token_buf_sz;
-    int token_buf_pos;
+      int state;
+      char *p;
+      char *last;
 
-    enum {
-      sw_start = 0,
-      sw_minus,
-      sw_value,
-      sw_minus_in_value,
-      sw_minus_on_stack,
-      sw_comment
-    };
+      char *token_buf;
+      int token_buf_sz;
+      int token_buf_pos;
 
-    void to_buf(char ch);
-    void error(char *str);
+      enum {
+        sw_start = 0,
+        sw_minus,
+        sw_value,
+        sw_minus_in_value,
+        sw_minus_on_stack,
+        sw_comment
+      };
 
-    /*
-     * Returns +true+ is a token was parsed successfully.
-     * Returns +false+ if reached the end of the string.
-     */
-    bool parse_token();
+      void to_buf(char ch);
+      void error(const char *str);
 
-    void clear_token();
+      /*
+       * Returns +true+ is a token was parsed successfully.
+       * Returns +false+ if reached the end of the string.
+       */
+      bool parse_token();
 
-    bool next_token_();
+      void clear_token();
 
-    /*
-     * Is called by the tokenizer if it wants more content to tokenize.
-     *
-     * Return the size of the new string (0 == End of string).  Use
-     * method feed() to set the new string.
-     */
-    virtual int wants_more() { return 0; }
+      bool next_token_();
 
-  public:
+      /*
+       * Is called by the tokenizer if it wants more content to tokenize.
+       *
+       * Return the size of the new string (0 == End of string).  Use
+       * method feed() to set the new string.
+       */
+      virtual int wants_more() { return 0; }
 
-    YinTokenizer(char *token_buf, int token_buf_sz);
+    public:
 
-    /*
-     * Feeds the tokenizer with a new string.
-     */
-    void feed(char *p, char *last);
+      YinTokenizer(char *token_buf, int token_buf_sz);
 
-    bool next_token();
-};
+      /*
+       * Feeds the tokenizer with a new string.
+       */
+      void feed(char *p, char *last);
 
-class YinFileTokenizer : protected YinTokenizer
-{
-  protected:
+      bool next_token();
+  };
 
-    int fh;
-    int buffer_sz;
-    char *buffer;
+  class YinFileTokenizer : protected YinTokenizer
+  {
+    protected:
 
-    virtual int wants_more();
+      int fh;
+      int buffer_sz;
+      char *buffer;
 
-  public:
+      virtual int wants_more();
 
-    YinFileTokenizer(int token_buf_sz=100, int buffer_sz=4096) :
-      YinTokenizer(new char[token_buf_sz], token_buf_sz)
-    {
-      this->fh = -1;
-      this->buffer_sz = buffer_sz;
-      buffer = new char[buffer_sz];
-      feed(buffer, buffer); 
-    }
+    public:
 
-    ~YinFileTokenizer()
-    {
-      delete[] buffer;
-      delete[] token_buf;
-    }
+      YinFileTokenizer(int token_buf_sz=100, int buffer_sz=4096) :
+        YinTokenizer(new char[token_buf_sz], token_buf_sz)
+      {
+        this->fh = -1;
+        this->buffer_sz = buffer_sz;
+        buffer = new char[buffer_sz];
+        feed(buffer, buffer); 
+      }
 
-    void open(const char *filename);
-    void close();
+      ~YinFileTokenizer()
+      {
+        delete[] buffer;
+        delete[] token_buf;
+      }
 
-    bool next_token(std::string& token);
-};
+      void open(const char *filename);
+      void close();
+
+      bool next_token(std::string& token);
+  };
+
+} /* namespace Yinspire */
 
 #endif
