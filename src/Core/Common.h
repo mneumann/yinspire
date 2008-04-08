@@ -5,16 +5,15 @@
 
 #include "Allocators/MemoryAllocator.h"
 #include <stdlib.h>
-#include <math.h>
-#define Infinity INFINITY 
+#include <cmath>
+#include <limits>
 #include <string>
 
 namespace Yinspire
 {
   typedef unsigned int uint;
   typedef float real;
-
-  inline real real_exp(real x) { return expf(x); }
+  const real Infinity = std::numeric_limits<real>::infinity();
 
   inline void fail(const std::string& msg1)
   {

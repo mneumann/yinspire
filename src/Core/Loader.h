@@ -34,4 +34,3 @@ namespace Yinspire {
 } /* namespace Yinspire */
 
 #endif
-

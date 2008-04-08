@@ -63,7 +63,7 @@ namespace Yinspire {
           /*
            * Calculate new membrane potential
            */
-          mem_pot = weight + mem_pot * real_exp(-(schedule_at - last_spike_time)/tau_m);
+          mem_pot = weight + mem_pot * exp(-(schedule_at - last_spike_time)/tau_m);
           last_spike_time = schedule_at;
 
           if (schedule_at < last_fire_time + abs_refr_duration)
@@ -72,7 +72,7 @@ namespace Yinspire {
           /*
            * Calculate dynamic reset
            */
-          const real dynamic_reset = reset * real_exp(-delta()/tau_ref);
+          const real dynamic_reset = reset * exp(-delta()/tau_ref);
 
           if (mem_pot >= const_threshold + dynamic_reset)
           {
