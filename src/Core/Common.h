@@ -17,6 +17,10 @@ namespace Yinspire
   typedef float real;
   const real Infinity = numeric_limits<real>::infinity();
 
+#ifdef WIN32
+  inline bool isinf(real n) { return !_finite(n) && !_isnan(n); }
+#endif
+
   inline void fail(const string& msg1)
   {
     throw(msg1);
