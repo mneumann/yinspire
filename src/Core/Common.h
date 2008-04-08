@@ -11,6 +11,8 @@
 
 namespace Yinspire
 {
+  using namespace std;
+
   typedef unsigned int uint;
   typedef float real;
   const real Infinity = std::numeric_limits<real>::infinity();
