@@ -7,7 +7,7 @@ namespace Yinspire {
   {
     while (true)
     {
-      real next_stop = std::min(stop_at, schedule_next_step);
+      real next_stop = min(stop_at, schedule_next_step);
 
       /* 
        * Calculate all events from the priority queue until the next time

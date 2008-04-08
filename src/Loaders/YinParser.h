@@ -11,8 +11,6 @@
 
 namespace Yinspire {
 
-  using namespace std;
-
   class YinParser 
   {
     protected:

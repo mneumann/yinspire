@@ -1,6 +1,7 @@
 #ifndef __YINSPIRE__YIN_TOKENIZER__
 #define __YINSPIRE__YIN_TOKENIZER__
 
+#include "Core/Common.h"
 #include <string>
 
 namespace Yinspire {
@@ -90,7 +91,7 @@ namespace Yinspire {
       void open(const char *filename);
       void close();
 
-      bool next_token(std::string& token);
+      bool next_token(string& token);
   };
 
 } /* namespace Yinspire */

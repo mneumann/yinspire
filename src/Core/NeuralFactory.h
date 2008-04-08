@@ -26,12 +26,12 @@ namespace Yinspire {
       /*
        * Stores an "type" -> creation method mapping.
        */
-      std::map<std::string, creator> types;
+      map<string, creator> types;
 
     public:
 
       void
-        register_type(const std::string &type, creator method)
+        register_type(const string &type, creator method)
         {
           types[type] = method;
         }
@@ -41,7 +41,7 @@ namespace Yinspire {
        * registered before using the +register_type+ method.
        */
       NeuralEntity*
-        create(const std::string& type)
+        create(const string& type)
         {
           if (types.count(type) > 0)
           {

@@ -1,6 +1,7 @@
 #ifndef __YINSPIRE__NEURAL_ENTITY__
 #define __YINSPIRE__NEURAL_ENTITY__
 
+#include "Core/Common.h"
 #include "Core/ScheduleEntity.h"
 #include "Core/Stimulus.h"
 #include "Core/Properties.h"
@@ -36,7 +37,7 @@ namespace Yinspire {
        * SHOULD NOT be changed, because it is used as a key in
        * the Simulator.
        */
-      std::string id_;
+      string id_;
 
       /*
        * Each NeuralEntity has it's own local stimuli priority queue.
@@ -52,7 +53,7 @@ namespace Yinspire {
       /*
        * Returns the +id+ of the entity.
        */
-      const std::string&
+      const string&
         id()
         {
           return id_;
@@ -72,7 +73,7 @@ namespace Yinspire {
        * repetition in each subclass.
        */
       void
-        init(const std::string& id, Simulator *simulator)
+        init(const string& id, Simulator *simulator)
         {
           id_ = id;
           scheduler = (Scheduler*) simulator;

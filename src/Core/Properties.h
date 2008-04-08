@@ -32,12 +32,12 @@ namespace Yinspire {
   {
     protected: 
 
-      std::map<std::string, Property> properties;
+      map<string, Property> properties;
 
     public:
 
       void
-        load(real &variable, const std::string &name)
+        load(real &variable, const string &name)
         {
           if (properties.count(name) == 0)
             return;
@@ -48,7 +48,7 @@ namespace Yinspire {
         }
 
       void
-        load(bool &variable, const std::string &name)
+        load(bool &variable, const string &name)
         {
           if (properties.count(name) == 0)
             return;
@@ -59,7 +59,7 @@ namespace Yinspire {
         }
 
       void
-        dump(real variable, const std::string &name)
+        dump(real variable, const string &name)
         {
           Property prop;
           prop.type = Property_Real;
@@ -68,7 +68,7 @@ namespace Yinspire {
         }
 
       void
-        dump(bool variable, const std::string &name)
+        dump(bool variable, const string &name)
         {
           Property prop;
           prop.type = Property_Bool;
@@ -91,7 +91,6 @@ namespace Yinspire {
       void
         update(Properties &p)
         {
-          using namespace std;
           for (map<string, Property>::iterator i=p.properties.begin();
               i != p.properties.end(); i++)
           {
@@ -100,9 +99,8 @@ namespace Yinspire {
         }
 
       void
-        output(std::ostream &s)
+        output(ostream &s)
         {
-          using namespace std;
           for (map<string, Property>::iterator i=properties.begin();
               i != properties.end(); i++)
           {

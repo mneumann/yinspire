@@ -15,14 +15,14 @@ namespace Yinspire
 
   typedef unsigned int uint;
   typedef float real;
-  const real Infinity = std::numeric_limits<real>::infinity();
+  const real Infinity = numeric_limits<real>::infinity();
 
-  inline void fail(const std::string& msg1)
+  inline void fail(const string& msg1)
   {
     throw(msg1);
   }
 
-  inline void fail(const std::string& msg1, const std::string& msg2)
+  inline void fail(const string& msg1, const string& msg2)
   {
     throw(msg1 + msg2);
   }

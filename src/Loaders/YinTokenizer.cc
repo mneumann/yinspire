@@ -205,11 +205,11 @@ int YinFileTokenizer::wants_more()
   return sz;
 }
 
-bool YinFileTokenizer::next_token(std::string& token)
+bool YinFileTokenizer::next_token(string& token)
 {
   bool res = YinTokenizer::next_token();
   // FIXME: optimimal?
-  token = std::string(token_buf, token_buf_pos);
+  token = string(token_buf, token_buf_pos);
   return res;
 }
 

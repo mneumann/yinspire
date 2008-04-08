@@ -9,8 +9,6 @@
 
 namespace Yinspire {
 
-  using namespace std;
-
   class Loader_Yin : public Loader, public YinVisitor
   {
     protected:

@@ -18,7 +18,7 @@ namespace Yinspire {
       /*
        * Stores an "id" -> NeuralEntity mapping.
        */
-      std::map<std::string, NeuralEntity*> entities;
+      map<string, NeuralEntity*> entities;
 
     public:
 
@@ -39,7 +39,7 @@ namespace Yinspire {
         }
 
       NeuralEntity *
-        get(const std::string& id)
+        get(const string& id)
         {
           if (entities.count(id) == 0)
             return NULL;

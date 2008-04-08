@@ -8,8 +8,6 @@
 
 namespace Yinspire {
 
-  using namespace std;
-
   class YinVisitor
   {
     public:
