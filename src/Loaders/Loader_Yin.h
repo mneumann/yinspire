@@ -3,8 +3,8 @@
 
 #include <string>
 #include <map>
-#include "Core/Loader.h"
 #include "Core/Properties.h"
+#include "Loaders/Loader.h"
 #include "Loaders/YinVisitor.h"
 
 namespace Yinspire {
