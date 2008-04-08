@@ -3,6 +3,7 @@
 
 #include "Core/Common.h"
 #include <string>
+#include <stdio.h>
 
 namespace Yinspire {
 
@@ -65,7 +66,7 @@ namespace Yinspire {
   {
     protected:
 
-      int fh;
+      FILE *fh;
       int buffer_sz;
       char *buffer;
 
@@ -76,7 +77,7 @@ namespace Yinspire {
       YinFileTokenizer(int token_buf_sz=100, int buffer_sz=16*1024) :
         YinTokenizer(new char[token_buf_sz], token_buf_sz)
       {
-        this->fh = -1;
+        this->fh = NULL;
         this->buffer_sz = buffer_sz;
         buffer = new char[buffer_sz];
         feed(buffer, buffer); 

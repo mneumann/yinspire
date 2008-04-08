@@ -1,20 +1,7 @@
 #include <ctype.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <string>
-#include <fcntl.h>
 #include <stdio.h>
 #include "Core/Common.h"
 #include "Loaders/YinTokenizer.h"
-
-#ifdef WIN32
-#include <io.h>
-#else
-#define _open ::open
-#define _close ::close
-#define _read ::read
-#define _fileno fileno
-#endif
 
 namespace Yinspire {
 
@@ -205,13 +192,20 @@ bool YinTokenizer::next_token()
 
 int YinFileTokenizer::wants_more()
 {
-  int sz = _read(fh, buffer, buffer_sz);
-  if (sz < 0)
+  size_t sz = fread(buffer, 1, buffer_sz, fh);
+  if (sz > 0)
+  {
+    feed(buffer, buffer+sz);
+    return sz;
+  }
+  else if (ferror(fh))
   {
     fail("file error");
   }
-  feed(buffer, buffer+sz);
-  return sz;
+  else
+  {
+    return 0;
+  }
 }
 
 bool YinFileTokenizer::next_token(string& token)
@@ -225,16 +219,16 @@ bool YinFileTokenizer::next_token(string& token)
 void YinFileTokenizer::open(const char *filename)
 {
   fh = (strcmp(filename, "-") == 0) ? 
-    _fileno(stdin) : 
-    _open(filename, O_RDONLY);
-  if (fh < 0)
+    stdin :
+    fopen(filename, "r"); 
+  if (fh == NULL)
     fail("couldn't open file");
 }
 
 void YinFileTokenizer::close()
 {
-  if (fh != _fileno(stdin))
-    _close(fh);
+  if (fh != stdin)
+    fclose(fh);
 }
 
 } /* namespace Yinspire */
