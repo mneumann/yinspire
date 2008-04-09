@@ -173,7 +173,7 @@ void YinParser::parse_connect(Array<string>& ids)
 
     for (int i = 0; i < from_ids.size(); i++)
       for (int j = 0; j < to_ids.size(); j++)
-        visitor->on_connect(from_ids[i], to_ids[i]);
+        visitor->on_connect(from_ids[i], to_ids[j]);
 
     Array<string>& tmp = from_ids;
     from_ids = to_ids;
