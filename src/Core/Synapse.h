@@ -14,7 +14,7 @@ namespace Yinspire {
    */
   class Synapse : public NeuralEntity
   {
-    protected: 
+    public:
 
       friend class Neuron;
 

@@ -5,6 +5,7 @@
 #include "Core/Properties.h"
 #include "Loaders/Loader_Yin.h"
 #include "Dumpers/Dumper_Yin.h"
+#include "Dumpers/Dumper_Dot.h"
 #include "RegisterTypes.h"
 
 using namespace Yinspire;
@@ -157,6 +158,9 @@ int main(int argc, char **argv)
 
   Dumper_Yin dumper(&nn);
   dumper.dump("out");
+
+  Dumper_Dot dumper2(&nn);
+  dumper2.dump("out.dot");
 
   return 0;
 }
