@@ -106,13 +106,13 @@ namespace Yinspire {
        * Connect with +target+.
        */
       virtual void
-        connect(NeuralEntity *target) = 0;
+        connect(NeuralEntity *target, bool forward=true) = 0;
 
       /*
        * Disconnect from +target+.
        */
       virtual void
-        disconnect(NeuralEntity *target) = 0;
+        disconnect(NeuralEntity *target, bool forward=true) = 0;
 
       /*
        * Calls +yield+ for each incoming connection.

@@ -3,10 +3,9 @@
 
 #include "Core/Common.h"
 #include "Core/NeuralEntity.h"
+#include <assert.h>
 
 namespace Yinspire {
-
-  class Neuron; // Forward declaration 
 
   /*
    * Base class of all Synapses. Defines the structure that is special
@@ -16,10 +15,8 @@ namespace Yinspire {
   {
     public:
 
-      friend class Neuron;
-
-      Neuron *pre_neuron;
-      Neuron *post_neuron;
+      NeuralEntity *pre_neuron;
+      NeuralEntity *post_neuron;
 
     public:
 
@@ -34,16 +31,48 @@ namespace Yinspire {
        * Adding a pre synapse. Target must be a Neuron.
        */
       virtual void
-        connect(NeuralEntity *target);
+        connect(NeuralEntity *target, bool forward=true)
+        {
+          if (forward)
+          {
+            assert(post_neuron == NULL);
+            post_neuron = target;
+            target->connect(this, false);
+          }
+          else
+          {
+            assert(pre_neuron == NULL);
+            pre_neuron = target;
+          }
+        }
 
       virtual void
-        disconnect(NeuralEntity *target);
+        disconnect(NeuralEntity *target, bool forward=true)
+        {
+          if (forward)
+          {
+            assert(target == post_neuron);
+            post_neuron = NULL;
+            target->disconnect(this, false);
+          }
+          else
+          {
+            assert(target == pre_neuron);
+            pre_neuron = NULL;
+          }
+        }
 
       virtual void
-        each_incoming_connection(connection_iter yield, void *data);
+        each_incoming_connection(connection_iter yield, void *data)
+        {
+          yield(this, pre_neuron, data);
+        }
 
       virtual void
-        each_outgoing_connection(connection_iter yield, void *data);
+        each_outgoing_connection(connection_iter yield, void *data)
+        {
+          yield(this, post_neuron, data);
+        }
 
   };
 
