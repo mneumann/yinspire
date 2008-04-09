@@ -1,5 +1,5 @@
-defines = '-DYINSPIRE__EXPENSIVE_RECORD -DNDEBUG'
-env = Environment(CPPPATH='src', CCFLAGS='-O3 ' + defines)
+defines = ['YINSPIRE__EXPENSIVE_RECORD', 'NDEBUG']
+env = Environment(CPPPATH='src', CPPDEFINES=defines, CCFLAGS='-O3')
 sources = Split("""
   src/Main.cc
   src/Core/NeuralEntity.cc
