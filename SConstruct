@@ -1,7 +1,6 @@
 defines = ['YINSPIRE__EXPENSIVE_RECORD', 'NDEBUG']
 env = Environment(CPPPATH='src', CPPDEFINES=defines, CCFLAGS='-O3')
 sources = Split("""
-  src/Main.cc
   src/Core/NeuralEntity.cc
   src/Core/Neuron.cc
   src/Core/ScheduleEntity.cc
@@ -13,4 +12,5 @@ sources = Split("""
   src/Loaders/YinParser.cc
   src/Loaders/YinTokenizer.cc
 """)
-env.Program('yinspire', sources)
+lib = env.Library('yinspire', sources)
+env.Program('yinspire', ['src/Main.cc', lib])
