@@ -47,6 +47,19 @@ namespace Yinspire {
             return entities[id];
         }
 
+      /*
+       * Iterates over all entities
+       */
+      void
+        each(void (*yield)(NeuralEntity*, void*), void *data)
+        {
+          for (map<string, NeuralEntity*>::iterator i = entities.begin();
+              i != entities.end(); i++)
+          {
+            yield(i->second, data);
+          }
+        }
+
   };
 
 } /* namespace Yinspire */

@@ -132,6 +132,12 @@ namespace Yinspire {
       virtual void
         stimulate(real at, real weight, NeuralEntity *source) = 0;
 
+      /*
+       * Calls +yield+ for each Stimuli in the stimuli_pq.
+       */
+      void
+        each_stimulus(void(*yield)(const Stimulus&, void*), void *data);
+
     protected:
 
       Simulator *

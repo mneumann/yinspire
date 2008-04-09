@@ -4,6 +4,7 @@
 #include "Core/NeuralFactory.h"
 #include "Core/Properties.h"
 #include "Loaders/Loader_Yin.h"
+#include "Dumpers/Dumper_Yin.h"
 #include "RegisterTypes.h"
 
 using namespace Yinspire;
@@ -153,6 +154,9 @@ int main(int argc, char **argv)
     fprintf(stderr, "# ERROR %s\n", msg.c_str()); 
     return 1;
   }
+
+  Dumper_Yin dumper(&nn);
+  dumper.dump("out");
 
   return 0;
 }

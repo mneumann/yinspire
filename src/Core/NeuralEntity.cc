@@ -4,6 +4,11 @@
 
 namespace Yinspire {
 
+  void NeuralEntity::each_stimulus(void(*yield)(const Stimulus&, void*), void *data)
+  {
+    stimuli_pq.each(yield, data);
+  }
+
   void NeuralEntity::stimuli_add(real at, real weight)
   {
     Stimulus s; s.at = at; s.weight = weight;

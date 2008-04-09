@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <ostream>
+#include <stdio.h>
 
 #define PROP_LOAD(properties, var) \
   properties.load(var, #var)
@@ -119,6 +120,31 @@ namespace Yinspire {
             s << endl;
           }
         }
+
+      void
+        output(FILE *f)
+        {
+          for (map<string, Property>::iterator i=properties.begin();
+              i != properties.end(); i++)
+          {
+            fprintf(f, "%s = ", i->first.c_str());
+            switch (i->second.type)
+            {
+              case Property_Real:
+                fprintf(f, "%f\n", i->second.value.real_value);
+                break;
+              case Property_Bool:
+                if (i->second.value.bool_value)
+                  fprintf(f, "true\n");
+                else
+                  fprintf(f, "false\n");
+                break;
+              default:
+                fail("Invalid Property Type");
+            };
+          }
+        }
+
   };
 
 } /* namespace Yinspire */
