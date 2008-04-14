@@ -84,6 +84,21 @@ bool get_float(string arg, string flag, real &res)
   return false;
 }
 
+FILE *open_in(const char *fname)
+{
+  FILE *fh = NULL;
+
+  if (strcmp(fname, "-") == 0)
+    fh = stdin;
+  else
+    fh = fopen(fname, "r");
+
+  if (fh == NULL)
+    fail("Couldn't open file: ", fname);
+
+  return fh;
+}
+
 int main(int argc, char **argv)
 {
   MySimulator simulator;
@@ -217,7 +232,10 @@ int main(int argc, char **argv)
     for (; i < argc; i++)
     {
       fprintf(stderr, "# LOAD \"%s\"\n", argv[i]);
-      loader.load(argv[i]);
+      FILE *fh = open_in(argv[i]);
+      loader.load(fh);
+      if (fh != stdin)
+        fclose(fh);
     }
 
     fprintf(stderr, "# LOG starting simulation...\n");

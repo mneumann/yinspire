@@ -80,10 +80,10 @@ namespace Yinspire {
     }
   }
 
-  void Loader_Yin::load(const char* filename)
+  void Loader_Yin::load(FILE *fh)
   {
     YinParser parser;
-    parser.parse(filename, this);
+    parser.parse(fh, this);
   }
 
 } /* namespace Yinspire */

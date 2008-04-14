@@ -4,6 +4,7 @@
 #include "Core/Simulator.h"
 #include "Core/NeuralFactory.h"
 #include "Core/NeuralNet.h"
+#include <stdio.h>
 
 namespace Yinspire {
 
@@ -28,7 +29,7 @@ namespace Yinspire {
         this->net = net;
       }
 
-      virtual void load(const char* filename) = 0;
+      virtual void load(FILE *fh) = 0;
   };
 
 } /* namespace Yinspire */

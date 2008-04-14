@@ -216,19 +216,9 @@ bool YinFileTokenizer::next_token(string& token)
   return res;
 }
 
-void YinFileTokenizer::open(const char *filename)
+void YinFileTokenizer::set_fh(FILE *fh)
 {
-  fh = (strcmp(filename, "-") == 0) ? 
-    stdin :
-    fopen(filename, "r"); 
-  if (fh == NULL)
-    fail("couldn't open file");
-}
-
-void YinFileTokenizer::close()
-{
-  if (fh != stdin)
-    fclose(fh);
+  this->fh = fh;
 }
 
 } /* namespace Yinspire */

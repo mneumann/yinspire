@@ -89,8 +89,7 @@ namespace Yinspire {
         delete[] token_buf;
       }
 
-      void open(const char *filename);
-      void close();
+      void set_fh(FILE *fh);
 
       bool next_token(string& token);
   };

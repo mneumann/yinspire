@@ -21,7 +21,7 @@ namespace Yinspire {
       Loader_Yin(Simulator *simulator, NeuralFactory *factory, NeuralNet *net) :
         Loader(simulator, factory, net) {}
 
-      virtual void load(const char* filename);
+      virtual void load(FILE *fh);
 
       /* 
        * YinVisitor interface

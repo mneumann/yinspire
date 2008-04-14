@@ -2,6 +2,7 @@
 #define __YINSPIRE__YIN_PARSER__
 
 #include <string>
+#include <stdio.h>
 #include "Loaders/YinTokenizer.h"
 #include "Loaders/YinVisitor.h"
 #include "Core/Common.h"
@@ -22,7 +23,7 @@ namespace Yinspire {
 
     public:
 
-      void parse(const char *filename, YinVisitor *visitor);
+      void parse(FILE *fh, YinVisitor *visitor);
 
     protected:
 

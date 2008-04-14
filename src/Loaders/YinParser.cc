@@ -3,14 +3,14 @@
 
 namespace Yinspire {
 
-void YinParser::parse(const char *filename, YinVisitor *visitor)
+void YinParser::parse(FILE *fh, YinVisitor *visitor)
 {
   YinFileTokenizer t;
   tokenizer = &t;
 
   this->visitor = visitor;
 
-  tokenizer->open(filename);
+  tokenizer->set_fh(fh);
   at_end = false;
 
   like_next_token();
@@ -19,8 +19,6 @@ void YinParser::parse(const char *filename, YinVisitor *visitor)
   {
     parse_command();
   }
-
-  tokenizer->close();
 }
 
 void YinParser::parse_command()
