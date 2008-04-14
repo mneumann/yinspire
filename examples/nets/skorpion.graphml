@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+
+	<!-- GraphML-Attibutes 
+		for 	graph, node, edge or all
+	-->
+	
+	<key id="graph_default_neuron_type" for="graph"/>
+	<key id="graph_default_synapse_type" for="graph"/>
+	<key id="neuron_type" for="node"/>
+	<key id="synapse_type" for="edge"/>
+	
+	<key id="neuron_tauM" for="node"/>
+	<key id="neuron_refWeight" for="node"/>
+	<key id="neuron_tauRef" for="node"/>
+	<key id="neuron_arpTime" for="node"/>
+	<key id="neuron_constThreshold" for="node"/>
+	
+	<key id="synapse_weight" for="edge"/>
+	<key id="synapse_delay" for="edge"/>
+	
+	<!-- defines a graph, id optional, edgedefault mandatory 	-->
+	<graph id="InspireGraph" edgedefault="directed">
+		
+		<!-- define neuron type 
+			for now those are defined:
+			NEURONTYPE_KBLIF, NEURONTYPE 	(Inspire class: KernelBasedLIFNeuron)
+			NEURONTYPE_EKERNEL 		(Inspire class: SpecialEKernelNeuron)
+			NEURONTYPE_KBLIF_HEBB 		(Inspire class: KernelBasedLIFNeuron_Hebb)
+			NEURONTYPE_ECLIF			(Inspire class: ECurLIFNeuron)
+			NEURONTYPE_LIF			(Inspire class: LIFNeuron)
+		-->
+		<data key="graph_default_neuron_type">NEURONTYPE_KBLIF</data>
+		
+		<!-- define synapse type 
+			for now those are defined:
+			SYNAPSE_DEFAULT	(Inspire class: Synapse)
+			SYNAPSE_HEBB	(Inspire class: Synapse_Hebb)
+		-->
+		<data key="graph_default_synapse_type">SYNAPSE_DEFAULT</data>
+		
+		<!-- defines a node, id mandatory and has to be unique -->
+		
+		<!-- Neuronen -->
+		
+		<node id="SensorR1">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="SensorR2">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="SensorR3">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="SensorR4">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="SensorL1">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="SensorL2">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="SensorL3">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="SensorL4">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="KommaR1">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="KommaR2">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="KommaR3">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="KommaR4">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="KommaL1">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="KommaL2">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="KommaL3">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="KommaL4">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="InterR1">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="InterR2">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="InterR3">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="InterR4">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="InterL1">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="InterL2">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="InterL3">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		<node id="InterL4">
+			<data key="neuron_tauM">1.15</data>
+			<data key="neuron_refWeight">0.25</data>
+			<data key="neuron_tauRef">3</data>
+			<data key="neuron_arpTime">0.000</data>
+			<data key="neuron_constThreshold">1</data>
+		</node>
+		
+		
+		<!--  Synapsen -->
+		
+		<!--  Excitatorische Pulse -->
+		
+		<edge id="e0" directed="true" source="SensorR1" target="KommaR1">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e1" directed="true" source="SensorR2" target="KommaR2">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e2" directed="true" source="SensorR3" target="KommaR3">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e3" directed="true" source="SensorR4" target="KommaR4">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e4" directed="true" source="SensorL1" target="KommaL1">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e5" directed="true" source="SensorL2" target="KommaL2">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e6" directed="true" source="SensorL3" target="KommaL3">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e7" directed="true" source="SensorL4" target="KommaL4">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		
+		<!-- Inhibitorische Verschaltung -->
+		
+		<edge id="e8" directed="true" source="SensorR1" target="InterR1">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e9" directed="true" source="SensorR2" target="InterR2">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e10" directed="true" source="SensorR3" target="InterR3">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e11" directed="true" source="SensorR4" target="InterR4">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e12" directed="true" source="SensorL1" target="InterL1">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e13" directed="true" source="SensorL2" target="InterL2">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e14" directed="true" source="SensorL3" target="InterL3">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e15" directed="true" source="SensorL4" target="InterL4">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		
+		<!-- Inhibitorische Pulse -->
+		
+		<edge id="e16" directed="true" source="InterR1" target="KommaL4">
+			<data key="synapse_weight">-1</data>
+			<data key="synapse_delay">0.20</data>
+		</edge>
+		<edge id="e17" directed="true" source="InterR2" target="KommaL3">
+			<data key="synapse_weight">-1</data>
+			<data key="synapse_delay">0.20</data>
+		</edge>
+		<edge id="e18" directed="true" source="InterR3" target="KommaL2">
+			<data key="synapse_weight">-1</data>
+			<data key="synapse_delay">0.20</data>
+		</edge>
+		<edge id="e19" directed="true" source="InterR4" target="KommaL1">
+			<data key="synapse_weight">-1</data>
+			<data key="synapse_delay">0.20</data>
+		</edge>
+		<edge id="e20" directed="true" source="InterL1" target="KommaR4">
+			<data key="synapse_weight">-1</data>
+			<data key="synapse_delay">0.20</data>
+		</edge>
+		<edge id="e21" directed="true" source="InterL2" target="KommaR3">
+			<data key="synapse_weight">-1</data>
+			<data key="synapse_delay">0.20</data>
+		</edge>
+		<edge id="e22" directed="true" source="InterL3" target="KommaR2">
+			<data key="synapse_weight">-1</data>
+			<data key="synapse_delay">0.20</data>
+		</edge>
+		<edge id="e23" directed="true" source="InterL4" target="KommaR1">
+			<data key="synapse_weight">-1</data>
+			<data key="synapse_delay">0.20</data>
+		</edge>
+		
+		<!-- Inhibitorische Verschaltung -->
+		
+		<edge id="e24" directed="true" source="SensorR2" target="InterR1">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e25" directed="true" source="SensorR3" target="InterR2">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e26" directed="true" source="SensorR4" target="InterR3">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e27" directed="true" source="SensorL4" target="InterR4">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		
+		
+		<edge id="e28" directed="true" source="SensorL3" target="InterL4">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e29" directed="true" source="SensorL2" target="InterL3">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e30" directed="true" source="SensorL1" target="InterL2">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e31" directed="true" source="SensorR1" target="InterL1">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		
+		
+		<edge id="e32" directed="true" source="SensorL1" target="InterR1">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e33" directed="true" source="SensorR1" target="InterR2">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e34" directed="true" source="SensorR2" target="InterR3">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e35" directed="true" source="SensorR3" target="InterR4">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		
+		
+		<edge id="e36" directed="true" source="SensorR4" target="InterL4">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e37" directed="true" source="SensorL4" target="InterL3">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e38" directed="true" source="SensorL3" target="InterL2">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+		<edge id="e39" directed="true" source="SensorL2" target="InterL1">
+			<data key="synapse_weight">1.1</data>
+			<data key="synapse_delay">0.70</data>
+		</edge>
+	</graph>
+</graphml>
