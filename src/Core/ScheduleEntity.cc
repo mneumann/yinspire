@@ -5,11 +5,8 @@ namespace Yinspire {
 
   void ScheduleEntity::schedule(real at)
   {
-    if (at < schedule_at)
-    {
-      schedule_at = at;
-      scheduler->schedule_update(this);
-    }
+    schedule_at = at;
+    scheduler->schedule_update(this);
   }
 
   bool ScheduleEntity::schedule_stepping_enabled()
