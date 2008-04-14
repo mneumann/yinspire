@@ -59,6 +59,7 @@ namespace Yinspire {
         process(real at)
         {
           real weight = stimuli_sum(at);
+          const real delta = at - last_fire_time - abs_refr_duration; 
 
           /*
            * Calculate new membrane potential
@@ -66,13 +67,13 @@ namespace Yinspire {
           mem_pot = weight + mem_pot * exp(-(at - last_spike_time)/tau_m);
           last_spike_time = at;
 
-          if (at < last_fire_time + abs_refr_duration)
+          if (delta < 0.0)
             return;
 
           /*
            * Calculate dynamic reset
            */
-          const real dynamic_reset = reset * exp(-delta(at)/tau_ref);
+          const real dynamic_reset = reset * exp(-delta/tau_ref);
 
           if (mem_pot >= const_threshold + dynamic_reset)
           {
@@ -85,7 +86,8 @@ namespace Yinspire {
       inline void
         fire(real at, real weight, real dynamic_reset)
         {
-          if (abs_refr_duration > 0.0)
+          if (abs_refr_duration > 0.0 &&
+              at + abs_refr_duration < schedule_at)
           {
             schedule(at + abs_refr_duration);
           }

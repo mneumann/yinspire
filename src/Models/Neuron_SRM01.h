@@ -64,6 +64,7 @@ namespace Yinspire {
         process(real at)
         {
           real weight = stimuli_sum(at);
+          const real delta = at - last_fire_time - abs_refr_duration; 
 
           /*
            * Calculate new membrane potential
@@ -74,7 +75,7 @@ namespace Yinspire {
           /*
            * Calculate dynamic threshold
            */
-          const real dynamic_threshold = ref_weight * exp(-delta(at)/tau_ref);
+          const real dynamic_threshold = ref_weight * exp(-delta/tau_ref);
 
           if (mem_pot >= const_threshold + dynamic_threshold)
           {

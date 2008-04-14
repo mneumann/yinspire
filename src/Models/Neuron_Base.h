@@ -86,12 +86,6 @@ namespace Yinspire {
           stimulate_post_synapses(at, weight);
         }
 
-      inline real
-        delta(real at)
-        {
-          return at - last_fire_time - abs_refr_duration;
-        }
-
    };
 
 } /* namespace Yinspire */
