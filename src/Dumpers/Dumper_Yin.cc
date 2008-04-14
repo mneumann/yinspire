@@ -6,15 +6,11 @@
 
 namespace Yinspire {
 
-  void Dumper_Yin::dump(const char* filename)
+  void Dumper_Yin::dump(FILE *fh)
   {
-    FILE *fh = (strcmp(filename, "-") == 0) ? stdout : fopen(filename, "w+");
-    if (!fh)
-      fail("could not open file for writing: ", filename);
     net->each(dump_entity, fh);
     net->each(dump_connections, fh);
     net->each(dump_stimuli, fh);
-    if (strcmp(filename, "-") != 0) fclose(fh);
   }
 
   void Dumper_Yin::dump_entity(NeuralEntity *entity, void *data)

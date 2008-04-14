@@ -2,6 +2,7 @@
 #define __YINSPIRE__DUMPER__
 
 #include "Core/NeuralNet.h"
+#include <stdio.h>
 
 namespace Yinspire {
 
@@ -22,7 +23,7 @@ namespace Yinspire {
         this->net = net;
       }
 
-      virtual void dump(const char* filename) = 0;
+      virtual void dump(FILE *fh) = 0;
   };
 
 } /* namespace Yinspire */

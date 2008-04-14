@@ -4,22 +4,15 @@
 #include "Core/Synapse.h"
 #include "Core/Properties.h"
 #include "Dumpers/Dumper_Dot.h"
-#include <stdio.h>
 
 namespace Yinspire {
 
-  void Dumper_Dot::dump(const char* filename)
+  void Dumper_Dot::dump(FILE *fh)
   {
-    FILE *fh = (strcmp(filename, "-") == 0) ? stdout : fopen(filename, "w+");
-    if (!fh)
-      fail("could not open file for writing: ", filename);
-
     fprintf(fh, "digraph {\n");
     fprintf(fh, "node [shape = circle];\n");
     net->each(dump_entity, fh);
     fprintf(fh, "}\n");
-
-    if (strcmp(filename, "-") != 0) fclose(fh);
   }
 
   void Dumper_Dot::dump_entity(NeuralEntity *entity, void *data)

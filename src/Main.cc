@@ -99,6 +99,27 @@ FILE *open_in(const char *fname)
   return fh;
 }
 
+FILE *open_out(const char *fname)
+{
+  FILE *fh = NULL;
+
+  if (strcmp(fname, "-") == 0)
+    fh = stdout;
+  else
+    fh = fopen(fname, "w+");
+
+  if (fh == NULL)
+    fail("Couldn't open file: ", fname);
+
+  return fh;
+}
+
+void close_inout(FILE *fh)
+{
+  if (fh != stdin && fh != stdout && fh != stderr)
+    fclose(fh);
+}
+
 int main(int argc, char **argv)
 {
   MySimulator simulator;
@@ -218,14 +239,7 @@ int main(int argc, char **argv)
 
   if (record_file)
   {
-    if (strcmp(record_file, "-") == 0)
-    {
-      simulator.set_out(stdout);
-    }
-    else
-    {
-      simulator.set_out(fopen(record_file, "w+"));
-    }
+    simulator.set_out(open_out(record_file));
   }
 
   try {
@@ -234,8 +248,7 @@ int main(int argc, char **argv)
       fprintf(stderr, "# LOAD \"%s\"\n", argv[i]);
       FILE *fh = open_in(argv[i]);
       loader.load(fh);
-      if (fh != stdin)
-        fclose(fh);
+      close_inout(fh);
     }
 
     fprintf(stderr, "# LOG starting simulation...\n");
@@ -251,14 +264,18 @@ int main(int argc, char **argv)
   {
     fprintf(stderr, "# LOG Dump to %s\n", dump_file);
     Dumper_Yin dumper(&nn);
-    dumper.dump(dump_file);
+    FILE *fh = open_out(dump_file); 
+    dumper.dump(fh);
+    close_inout(fh);
   }
 
   if (dump_dot)
   {
     fprintf(stderr, "# LOG Dump (dot) to %s\n", dump_dot);
     Dumper_Dot dumper(&nn);
-    dumper.dump(dump_dot);
+    FILE *fh = open_out(dump_dot); 
+    dumper.dump(fh);
+    close_inout(fh);
   }
 
   return 0;

@@ -13,7 +13,7 @@ namespace Yinspire {
       Dumper_Dot(NeuralNet *net) :
         Dumper(net) {}
 
-      virtual void dump(const char* filename);
+      virtual void dump(FILE *fh);
 
     protected:
 
