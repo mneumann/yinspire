@@ -13,18 +13,34 @@ using namespace std;
 
 class MySimulator : public Simulator
 {
-  virtual void record_output_fire(real at, real weight, NeuralEntity *source)
-  {
-    fprintf(stdout, "%s\t!\t", source ? source->id().c_str() : "_SIMULATOR_"); 
-    if (!isinf(weight))
-      fprintf(stdout, "%f\t@\t", weight);
-    fprintf(stdout, "%f\n", at);
-  }
+  protected:
 
-  virtual void record_fire(real at, real weight, NeuralEntity *source)
-  {
-    record_output_fire(at, weight, source);
-  }
+    FILE *out;
+
+  public:
+
+    MySimulator() : out(NULL) {}
+
+    void set_out(FILE *out)
+    {
+      this->out = out;
+    }
+
+    virtual void record_output_fire(real at, real weight, NeuralEntity *source)
+    {
+      if (out)
+      {
+        fprintf(out, "%s\t!\t", source ? source->id().c_str() : "_SIMULATOR_"); 
+        if (!isinf(weight))
+          fprintf(out, "%f\t@\t", weight);
+        fprintf(out, "%f\n", at);
+      }
+    }
+
+    virtual void record_fire(real at, real weight, NeuralEntity *source)
+    {
+      record_output_fire(at, weight, source);
+    }
 };
 
 void usage()
@@ -34,6 +50,9 @@ void usage()
    "    --set X=Y                   Set option\n"
    "    --set stop_at=N             Stop simulator at N (default: Infinity)\n"
    "    --set stimuli_tolerance=N   Stimuli tolerance (default: 0.0)\n"
+   "    --record FILE               Record fires to this file\n"
+   "    --dump FILE                 Dump net after simulation\n"
+   "    --dump-dot FILE             Dump net after simulation in dot format\n"
    "    --version                   Show version\n"
    "    --help                      Show this message\n");
 }
@@ -78,6 +97,9 @@ int main(int argc, char **argv)
    */
   vector<string> settings;
   int i;
+  char *record_file = NULL;
+  char *dump_file = NULL;
+  char *dump_dot = NULL;
 
   for (i = 1; i < argc; i++)
   {
@@ -101,6 +123,45 @@ int main(int argc, char **argv)
       else
       {
         fprintf(stderr, "Missing argument for --set\n");
+        usage();
+        return 1;
+      }
+    }
+    else if (arg == "--record")
+    {
+      if (++i < argc)
+      {
+        record_file = argv[i];
+      }
+      else
+      {
+        fprintf(stderr, "Missing argument for --record\n");
+        usage();
+        return 1;
+      }
+    }
+    else if (arg == "--dump")
+    {
+      if (++i < argc)
+      {
+        dump_file = argv[i];
+      }
+      else
+      {
+        fprintf(stderr, "Missing argument for --dump\n");
+        usage();
+        return 1;
+      }
+    }
+    else if (arg == "--dump-dot")
+    {
+      if (++i < argc)
+      {
+        dump_dot = argv[i];
+      }
+      else
+      {
+        fprintf(stderr, "Missing argument for --dump-dot\n");
         usage();
         return 1;
       }
@@ -140,6 +201,18 @@ int main(int argc, char **argv)
   fprintf(stderr, "# SET stop_at=%f\n", stop_at);
   fprintf(stderr, "# SET stimuli_tolerance=%f\n", simulator.stimuli_tolerance);
 
+  if (record_file)
+  {
+    if (strcmp(record_file, "-") == 0)
+    {
+      simulator.set_out(stdout);
+    }
+    else
+    {
+      simulator.set_out(fopen(record_file, "w+"));
+    }
+  }
+
   try {
     for (; i < argc; i++)
     {
@@ -156,11 +229,19 @@ int main(int argc, char **argv)
     return 1;
   }
 
-  Dumper_Yin dumper(&nn);
-  dumper.dump("out");
+  if (dump_file)
+  {
+    fprintf(stderr, "# LOG Dump to %s\n", dump_file);
+    Dumper_Yin dumper(&nn);
+    dumper.dump(dump_file);
+  }
 
-  Dumper_Dot dumper2(&nn);
-  dumper2.dump("out.dot");
+  if (dump_dot)
+  {
+    fprintf(stderr, "# LOG Dump (dot) to %s\n", dump_dot);
+    Dumper_Dot dumper(&nn);
+    dumper.dump(dump_dot);
+  }
 
   return 0;
 }
