@@ -20,7 +20,7 @@ namespace Yinspire {
           break;
         schedule_current_time = top->schedule_at; 
         schedule_pq.pop();
-        top->process();
+        top->process(schedule_current_time);
       }
 
       if (schedule_current_time >= stop_at)

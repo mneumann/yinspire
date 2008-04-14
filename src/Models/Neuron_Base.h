@@ -70,10 +70,10 @@ namespace Yinspire {
         }
 
       virtual void
-        process()
+        process(real at)
         {
 #ifdef YINSPIRE__EXPENSIVE_RECORD
-          simulator()->record_process(this);
+          simulator()->record_process(this, at);
 #endif
         }
 
@@ -87,9 +87,9 @@ namespace Yinspire {
         }
 
       inline real
-        delta()
+        delta(real at)
         {
-          return schedule_at - last_fire_time - abs_refr_duration;
+          return at - last_fire_time - abs_refr_duration;
         }
 
    };

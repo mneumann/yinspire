@@ -17,11 +17,11 @@ namespace Yinspire {
        * the same timestamp.
        */
       virtual void
-        process() 
+        process(real at) 
         {
           Stimulus s;
 
-          while (!stimuli_pq.empty() && stimuli_pq.top().at <= schedule_at)
+          while (!stimuli_pq.empty() && stimuli_pq.top().at <= at)
           {
             s = stimuli_pq.top();
             stimuli_pq.pop();
@@ -29,14 +29,7 @@ namespace Yinspire {
             fire(s.at, s.weight);
           }
 
-          /*
-           * NOTE: we don't have to remove the entity from the schedule if the
-           * pq is empty.
-           */
-          if (!stimuli_pq.empty())
-          {
-            schedule(stimuli_pq.top().at);
-          }
+          stimuli_reschedule();
         }
 
     protected: 

@@ -79,7 +79,7 @@ namespace Yinspire {
        * Overwrite it if you need this behaviour.
        */
       virtual void
-        process() {} 
+        process(real at) {} 
 
       /*
        * This method is called in each time-step, if a ScheduleEntity

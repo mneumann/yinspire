@@ -61,27 +61,27 @@ namespace Yinspire {
         }
 
       virtual void
-        process()
+        process(real at)
         {
-          real weight = stimuli_sum(schedule_at);
+          real weight = stimuli_sum(at);
 
           /*
            * Calculate new membrane potential
            */
-          mem_pot = weight + mem_pot * exp(-(schedule_at - last_spike_time) / tau_m);
-          last_spike_time = schedule_at;
+          mem_pot = weight + mem_pot * exp(-(at - last_spike_time) / tau_m);
+          last_spike_time = at;
 
           /*
            * Calculate dynamic threshold
            */
-          const real dynamic_threshold = ref_weight * exp(-delta()/tau_ref);
+          const real dynamic_threshold = ref_weight * exp(-delta(at)/tau_ref);
 
           if (mem_pot >= const_threshold + dynamic_threshold)
           {
-            fire(schedule_at, Infinity); 
+            fire(at, Infinity); 
           }
 
-          Neuron_Base::process();
+          Neuron_Base::process(at);
         }
 
       inline void

@@ -30,7 +30,7 @@ namespace Yinspire {
         record_stimulate(NeuralEntity *origin, real at, real weight, NeuralEntity *source) {}
 
       virtual void
-        record_process(NeuralEntity *origin) {}
+        record_process(NeuralEntity *origin, real at) {}
 #endif
 
       virtual void

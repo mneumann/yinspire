@@ -25,7 +25,7 @@ namespace Yinspire {
     }
     
     stimuli_pq.push(s);
-    schedule(stimuli_pq.top().at);
+    stimuli_reschedule();
   }
 
   real NeuralEntity::stimuli_sum(real till)
@@ -38,15 +38,7 @@ namespace Yinspire {
       stimuli_pq.pop();
     }
 
-    /*
-     * NOTE: we don't have to remove the entity from the schedule if the
-     * pq is empty.
-     */
-    if (!stimuli_pq.empty())
-    {
-      schedule(stimuli_pq.top().at);
-    }
-
+    stimuli_reschedule();
     return weight;
   }
 
@@ -68,12 +60,20 @@ namespace Yinspire {
       stimuli_pq.pop();
     }
 
-    if (!stimuli_pq.empty())
+    stimuli_reschedule();
+    return weight;
+  }
+
+  void NeuralEntity::stimuli_reschedule()
+  {
+    if (stimuli_pq.empty())
+    {
+      schedule_at = Infinity;
+    }
+    else
     {
       schedule(stimuli_pq.top().at);
     }
-
-    return weight;
   }
 
 } /* namespace Yinspire */

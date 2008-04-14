@@ -166,6 +166,14 @@ namespace Yinspire {
       real
         stimuli_sum_inf(real till, bool &is_inf);
 
+      /*
+       * If you add or remove stimuli's to/from the stimuli_pq, call
+       * this method to reschedule the NeuralEntity according to the new
+       * top element.
+       */
+      void
+        stimuli_reschedule();
+
   };
 
 } /* namespace Yinspire */
