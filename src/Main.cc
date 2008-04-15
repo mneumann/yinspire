@@ -47,14 +47,13 @@ void usage()
 {
   printf(
    "Usage: yinspire [options] file [file...]\n"
-   "    --set X=Y                   Set option\n"
-   "    --set stop_at=N             Stop simulator at N (default: Infinity)\n"
-   "    --set stimuli_tolerance=N   Stimuli tolerance (default: 0.0)\n"
-   "    --record FILE               Record fires to this file\n"
-   "    --dump FILE                 Dump net after simulation\n"
-   "    --dump-dot FILE             Dump net after simulation in dot format\n"
-   "    --version                   Show version\n"
-   "    --help                      Show this message\n");
+   "    --stop-at N             Stop simulator at N (default: Infinity)\n"
+   "    --stimuli_tolerance N   Stimuli tolerance (default: 0.0)\n"
+   "    --record FILE           Record fires to this file\n"
+   "    --dump FILE             Dump net after simulation\n"
+   "    --dump-dot FILE         Dump net after simulation in dot format\n"
+   "    --version               Show version\n"
+   "    --help                  Show this message\n");
 }
 
 void version()
@@ -65,23 +64,18 @@ void version()
    "    Released under the Ruby license.\n", YINSPIRE_VERSION);
 }
 
-bool get_float(string arg, string flag, real &res)
-{ 
-  string set = arg;
-  if (set.find(flag) == 0)
+real str_to_real(char *arg)
+{
+  char *e;
+  real res = strtod(arg, &e); 
+
+  if (e != arg + strlen(arg))
   {
-    set.erase(0, flag.size());
-    const char *n = set.c_str(); 
-    char *e;
-    res = strtod(n, &e);
-    if (e != n + set.size())
-    {
-      fprintf(stderr, "invalid float at --set %s\n", arg.c_str());
-      exit(1);
-    }
-    return true;
+    fprintf(stderr, "invalid float: %s\n", arg);
+    exit(1);
   }
-  return false;
+
+  return res;
 }
 
 FILE *open_in(const char *fname)
@@ -131,11 +125,12 @@ int main(int argc, char **argv)
   /*
    * Parse Command Line
    */
-  vector<string> settings;
   int i;
   char *record_file = NULL;
   char *dump_file = NULL;
   char *dump_dot = NULL;
+  real stop_at = Infinity;
+  simulator.stimuli_tolerance = 0.0;
 
   for (i = 1; i < argc; i++)
   {
@@ -150,15 +145,28 @@ int main(int argc, char **argv)
       usage();
       return 0;
     }
-    else if (arg == "--set")
+    else if (arg == "--stop-at")
     {
       if (++i < argc)
       {
-        settings.push_back(argv[i]);
+        stop_at = str_to_real(argv[i]);
       }
       else
       {
-        fprintf(stderr, "Missing argument for --set\n");
+        fprintf(stderr, "Missing argument for --stop-at\n");
+        usage();
+        return 1;
+      }
+    }
+    else if (arg == "--stimuli_tolerance")
+    {
+      if (++i < argc)
+      {
+        simulator.stimuli_tolerance = str_to_real(argv[i]);
+      }
+      else
+      {
+        fprintf(stderr, "Missing argument for --stimuli_tolerance\n");
         usage();
         return 1;
       }
@@ -220,22 +228,8 @@ int main(int argc, char **argv)
     return 0;
   }
 
-  real stop_at = Infinity;
-
-  for (int j=0; j < settings.size(); j++)
-  {
-    string set = settings[j];
-
-    if (!get_float(set, "stop_at=", stop_at) && 
-        !get_float(set, "stimuli_tolerance=", simulator.stimuli_tolerance))
-    {
-      fprintf(stderr, "Invalid argument --set %s\n", set.c_str());
-      return 1;
-    }
-  }
-
-  fprintf(stderr, "# SET stop_at=%f\n", stop_at);
-  fprintf(stderr, "# SET stimuli_tolerance=%f\n", simulator.stimuli_tolerance);
+  fprintf(stderr, "# LOG stop_at=%f\n", stop_at);
+  fprintf(stderr, "# LOG stimuli_tolerance=%f\n", simulator.stimuli_tolerance);
 
   if (record_file)
   {
