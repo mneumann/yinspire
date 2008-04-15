@@ -7,15 +7,24 @@
 
 namespace Yinspire {
 
-  void Dumper_Dot::dump(FILE *fh)
+  static void dump_connection2(NeuralEntity *self, NeuralEntity *conn, void *data)
   {
-    fprintf(fh, "digraph {\n");
-    fprintf(fh, "node [shape = circle];\n");
-    net->each(dump_entity, fh);
-    fprintf(fh, "}\n");
+    fprintf((FILE*) data, " -> \"%s\"", conn->id().c_str());
   }
 
-  void Dumper_Dot::dump_entity(NeuralEntity *entity, void *data)
+  static void dump_connection(NeuralEntity *self, NeuralEntity *conn, void *data)
+  {
+    FILE *f = (FILE*) data;
+    Synapse *syn = dynamic_cast<Synapse*>(conn);
+    if (syn == NULL) 
+      fail("FATAL");
+
+    fprintf(f, "\"%s\"", self->id().c_str());
+    syn->each_outgoing_connection(dump_connection2, data);
+    fprintf(f, " [label = \"%s\"];\n", conn->id().c_str());
+  }
+
+  static void dump_entity(NeuralEntity *entity, void *data)
   {
     FILE *f = (FILE*) data;
 
@@ -27,17 +36,12 @@ namespace Yinspire {
     entity->each_outgoing_connection(dump_connection, data);
   }
 
-  void Dumper_Dot::dump_connection(NeuralEntity *self, NeuralEntity *conn, void *data)
+  void Dumper_Dot::dump(FILE *fh)
   {
-    FILE *f = (FILE*) data;
-    Synapse *syn = dynamic_cast<Synapse*>(conn);
-    if (syn == NULL) 
-      fail("FATAL");
-
-    fprintf(f, "\"%s\" -> \"%s\" [label = \"%s\"];\n", 
-        self->id().c_str(), 
-        syn->post_neuron->id().c_str(),
-        conn->id().c_str()); 
+    fprintf(fh, "digraph {\n");
+    fprintf(fh, "node [shape = circle];\n");
+    net->each(dump_entity, fh);
+    fprintf(fh, "}\n");
   }
 
 } /* namespace Yinspire */

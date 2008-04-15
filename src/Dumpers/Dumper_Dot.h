@@ -15,11 +15,6 @@ namespace Yinspire {
 
       virtual void dump(FILE *fh);
 
-    protected:
-
-      static void dump_entity(NeuralEntity *entity, void *data);
-      static void dump_connection(NeuralEntity *self, NeuralEntity *conn, void *data);
-      
   };
 
 } /* namespace Yinspire */

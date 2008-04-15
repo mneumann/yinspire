@@ -13,7 +13,7 @@ namespace Yinspire {
    */
   class Synapse : public NeuralEntity
   {
-    public:
+    protected:
 
       NeuralEntity *pre_neuron;
       NeuralEntity *post_neuron;
