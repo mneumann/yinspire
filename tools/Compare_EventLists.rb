@@ -17,10 +17,12 @@ a = parse(ARGV.shift)
 b = parse(ARGV.shift)
 
 max = [maximum(a), maximum(b)].max
-as = a.inject(0) {|s, i| s + i.size} 
-bs = b.inject(0) {|s, i| s + i.size} 
 
-raise "invalid size" if (as - bs).abs > 2
+as = a.inject(0) {|s, kv| s + kv[1].size} 
+bs = b.inject(0) {|s, kv| s + kv[1].size} 
+max_sz = [as, bs].max
+
+STDERR.puts "Total size differs: #{((as - bs).abs * 100.0 / max_sz)} %"
 raise "keys failed" if a.keys.sort != b.keys.sort
 
 grand_total_err = 0.0
@@ -29,7 +31,7 @@ for k in a.keys
 
   diff_sz = (a[k].size - b[k].size).abs
   if diff_sz > 3
-    raise "number of fires differs too much for key #{k} (#{diff_sz})"
+    STDERR.puts "number of fires differs too much for key #{k} (#{diff_sz})"
   end
 
   err = 0.0  
@@ -41,15 +43,8 @@ for k in a.keys
 
   total_err = err / n
   grand_total_err += total_err
-
-  if total_err > (max / 100.0)
-    raise "total error too large #{total_err}"
-  end
-
 end
 
 grand_total_err /= a.keys.size
 
-if grand_total_err > max / 100.0
-  raise "grand total error too large #{grand_total_err}"
-end
+STDERR.puts "grand total error: #{grand_total_err}"
