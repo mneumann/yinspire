@@ -54,7 +54,12 @@ namespace Yinspire {
 #endif
           if (source != post_neuron)
           {
-            post_neuron->stimulate(at + delay, weight, this);
+
+            /*
+             * Synapse fires with it's own weight, not the weight passed
+             * by the Neuron.
+             */
+            post_neuron->stimulate(at + delay, this->weight, this);
           }
         }
 

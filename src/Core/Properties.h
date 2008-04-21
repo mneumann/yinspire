@@ -4,7 +4,6 @@
 #include "Core/Common.h"
 #include <string>
 #include <map>
-#include <ostream>
 #include <stdio.h>
 
 #define PROP_LOAD(properties, var) \
@@ -96,28 +95,6 @@ namespace Yinspire {
               i != p.properties.end(); i++)
           {
             properties[i->first] = i->second;   
-          }
-        }
-
-      void
-        output(ostream &s)
-        {
-          for (map<string, Property>::iterator i=properties.begin();
-              i != properties.end(); i++)
-          {
-            s << i->first << " = "; 
-            switch (i->second.type)
-            {
-              case Property_Real:
-                s << i->second.value.real_value;
-                break;
-              case Property_Bool:
-                s << i->second.value.bool_value;
-                break;
-              default:
-                fail("Invalid Property Type");
-            };
-            s << endl;
           }
         }
 

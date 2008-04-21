@@ -1,5 +1,5 @@
 #include "Loaders/YinParser.h"
-#include <stdlib.h>
+#include <stdlib.h> // strtod
 
 namespace Yinspire {
 

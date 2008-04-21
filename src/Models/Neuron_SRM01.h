@@ -54,6 +54,10 @@ namespace Yinspire {
       virtual void
         stimulate(real at, real weight, NeuralEntity *source)
         {
+          /*
+           * Reject all incoming stimuli as long as the neuron is in
+           * it's absolute refractory period.
+           */
           if (at >= last_fire_time + abs_refr_duration)
           {
             Neuron_Base::stimulate(at, weight, source);
@@ -64,18 +68,28 @@ namespace Yinspire {
         process(real at)
         {
           real weight = stimuli_sum(at);
-          const real delta = at - last_fire_time - abs_refr_duration; 
+          real delta = at - last_fire_time - abs_refr_duration; 
+
+          /*
+           * Neuron is still in absolute refractory period.
+           */
+          if (delta < 0.0)
+            return;
 
           /*
            * Calculate new membrane potential
            */
           mem_pot = weight + mem_pot * exp(-(at - last_spike_time) / tau_m);
+
+          /*
+           * Last spike time outside the absolute refractory period
+           */
           last_spike_time = at;
 
           /*
            * Calculate dynamic threshold
            */
-          const real dynamic_threshold = ref_weight * exp(-delta/tau_ref);
+          real dynamic_threshold = ref_weight * exp(-delta/tau_ref);
 
           if (mem_pot >= const_threshold + dynamic_threshold)
           {
