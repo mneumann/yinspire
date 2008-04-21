@@ -27,7 +27,8 @@ grand_total_err = 0.0
 
 for k in a.keys
 
-  if (a[k].size - b[k].size).abs > 3
+  diff_sz = (a[k].size - b[k].size).abs
+  if diff_sz > 3
     raise "number of fires differs too much for key #{k} (#{diff_sz})"
   end
 
