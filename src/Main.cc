@@ -7,6 +7,7 @@
 #include "Dumpers/Dumper_Yin.h"
 #include "Dumpers/Dumper_Dot.h"
 #include "RegisterTypes.h"
+#include "Test.h"
 
 using namespace Yinspire;
 using namespace std;
@@ -121,6 +122,16 @@ int main(int argc, char **argv)
   NeuralNet nn;
   Loader_Yin loader(&simulator, &factory, &nn);
   RegisterTypes(factory);
+
+  /*
+   * Run some tests at startup to ensure correct program behaviour.
+   */
+  Test test;
+  if (!test.run())
+  {
+    fprintf(stderr, "Tests failed\n");
+    return -1;
+  }
 
   /*
    * Parse Command Line
