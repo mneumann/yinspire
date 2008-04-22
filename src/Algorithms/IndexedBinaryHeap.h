@@ -59,7 +59,7 @@ struct BinaryHeapIndexer
 };
 
 
-template <typename E, class Alloc, class Acc=E, unsigned int MIN_CAPA=1024> 
+template <typename E, class Alloc, class Acc=E, unsigned int MIN_CAPA=256> 
 class IndexedBinaryHeap : public BinaryHeap<E, Alloc, Acc, BinaryHeapIndexer<E, Acc>, MIN_CAPA>
 {
     typedef unsigned int I; // index type
