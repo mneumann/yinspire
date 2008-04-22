@@ -49,7 +49,6 @@ void usage()
   printf(
    "Usage: yinspire [options] file [file...]\n"
    "    --stop-at N             Stop simulator at N (default: Infinity)\n"
-   "    --stimuli_tolerance N   Stimuli tolerance (default: 0.0)\n"
    "    --record FILE           Record fires to this file\n"
    "    --dump FILE             Dump net after simulation\n"
    "    --dump-dot FILE         Dump net after simulation in dot format\n"
@@ -141,7 +140,6 @@ int main(int argc, char **argv)
   char *dump_file = NULL;
   char *dump_dot = NULL;
   real stop_at = Infinity;
-  simulator.stimuli_tolerance = 0.0;
 
   for (i = 1; i < argc; i++)
   {
@@ -165,19 +163,6 @@ int main(int argc, char **argv)
       else
       {
         fprintf(stderr, "Missing argument for --stop-at\n");
-        usage();
-        return 1;
-      }
-    }
-    else if (arg == "--stimuli_tolerance")
-    {
-      if (++i < argc)
-      {
-        simulator.stimuli_tolerance = str_to_real(argv[i]);
-      }
-      else
-      {
-        fprintf(stderr, "Missing argument for --stimuli_tolerance\n");
         usage();
         return 1;
       }
@@ -240,7 +225,6 @@ int main(int argc, char **argv)
   }
 
   fprintf(stderr, "# LOG stop_at=%f\n", stop_at);
-  fprintf(stderr, "# LOG stimuli_tolerance=%f\n", simulator.stimuli_tolerance);
 
   if (record_file)
   {

@@ -10,20 +10,9 @@ namespace Yinspire {
 
   class Simulator : public Scheduler
   {
-    public: 
-
-      friend class NeuralEntity;
-
-      /*
-       * The tolerance (time difference) up to which local stimuli are
-       * accumulated.
-       */
-      real stimuli_tolerance;
-
     public:
 
-      Simulator() :
-        stimuli_tolerance(0.0) {}
+      Simulator() {}
 
 #ifdef YINSPIRE__EXPENSIVE_RECORD
       virtual void

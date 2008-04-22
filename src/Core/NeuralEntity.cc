@@ -12,20 +12,17 @@ namespace Yinspire {
   void NeuralEntity::stimuli_add(real at, real weight)
   {
     Stimulus s; s.at = at; s.weight = weight;
+    Stimulus *parent = stimuli_pq.find_parent(s);
 
-    if (simulator()->stimuli_tolerance >= 0.0)
+    if (parent != NULL && parent->at == s.at)
     {
-      Stimulus *parent = stimuli_pq.find_parent(s);
-
-      if (parent != NULL && (s.at - parent->at) <= simulator()->stimuli_tolerance)
-      {
-        parent->weight += s.weight;
-        return;
-      }
+      parent->weight += s.weight;
     }
-    
-    stimuli_pq.push(s);
-    stimuli_reschedule();
+    else
+    {
+      stimuli_pq.push(s);
+      stimuli_reschedule();
+    }
   }
 
   real NeuralEntity::stimuli_sum(real till)
