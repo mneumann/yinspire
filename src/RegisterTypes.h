@@ -14,13 +14,30 @@
 
 namespace Yinspire {
 
-  void RegisterTypes(NeuralFactory &factory)
+  GEN_WRAPPER_CLASS(Neuron_Input);
+  GEN_WRAPPER_CLASS(Neuron_Output);
+  GEN_WRAPPER_CLASS(Neuron_SRM01);
+  GEN_WRAPPER_CLASS(Neuron_SRM02);
+  GEN_WRAPPER_CLASS(Synapse_Default);
+
+  void RegisterTypes(NeuralFactory &factory, bool wrapper=false)
   {
-    REGISTER_TYPE(factory, Neuron_Input);
-    REGISTER_TYPE(factory, Neuron_Output);
-    REGISTER_TYPE(factory, Neuron_SRM01);
-    REGISTER_TYPE(factory, Neuron_SRM02);
-    REGISTER_TYPE(factory, Synapse_Default);
+    if (!wrapper)
+    {
+      REGISTER_TYPE(factory, Neuron_Input);
+      REGISTER_TYPE(factory, Neuron_Output);
+      REGISTER_TYPE(factory, Neuron_SRM01);
+      REGISTER_TYPE(factory, Neuron_SRM02);
+      REGISTER_TYPE(factory, Synapse_Default);
+    }
+    else
+    {
+      REGISTER_TYPE(factory, Wrap_Neuron_Input);
+      REGISTER_TYPE(factory, Wrap_Neuron_Output);
+      REGISTER_TYPE(factory, Wrap_Neuron_SRM01);
+      REGISTER_TYPE(factory, Wrap_Neuron_SRM02);
+      REGISTER_TYPE(factory, Wrap_Synapse_Default);
+    }
   }
 
 } /* namespace Yinspire */

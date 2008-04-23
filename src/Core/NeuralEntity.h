@@ -5,6 +5,7 @@
 #include "Core/ScheduleEntity.h"
 #include "Core/Stimulus.h"
 #include "Core/Properties.h"
+#include "Core/Recorder.h"
 #include <string>
 
 #define DECLARE_ENTITY(name)        \
@@ -19,9 +20,42 @@
       return #name;                 \
     }
 
-namespace Yinspire {
+/*
+ * GEN_WRAPPER_CLASS generates a class that calls record_before_xxx and
+ * recorder_after_xxx in method xxx.
+ */
+#define GEN_WRAPPER_CLASS(klass)                                          \
+  class Wrap_ ## klass : public klass {                                   \
+    typedef Wrap_ ## klass super;                                         \
+    public:                                                               \
+      virtual void stimulate(real at, real weight, NeuralEntity *source)  \
+      {                                                                   \
+        if (recorder)                                                     \
+          recorder->record_before_stimulate(this, at, weight, source);    \
+        super::stimulate(at, weight, source);                             \
+        if (recorder)                                                     \
+          recorder->record_after_stimulate(this, at, weight, source);     \
+      }                                                                   \
+      virtual void process(real at)                                       \
+      {                                                                   \
+        if (recorder)                                                     \
+          recorder->record_before_process(this, at);                      \
+        super::process(at);                                               \
+        if (recorder)                                                     \
+          recorder->record_after_process(this, at);                       \
+      }                                                                   \
+      virtual void process_stepped(real at, real step)                    \
+      {                                                                   \
+        if (recorder)                                                     \
+          recorder->record_before_process_stepped(this, at, step);        \
+        super::process_stepped(at, step);                                 \
+        if (recorder)                                                     \
+          recorder->record_after_process_stepped(this, at, step);         \
+      }                                                                   \
+  };
 
-  class Simulator; // Forward declaration
+
+namespace Yinspire {
 
   /*
    * NeuralEntity is the base class of all entities in a neural net,
@@ -33,11 +67,10 @@ namespace Yinspire {
 
       /*
        * Each NeuralEntity has an +id+ associated which uniquely
-       * identifies itself within a Simulator instance. This +id+ 
-       * SHOULD NOT be changed, because it is used as a key in
-       * the Simulator.
+       * identifies itself within a NeuralNet instance. This +id+ 
+       * SHOULD NOT be changed, because it is used as a key.
        */
-      string id_;
+      string id;
 
       /*
        * Each NeuralEntity has it's own local stimuli priority queue.
@@ -48,15 +81,46 @@ namespace Yinspire {
        */
       Stimulus::PQ stimuli_pq;
 
+      /*
+       * Instance of the recorder to use for this NeuralEntity.
+       */
+      Recorder *recorder;
+
     public:
+
+      /*
+       * Constructor
+       */
+      NeuralEntity() : recorder(NULL) {}
 
       /*
        * Returns the +id+ of the entity.
        */
       const string&
-        id()
+        get_id()
         {
-          return id_;
+          return this->id;
+        }
+
+      /*
+       * Set the +id+ of the entity.
+       */
+      void
+        set_id(const string& id)
+        {
+          this->id = id;
+        }
+
+      void
+        set_recorder(Recorder *recorder)
+        {
+          this->recorder = recorder;
+        }
+
+      Recorder*
+        get_recorder()
+        {
+          return this->recorder;
         }
 
       /*
@@ -65,19 +129,6 @@ namespace Yinspire {
        */
       virtual const char *
         type() = 0;
-
-      /*
-       * Initialize the NeuralEntity with an id and a simulator. 
-       *
-       * Doing the same in a constructor would lead to a lot of
-       * repetition in each subclass.
-       */
-      void
-        init(const string& id, Simulator *simulator)
-        {
-          id_ = id;
-          scheduler = (Scheduler*) simulator;
-        }
 
       /*
        * Load the internal state of a NeuralEntity from +p+.
@@ -139,12 +190,6 @@ namespace Yinspire {
         each_stimulus(void(*yield)(const Stimulus&, void*), void *data);
 
     protected:
-
-      Simulator *
-        simulator() const
-        {
-          return (Simulator*) scheduler;
-        }
 
       /*
        * Add a Stimuli to the local priority queue.

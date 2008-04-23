@@ -21,10 +21,10 @@ namespace Yinspire {
       Scheduler *scheduler;
 
       /*
-       * Index of this entity in the entity priority queue managed by the
-       * Simulator. If schedule_index is zero then the entity is currently
-       * not present in the priority queue and as such the entity is not
-       * scheduled for a specific time.
+       * Index of this entity in the entity priority queue managed by
+       * the Scheduler. If schedule_index is zero then the entity is
+       * currently not present in the priority queue and as such the
+       * entity is not scheduled for a specific time.
        */
       uint schedule_index;
 
@@ -89,6 +89,18 @@ namespace Yinspire {
        */
       virtual void
         process_stepped(real at, real step) {}
+
+      void
+        set_scheduler(Scheduler *scheduler)
+        {
+          this->scheduler = scheduler;
+        }
+
+      Scheduler*
+        get_scheduler()
+        {
+          return this->scheduler;
+        }
 
     protected:
 

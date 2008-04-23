@@ -1,16 +1,8 @@
 project (YINSPIRE)
 
-option (YINSPIRE_EXPENSIVE_RECORD
-  "Compiles in calls to record every stimulation/processing of a NeuralEntity"
-  OFF)
-
 option (YINSPIRE_CROSSCOMPILE_MINGW
   "Cross-compile Yinspire for Windows using mingw" 
   OFF)
-
-if (YINSPIRE_EXPENSIVE_RECORD)
-  add_definitions (-DYINSPIRE__EXPENSIVE_RECORD)
-endif (YINSPIRE_EXPENSIVE_RECORD)
 
 if (YINSPIRE_CROSSCOMPILE_MINGW)
   set (CMAKE_SYSTEM_NAME Windows)

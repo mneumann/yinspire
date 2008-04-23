@@ -49,12 +49,8 @@ namespace Yinspire {
       virtual void 
         stimulate(real at, real weight, NeuralEntity *source)
         {
-#ifdef YINSPIRE__EXPENSIVE_RECORD
-          simulator()->record_stimulate(this, at, weight, source);
-#endif
           if (source != post_neuron)
           {
-
             /*
              * Synapse fires with it's own weight, not the weight passed
              * by the Neuron.

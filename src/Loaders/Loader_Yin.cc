@@ -67,12 +67,10 @@ namespace Yinspire {
 
   void Loader_Yin::create_entity(string& id, string& type, Properties &p)
   {
-    NeuralEntity *entity = factory->create(type); 
+    NeuralEntity *entity = factory->create(type, id, p); 
     if (entity != NULL)
     {
-      entity->init(id, simulator);
       net->add(entity);
-      entity->load(p);
     }
     else
     {

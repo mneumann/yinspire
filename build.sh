@@ -1,11 +1,5 @@
 #!/bin/sh
 
-#
-# Flags than can be passed:
-#
-#   -DYINSPIRE_EXPENSIVE_RECORD=ON
-#
-
 mkdir -p build/Default
 mkdir -p build/Release
 mkdir -p build/Debug

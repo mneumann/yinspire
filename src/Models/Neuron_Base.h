@@ -63,18 +63,12 @@ namespace Yinspire {
       virtual void
         stimulate(real at, real weight, NeuralEntity *source)
         {
-#ifdef YINSPIRE__EXPENSIVE_RECORD
-          simulator()->record_stimulate(this, at, weight, source);
-#endif
           stimuli_add(at, weight);
         }
 
       virtual void
         process(real at)
         {
-#ifdef YINSPIRE__EXPENSIVE_RECORD
-          simulator()->record_process(this, at);
-#endif
         }
 
     protected:

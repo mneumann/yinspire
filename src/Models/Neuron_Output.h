@@ -17,7 +17,8 @@ namespace Yinspire {
       virtual void
         fire(real at, real weight)
         {
-          simulator()->record_output_fire(at, weight, this);
+          if (recorder)
+            recorder->record_fire(this, at, weight);
         }
 
    };

@@ -28,13 +28,13 @@ namespace Yinspire {
       void
         add(NeuralEntity *entity)
         {
-          if (entities.count(entity->id()) == 0)
+          if (entities.count(entity->get_id()) == 0)
           {
-            entities[entity->id()] = entity;
+            entities[entity->get_id()] = entity;
           }
           else
           {
-            fail("Duplicate NeuralEntity id: ", entity->id());
+            fail("Duplicate NeuralEntity id: ", entity->get_id());
           }
         }
 

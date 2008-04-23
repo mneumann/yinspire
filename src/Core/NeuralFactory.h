@@ -3,6 +3,9 @@
 
 #include "Core/Common.h"
 #include "Core/NeuralEntity.h"
+#include "Core/Scheduler.h"
+#include "Core/Recorder.h"
+#include "Core/Properties.h"
 #include <string>
 #include <map>
 
@@ -28,7 +31,16 @@ namespace Yinspire {
        */
       map<string, creator> types;
 
+      /*
+       * Default settings for new created NeuralEntities.
+       */
+      Scheduler *default_scheduler;
+      Recorder *default_recorder;
+
     public:
+
+      NeuralFactory(Scheduler *scheduler=NULL, Recorder *recorder=NULL) :
+        default_scheduler(scheduler), default_recorder(recorder) {}
 
       void
         register_type(const string &type, creator method)
@@ -45,12 +57,41 @@ namespace Yinspire {
         {
           if (types.count(type) > 0)
           {
-            return types[type]();
+            NeuralEntity *n = types[type]();
+            if (n)
+            {
+              n->set_scheduler(default_scheduler);
+              n->set_recorder(default_recorder);
+            }
+            return n;
           }
           else
           {
             return NULL;
           }
+        }
+
+      NeuralEntity*
+        create(const string& type, const string& id)
+        {
+          NeuralEntity *n = create(type);
+          if (n)
+          {
+            n->set_id(id);
+          }
+          return n;
+        }
+
+      NeuralEntity*
+        create(const string& type, const string& id, Properties& p)
+        {
+          NeuralEntity *n = create(type);
+          if (n)
+          {
+            n->set_id(id);
+            n->load(p);
+          }
+          return n;
         }
 
   };

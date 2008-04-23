@@ -1,5 +1,5 @@
 #include "Core/Common.h"
-#include "Core/Simulator.h"
+#include "Core/Recorder.h"
 #include "Core/NeuralNet.h"
 #include "Core/NeuralFactory.h"
 #include "Core/Properties.h"
@@ -12,7 +12,7 @@
 using namespace Yinspire;
 using namespace std;
 
-class MySimulator : public Simulator
+class MyRecorder : public Recorder
 {
   protected:
 
@@ -20,7 +20,7 @@ class MySimulator : public Simulator
 
   public:
 
-    MySimulator() : out(NULL) {}
+    MyRecorder() : out(NULL) {}
 
     void set_out(FILE *out)
     {
@@ -31,7 +31,7 @@ class MySimulator : public Simulator
     {
       if (out)
       {
-        fprintf(out, "%s\t!\t", source ? source->id().c_str() : "_SIMULATOR_"); 
+        fprintf(out, "%s\t!\t", source ? source->get_id().c_str() : "_SIMULATOR_"); 
         if (!isinf(weight))
           fprintf(out, "%f\t@\t", weight);
         fprintf(out, "%f\n", at);
@@ -116,10 +116,11 @@ void close_inout(FILE *fh)
 
 int main(int argc, char **argv)
 {
-  MySimulator simulator;
-  NeuralFactory factory;
   NeuralNet nn;
-  Loader_Yin loader(&simulator, &factory, &nn);
+  Scheduler scheduler;
+  MyRecorder recorder;
+  NeuralFactory factory(&scheduler, &recorder);
+  Loader_Yin loader(&factory, &nn);
   RegisterTypes(factory);
 
   /*
@@ -228,7 +229,7 @@ int main(int argc, char **argv)
 
   if (record_file)
   {
-    simulator.set_out(open_out(record_file));
+    recorder.set_out(open_out(record_file));
   }
 
   try {
@@ -241,7 +242,7 @@ int main(int argc, char **argv)
     }
 
     fprintf(stderr, "# LOG starting simulation...\n");
-    simulator.run(stop_at);
+    scheduler.schedule_run(stop_at);
   }
   catch (string msg)
   {

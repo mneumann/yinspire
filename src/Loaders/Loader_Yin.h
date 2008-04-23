@@ -18,8 +18,8 @@ namespace Yinspire {
 
     public:
 
-      Loader_Yin(Simulator *simulator, NeuralFactory *factory, NeuralNet *net) :
-        Loader(simulator, factory, net) {}
+      Loader_Yin(NeuralFactory *factory, NeuralNet *net) :
+        Loader(factory, net) {}
 
       virtual void load(FILE *fh);
 

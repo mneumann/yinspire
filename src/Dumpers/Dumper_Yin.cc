@@ -19,7 +19,7 @@ namespace Yinspire {
     Properties p;
     entity->dump(p);
 
-    fprintf(f, "ENTITY %s = %s {\n", entity->id().c_str(), entity->type());
+    fprintf(f, "ENTITY %s = %s {\n", entity->get_id().c_str(), entity->type());
     p.output(f);
     fprintf(f, "}\n");
   }
@@ -32,13 +32,13 @@ namespace Yinspire {
   void Dumper_Yin::dump_connection(NeuralEntity *self, NeuralEntity *conn, void *data)
   {
     FILE *f = (FILE*) data;
-    fprintf(f, "CONNECT %s -> %s\n", self->id().c_str(), conn->id().c_str());
+    fprintf(f, "CONNECT %s -> %s\n", self->get_id().c_str(), conn->get_id().c_str());
   }
 
   void Dumper_Yin::dump_stimuli(NeuralEntity *entity, void *data)
   {
     FILE *f = (FILE*) data;
-    fprintf(f, "STIMULATE %s ! {\n", entity->id().c_str());
+    fprintf(f, "STIMULATE %s ! {\n", entity->get_id().c_str());
     entity->each_stimulus(dump_stimulus, data);
     fprintf(f, "}\n");
   }

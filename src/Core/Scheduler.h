@@ -53,7 +53,7 @@ namespace Yinspire {
        * Run the simulation.
        */
       void
-        schedule_run(real stop_at);
+        schedule_run(real stop_at=Infinity);
 
       /*
        * If a ScheduleEntity has changed it's scheduling time, it has to

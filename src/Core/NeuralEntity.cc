@@ -1,6 +1,5 @@
 #include "Core/Common.h"
 #include "Core/NeuralEntity.h"
-#include "Core/Simulator.h"
 
 namespace Yinspire {
 

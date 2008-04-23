@@ -103,7 +103,8 @@ namespace Yinspire {
           }
 
           last_fire_time = at;
-          simulator()->record_fire(at, weight, this);
+          if (recorder)
+            recorder->record_fire(this, at, weight);
           stimulate_synapses(at, weight);
         }
 

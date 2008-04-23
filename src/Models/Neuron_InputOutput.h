@@ -25,7 +25,8 @@ namespace Yinspire {
           {
             s = stimuli_pq.top();
             stimuli_pq.pop();
-            simulator()->record_fire(s.at, s.weight, this);
+            if (recorder)
+              recorder->record_fire(this, s.at, s.weight);
             fire(s.at, s.weight);
           }
 
