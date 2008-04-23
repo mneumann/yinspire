@@ -27,7 +27,7 @@ class MyRecorder : public Recorder
       this->out = out;
     }
 
-    virtual void record_output_fire(real at, real weight, NeuralEntity *source)
+    virtual void record_fire(real at, real weight, NeuralEntity *source)
     {
       if (out)
       {
@@ -36,11 +36,6 @@ class MyRecorder : public Recorder
           fprintf(out, "%f\t@\t", weight);
         fprintf(out, "%f\n", at);
       }
-    }
-
-    virtual void record_fire(real at, real weight, NeuralEntity *source)
-    {
-      record_output_fire(at, weight, source);
     }
 };
 
@@ -118,10 +113,13 @@ int main(int argc, char **argv)
 {
   NeuralNet nn;
   Scheduler scheduler;
+  NeuralFactory factory;
   MyRecorder recorder;
-  NeuralFactory factory(&scheduler, &recorder);
   Loader_Yin loader(&factory, &nn);
+
   RegisterTypes(factory);
+
+  factory.set_default_scheduler(&scheduler);
 
   /*
    * Run some tests at startup to ensure correct program behaviour.
@@ -230,6 +228,11 @@ int main(int argc, char **argv)
   if (record_file)
   {
     recorder.set_out(open_out(record_file));
+    factory.set_default_recorder(&recorder);
+  }
+  else
+  {
+    factory.set_default_recorder(NULL);
   }
 
   try {

@@ -42,6 +42,11 @@ namespace Yinspire {
       NeuralFactory(Scheduler *scheduler=NULL, Recorder *recorder=NULL) :
         default_scheduler(scheduler), default_recorder(recorder) {}
 
+      Scheduler *get_default_scheduler() { return default_scheduler; }
+      Recorder *get_default_recorder() { return default_recorder; }
+      void set_default_scheduler(Scheduler *scheduler) { default_scheduler = scheduler; }
+      void set_default_recorder(Recorder *recorder) { default_recorder = recorder; }
+
       void
         register_type(const string &type, creator method)
         {
