@@ -27,15 +27,14 @@ class MyRecorder : public Recorder
       this->out = out;
     }
 
-    virtual void record_fire(real at, real weight, NeuralEntity *source)
+    virtual void record_fire(NeuralEntity *origin, real at, real weight)
     {
-      if (out)
-      {
-        fprintf(out, "%s\t!\t", source ? source->get_id().c_str() : "_SIMULATOR_"); 
-        if (!isinf(weight))
-          fprintf(out, "%f\t@\t", weight);
-        fprintf(out, "%f\n", at);
-      }
+      if (!out) return;
+
+      fprintf(out, "%s\t!\t", origin ? origin->get_id().c_str() : "_SIMULATOR_"); 
+      if (!isinf(weight))
+        fprintf(out, "%f\t@\t", weight);
+      fprintf(out, "%f\n", at);
     }
 };
 
@@ -120,6 +119,7 @@ int main(int argc, char **argv)
   RegisterTypes(factory);
 
   factory.set_default_scheduler(&scheduler);
+  factory.set_default_recorder(&recorder);
 
   /*
    * Run some tests at startup to ensure correct program behaviour.
@@ -228,7 +228,6 @@ int main(int argc, char **argv)
   if (record_file)
   {
     recorder.set_out(open_out(record_file));
-    factory.set_default_recorder(&recorder);
   }
   else
   {
