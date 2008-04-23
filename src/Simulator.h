@@ -51,7 +51,7 @@ namespace Yinspire {
       real
         run(real stop_at=Infinity)
         {
-          scheduler.schedule_run(stop_at);
+          return scheduler.schedule_run(stop_at);
         }
 
       void
@@ -106,6 +106,24 @@ namespace Yinspire {
            */
           Test test;
           return test.run();
+        }
+
+      NeuralEntity *
+        get_entity(const string &id)
+        {
+          return net.get(id);
+        }
+
+      void
+        each_entity(void (*yield)(NeuralEntity*, void*), void *data)
+        {
+          net.each(yield, data);
+        }
+
+      uint
+        num_entities()
+        {
+          return net.size();
         }
 
       public:

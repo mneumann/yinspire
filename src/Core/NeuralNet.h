@@ -60,6 +60,12 @@ namespace Yinspire {
           }
         }
 
+      uint 
+        size()
+        {
+          return entities.size();
+        }
+
   };
 
 } /* namespace Yinspire */

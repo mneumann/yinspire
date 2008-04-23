@@ -36,26 +36,28 @@ namespace Yinspire {
 
     public:
 
-      void
+      bool
         load(real &variable, const string &name)
         {
           if (properties.count(name) == 0)
-            return;
+            return false;
           Property &prop = properties[name]; 
           if (prop.type != Property_Real)
             fail("Invalid Property Type");
           variable = prop.value.real_value;
+          return true;
         }
 
-      void
+      bool
         load(bool &variable, const string &name)
         {
           if (properties.count(name) == 0)
-            return;
+            return false;
           Property &prop = properties[name]; 
           if (prop.type != Property_Bool)
             fail("Invalid Property Type");
           variable = prop.value.bool_value;
+          return true;
         }
 
       void
@@ -120,6 +122,14 @@ namespace Yinspire {
                 fail("Invalid Property Type");
             };
           }
+        }
+
+      /*
+       * Getter method
+       */
+      map<string, Property>&
+        get_properties() {
+          return properties;
         }
 
   };
