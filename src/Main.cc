@@ -244,7 +244,8 @@ int main(int argc, char **argv)
     }
 
     fprintf(stderr, "# LOG starting simulation...\n");
-    scheduler.schedule_run(stop_at);
+    real end_time = scheduler.schedule_run(stop_at);
+    fprintf(stderr, "# LOG simulation ended at: %f\n", end_time);
   }
   catch (string msg)
   {

@@ -50,9 +50,10 @@ namespace Yinspire {
         schedule_stepping_list_root(NULL) {}
 
       /*
-       * Run the simulation.
+       * Run the simulation. Returns the time when the simulation stops
+       * (schedule_current_time).
        */
-      void
+      real
         schedule_run(real stop_at=Infinity);
 
       /*

@@ -3,7 +3,7 @@
 
 namespace Yinspire {
 
-  void Scheduler::schedule_run(real stop_at)
+  real Scheduler::schedule_run(real stop_at)
   {
     while (true)
     {
@@ -16,17 +16,17 @@ namespace Yinspire {
       while (!schedule_pq.empty())
       {
         ScheduleEntity *top = schedule_pq.top();
-        if (top->schedule_at >= next_stop)
-          break;
         schedule_current_time = top->schedule_at; 
+        if (schedule_current_time > next_stop)
+          break;
         schedule_pq.pop();
         top->process(schedule_current_time);
       }
 
-      if (schedule_current_time >= stop_at)
+      if (schedule_stepping_list_root == NULL && schedule_pq.empty())
         break;
 
-      if (schedule_stepping_list_root == NULL && schedule_pq.empty())
+      if (schedule_current_time > stop_at)
         break;
 
       /* 
@@ -41,6 +41,8 @@ namespace Yinspire {
 
       schedule_next_step += schedule_step;
     }
+
+    return schedule_current_time;
   }
 
   void Scheduler::schedule_update(ScheduleEntity *entity)
