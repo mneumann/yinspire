@@ -1,13 +1,5 @@
-#include "Core/Common.h"
+#include "Simulator.h"
 #include "Core/Recorder.h"
-#include "Core/NeuralNet.h"
-#include "Core/NeuralFactory.h"
-#include "Core/Properties.h"
-#include "Loaders/Loader_Yin.h"
-#include "Dumpers/Dumper_Yin.h"
-#include "Dumpers/Dumper_Dot.h"
-#include "RegisterTypes.h"
-#include "Test.h"
 
 using namespace Yinspire;
 using namespace std;
@@ -110,22 +102,13 @@ void close_inout(FILE *fh)
 
 int main(int argc, char **argv)
 {
-  NeuralNet nn;
-  Scheduler scheduler;
-  NeuralFactory factory;
   MyRecorder recorder;
-  Loader_Yin loader(&factory, &nn);
-
-  RegisterTypes(factory);
-
-  factory.set_default_scheduler(&scheduler);
-  factory.set_default_recorder(&recorder);
+  Simulator sim(&recorder);
 
   /*
    * Run some tests at startup to ensure correct program behaviour.
    */
-  Test test;
-  if (!test.run())
+  if (!sim.test())
   {
     fprintf(stderr, "Tests failed\n");
     return -1;
@@ -231,7 +214,7 @@ int main(int argc, char **argv)
   }
   else
   {
-    factory.set_default_recorder(NULL);
+    sim.set_default_recorder(NULL);
   }
 
   try {
@@ -239,12 +222,12 @@ int main(int argc, char **argv)
     {
       fprintf(stderr, "# LOAD \"%s\"\n", argv[i]);
       FILE *fh = open_in(argv[i]);
-      loader.load(fh);
+      sim.load_yin(fh);
       close_inout(fh);
     }
 
     fprintf(stderr, "# LOG starting simulation...\n");
-    real end_time = scheduler.schedule_run(stop_at);
+    real end_time = sim.run(stop_at);
     fprintf(stderr, "# LOG simulation ended at: %f\n", end_time);
   }
   catch (string msg)
@@ -256,18 +239,16 @@ int main(int argc, char **argv)
   if (dump_file)
   {
     fprintf(stderr, "# LOG Dump to %s\n", dump_file);
-    Dumper_Yin dumper(&nn);
     FILE *fh = open_out(dump_file); 
-    dumper.dump(fh);
+    sim.dump_yin(fh);
     close_inout(fh);
   }
 
   if (dump_dot)
   {
     fprintf(stderr, "# LOG Dump (dot) to %s\n", dump_dot);
-    Dumper_Dot dumper(&nn);
     FILE *fh = open_out(dump_dot); 
-    dumper.dump(fh);
+    sim.dump_dot(fh);
     close_inout(fh);
   }
 
