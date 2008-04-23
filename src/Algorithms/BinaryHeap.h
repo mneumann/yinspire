@@ -49,7 +49,7 @@ struct BinaryHeapDummyIndexer
 };
 
 template <typename E, class Alloc, class Acc=E, class Idx=BinaryHeapDummyIndexer<E>, 
-         unsigned int MIN_CAPA=256>
+         unsigned int MIN_CAPA=16>
 class BinaryHeap
 {
     typedef unsigned int I; // index type
