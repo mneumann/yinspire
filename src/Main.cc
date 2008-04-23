@@ -64,42 +64,6 @@ real str_to_real(char *arg)
   return res;
 }
 
-FILE *open_in(const char *fname)
-{
-  FILE *fh = NULL;
-
-  if (strcmp(fname, "-") == 0)
-    fh = stdin;
-  else
-    fh = fopen(fname, "r");
-
-  if (fh == NULL)
-    fail("Couldn't open file: ", fname);
-
-  return fh;
-}
-
-FILE *open_out(const char *fname)
-{
-  FILE *fh = NULL;
-
-  if (strcmp(fname, "-") == 0)
-    fh = stdout;
-  else
-    fh = fopen(fname, "w+");
-
-  if (fh == NULL)
-    fail("Couldn't open file: ", fname);
-
-  return fh;
-}
-
-void close_inout(FILE *fh)
-{
-  if (fh != stdin && fh != stdout && fh != stderr)
-    fclose(fh);
-}
-
 int main(int argc, char **argv)
 {
   MyRecorder recorder;
@@ -210,7 +174,7 @@ int main(int argc, char **argv)
 
   if (record_file)
   {
-    recorder.set_out(open_out(record_file));
+    recorder.set_out(sim.open_out(record_file));
   }
   else
   {
@@ -221,9 +185,7 @@ int main(int argc, char **argv)
     for (; i < argc; i++)
     {
       fprintf(stderr, "# LOAD \"%s\"\n", argv[i]);
-      FILE *fh = open_in(argv[i]);
-      sim.load_yin(fh);
-      close_inout(fh);
+      sim.load_yin(argv[i]);
     }
 
     fprintf(stderr, "# LOG starting simulation...\n");
@@ -239,17 +201,13 @@ int main(int argc, char **argv)
   if (dump_file)
   {
     fprintf(stderr, "# LOG Dump to %s\n", dump_file);
-    FILE *fh = open_out(dump_file); 
-    sim.dump_yin(fh);
-    close_inout(fh);
+    sim.dump_yin(dump_file);
   }
 
   if (dump_dot)
   {
     fprintf(stderr, "# LOG Dump (dot) to %s\n", dump_dot);
-    FILE *fh = open_out(dump_dot); 
-    sim.dump_dot(fh);
-    close_inout(fh);
+    sim.dump_dot(dump_dot);
   }
 
   return 0;

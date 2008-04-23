@@ -61,6 +61,14 @@ namespace Yinspire {
         }
 
       void
+        load_yin(const char *filename)
+        {
+          FILE *fh = open_in(filename);
+          load_yin(fh);
+          close_inout(fh);
+        }
+
+      void
         dump_yin(FILE *fh)
         {
           Dumper_Yin dumper(&net);
@@ -68,10 +76,26 @@ namespace Yinspire {
         }
 
       void
+        dump_yin(const char *filename)
+        {
+          FILE *fh = open_out(filename);
+          dump_yin(fh);
+          close_inout(fh);
+        }
+
+      void
         dump_dot(FILE *fh)
         {
           Dumper_Dot dumper(&net);
           dumper.dump(fh);
+        }
+
+      void
+        dump_dot(const char *filename)
+        {
+          FILE *fh = open_out(filename);
+          dump_dot(fh);
+          close_inout(fh);
         }
 
       bool
@@ -83,6 +107,52 @@ namespace Yinspire {
           Test test;
           return test.run();
         }
+
+      public:
+
+      /*
+       * Helper methods for opening and closing files
+       */
+
+      FILE *
+        open_in(const char *fname)
+        {
+          FILE *fh = NULL;
+
+          if (strcmp(fname, "-") == 0)
+            fh = stdin;
+          else
+            fh = fopen(fname, "r");
+
+          if (fh == NULL)
+            fail("Couldn't open file: ", fname);
+
+          return fh;
+        }
+
+      FILE *
+        open_out(const char *fname)
+        {
+          FILE *fh = NULL;
+
+          if (strcmp(fname, "-") == 0)
+            fh = stdout;
+          else
+            fh = fopen(fname, "w+");
+
+          if (fh == NULL)
+            fail("Couldn't open file: ", fname);
+
+          return fh;
+        }
+
+      void
+        close_inout(FILE *fh)
+        {
+          if (fh != stdin && fh != stdout && fh != stderr)
+            fclose(fh);
+        }
+
   };
 
 } /* namespace Yinspire */
