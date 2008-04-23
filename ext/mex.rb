@@ -55,7 +55,7 @@ mex :Yinspire_NeuralEntity_get_id, 1, %q{
   lhs[0] = string_to_mex(e->get_id());
 }, "Return the id of the entity"
 
-mex :Yinspire_NeuralEntity_get_properties, 1, %q{
+mex :Yinspire_NeuralEntity_dump, 1, %q{
   NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
   Properties p;
   e->dump(p);
@@ -92,6 +92,34 @@ mex :Yinspire_NeuralEntity_get_properties, 1, %q{
   }
 
   lhs[0] = v;
+}
+
+mex :Yinspire_NeuralEntity_load, 2, %q{
+  NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
+  Properties p;
+
+  mxArray *v = (mxArray*)rhs[1];
+
+  for (int i = 0; i < mxGetNumberOfFields(v); i++)
+  {
+    const char *key = mxGetFieldNameByNumber(v, i);
+    mxArray *value = mxGetFieldByNumber(v, 0, i);
+
+    if (mxIsLogicalScalar(value))
+    {
+      p.dump((bool)mxIsLogicalScalarTrue(value), key);
+    }
+    else if (mxIsNumeric(value))
+    {
+      p.dump((real)mex_to_double(value), key);
+    }
+    else
+    {
+      fail("invalid type");
+    }
+  }
+
+  e->load(p);
 }
 
 
