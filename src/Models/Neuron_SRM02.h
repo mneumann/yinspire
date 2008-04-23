@@ -79,8 +79,6 @@ namespace Yinspire {
           {
             fire(at, Infinity, dynamic_reset);
           }
-
-          Neuron_Base::process(at);
         }
 
       inline void

@@ -60,7 +60,7 @@ namespace Yinspire {
            */
           if (at >= last_fire_time + abs_refr_duration)
           {
-            Neuron_Base::stimulate(at, weight, source);
+            stimuli_add(at, weight);
           }
         }
 
@@ -95,8 +95,6 @@ namespace Yinspire {
           {
             fire(at, Infinity); 
           }
-
-          Neuron_Base::process(at);
         }
 
       inline void

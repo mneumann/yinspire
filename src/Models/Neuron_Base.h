@@ -66,11 +66,6 @@ namespace Yinspire {
           stimuli_add(at, weight);
         }
 
-      virtual void
-        process(real at)
-        {
-        }
-
     protected:
 
       void
