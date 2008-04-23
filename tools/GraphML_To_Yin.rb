@@ -25,7 +25,6 @@ class GraphML_To_Yin
     'synapse_delay' => ['delay', 'real'],
     'neuronPSP' => ['mem_pot', 'real'],
     'neuronReset' => ['reset', 'real'],
-    'neuron_tauM' => ['tau_m', 'real'],
     'neuron_tauRecov' => ['tau_ref', 'real'],
     'neuron_uReset' => ['u_reset', 'real'],
     'neuron_threshold' => ['const_threshold', 'real']
