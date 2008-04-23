@@ -5,6 +5,7 @@ namespace Yinspire {
 
   real Scheduler::schedule_run(real stop_at)
   {
+    real current = schedule_current_time;
     while (true)
     {
       real next_stop = min(stop_at, schedule_next_step);
@@ -16,23 +17,23 @@ namespace Yinspire {
       while (!schedule_pq.empty())
       {
         ScheduleEntity *top = schedule_pq.top();
-        schedule_current_time = top->schedule_at; 
-        if (schedule_current_time > next_stop)
+        current = top->schedule_at; 
+        if (current > next_stop)
           break;
         schedule_pq.pop();
-        top->process(schedule_current_time);
+        top->process(schedule_current_time = current);
       }
 
       if (schedule_stepping_list_root == NULL && schedule_pq.empty())
         break;
 
-      if (schedule_current_time > stop_at)
+      if (current > stop_at)
         break;
 
       /* 
        * Calculate the entities that require stepped processing.
        */ 
-      schedule_current_time = schedule_next_step; 
+      current = schedule_current_time = schedule_next_step; 
 
       if (schedule_stepping_list_root != NULL)
       {
