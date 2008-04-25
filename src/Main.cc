@@ -45,7 +45,11 @@ void usage()
 void version()
 {
   printf(
+#ifdef YINSPIRE_DOUBLE_PRECISION
+   "yinspire++/double (version %s)\n"
+#else
    "yinspire++ (version %s)\n"
+#endif
    "    Copyright (c) 2007, 2008 by Michael Neumann (mneumann@ntecs.de).\n"
    "    Released under the Ruby license.\n", YINSPIRE_VERSION);
 }

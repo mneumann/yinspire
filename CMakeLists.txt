@@ -4,6 +4,10 @@ option (YINSPIRE_CROSSCOMPILE_MINGW
   "Cross-compile Yinspire for Windows using mingw" 
   OFF)
 
+option (YINSPIRE_DOUBLE_PRECISION
+  "Use double instead of float type" 
+  OFF)
+
 if (YINSPIRE_CROSSCOMPILE_MINGW)
   set (CMAKE_SYSTEM_NAME Windows)
   set (CMAKE_C_COMPILER mingw32-gcc)
@@ -22,7 +26,11 @@ set (SRCS
   ${SRC_DIR}/Loaders/Loader_Yin.cc
   ${SRC_DIR}/Loaders/YinParser.cc
   ${SRC_DIR}/Loaders/YinTokenizer.cc)
- 
+
+if (YINSPIRE_DOUBLE_PRECISION)
+  add_definitions(-DYINSPIRE_DOUBLE_PRECISION)
+endif (YINSPIRE_DOUBLE_PRECISION)
+
 include_directories (${SRC_DIR})
 add_library (yinspirelib STATIC ${SRCS})
 add_executable (yinspire ${SRC_DIR}/Main.cc)

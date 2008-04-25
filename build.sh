@@ -1,41 +1,19 @@
 #!/bin/sh
 
-mkdir -p build/Default
-mkdir -p build/Release
-mkdir -p build/Debug
-mkdir -p build/Default.Win32
-mkdir -p build/Release.Win32
-mkdir -p build/Debug.Win32
+#VERBOSE="VERBOSE=1"
+ARGS=$@
 
-verbose=""
-#verbose="VERBOSE=1"
+build()
+{
+  mkdir -p build/$1
+  cd build/$1
+  cmake -DCMAKE_BUILD_TYPE=$2 $3 $4 $5 $6 $7 ${ARGS} ../..
+  make ${VERBOSE}
+  cd ../..
+}
 
-cd build/Default
-cmake $@ ../..
-make ${verbose}
-cd ../..
-
-cd build/Release
-cmake -DCMAKE_BUILD_TYPE=Release $@ ../..
-make ${verbose}
-cd ../..
-
-cd build/Debug
-cmake -DCMAKE_BUILD_TYPE=Debug $@ ../..
-make ${verbose}
-cd ../..
-
-cd build/Default.Win32
-cmake -DYINSPIRE_CROSSCOMPILE_MINGW=ON $@ ../..
-make ${verbose}
-cd ../..
-
-cd build/Release.Win32
-cmake -DCMAKE_BUILD_TYPE=Release -DYINSPIRE_CROSSCOMPILE_MINGW=ON $@ ../..
-make ${verbose}
-cd ../..
-
-cd build/Debug.Win32
-cmake -DCMAKE_BUILD_TYPE=Debug -DYINSPIRE_CROSSCOMPILE_MINGW=ON $@ ../..
-make ${verbose}
-cd ../..
+build Release Release
+build Release.Double Release -DYINSPIRE_DOUBLE_PRECISION=ON
+#build Debug Debug
+#build Release.Win32 Release -DYINSPIRE_CROSSCOMPILE_MINGW=ON
+#build Debug.Win32 Release -DYINSPIRE_CROSSCOMPILE_MINGW=ON

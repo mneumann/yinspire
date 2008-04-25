@@ -14,7 +14,13 @@ namespace Yinspire
   using namespace std;
 
   typedef unsigned int uint;
+
+#ifdef YINSPIRE_DOUBLE_PRECISION
+  typedef double real;
+#else
   typedef float real;
+#endif
+
   const real Infinity = numeric_limits<real>::infinity();
 
 #ifdef WIN32
