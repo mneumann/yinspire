@@ -56,15 +56,17 @@ end
 syn = 0
 1000.times do |from|
   100.times do |j|
-    to = rand(900)+100
+    to = rand(1000)
     NET.puts "CONNECT n_#{from} TO n_#{to} SYNAPSES #{SYNAPSE_CONN[neurons[from]][neurons[to]]}"
   end
 end
 
 #
-# Input neurons get stimuli at 48 Hz for 10 seconds.
+# Input neurons get stimuli at 48 Hz for 10 seconds
+# Note that inspire uses milliseconds, i.e. 10 seconds == 10_000
+# Yinspire "ticks".
 #
 100.times do |i|
-  arr = (0 ... (10*48)).map { rand() * 10 }.sort.map {|f| "%.5f" % f}
+  arr = (0 ... (10*48)).map { rand() * 10_000 }.sort.map {|f| "%.5f" % f}
   SPIKES.puts "n_#{i} #{arr.join(' ')}"
 end
