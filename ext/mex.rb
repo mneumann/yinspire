@@ -1,42 +1,42 @@
 $functions = {}
-FDef = Struct.new(:arity, :body, :help)
-def mex(name, arity, body, help=nil)
-  $functions[name] = FDef.new(arity, body, help)
+FDef = Struct.new(:arity_lhs, :arity_rhs, :body, :help)
+def mex(name, arity_lhs, arity_rhs, body, help=nil)
+  $functions[name] = FDef.new(arity_lhs, arity_rhs, body, help)
 end
 
-mex :Yinspire_Simulator_new, 0, %{
+mex :Yinspire_Simulator_new, 1, 0, %{
   Simulator *sim = new Simulator;
   lhs[0] = ptr_to_mex(sim); 
 }, "Create a new Simulator"
 
-mex :Yinspire_Simulator_delete, 1, %{
+mex :Yinspire_Simulator_delete, 0, 1, %{
   Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
   delete sim;
 }, "Delete a Simulator instance"
 
-mex :Yinspire_Simulator_test, 1, %{
+mex :Yinspire_Simulator_test, 1, 1, %{
   Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
   lhs[0] = logical_to_mex(sim->test());
 }, "Run some tests"
 
-mex :Yinspire_Simulator_load_yin, 2, %q{
+mex :Yinspire_Simulator_load_yin, 0, 2, %q{
   Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
   sim->load_yin(mex_to_string(rhs[1]).c_str());
 }, "Load a YIN file into the Simulator"
 
-mex :Yinspire_Simulator_run, 2, %q{
+mex :Yinspire_Simulator_run, 1, 2, %q{
   Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
   double stop_at  = mex_to_double(rhs[1]);
   double end_time = sim->run(stop_at);
   lhs[0] = double_to_mex(end_time);
 }, "Run the simulation"
 
-mex :Yinspire_Simulator_num_entities, 1, %q{
+mex :Yinspire_Simulator_num_entities, 1, 1, %q{
   Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
   lhs[0] = double_to_mex((double)sim->num_entities());
 }, "Return the number of entities"
 
-mex :Yinspire_Simulator_entity_ids, 1, %q{
+mex :Yinspire_Simulator_entity_ids, 1, 1, %q{
   Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
   array_with_index c;
   c.array = mex_create_cell_array(sim->num_entities());
@@ -45,17 +45,17 @@ mex :Yinspire_Simulator_entity_ids, 1, %q{
   lhs[0] = c.array;
 }, "Return the ids of all entities"
 
-mex :Yinspire_Simulator_get_entity_by_id, 2, %q{
+mex :Yinspire_Simulator_get_entity_by_id, 1, 2, %q{
   Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
   lhs[0] = ptr_to_mex(sim->get_entity(mex_to_string(rhs[1])));
 }, "Return a pointer to the Entity with the given id"
 
-mex :Yinspire_NeuralEntity_get_id, 1, %q{
+mex :Yinspire_NeuralEntity_get_id, 1, 1, %q{
   NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
   lhs[0] = string_to_mex(e->get_id());
 }, "Return the id of the entity"
 
-mex :Yinspire_NeuralEntity_dump, 1, %q{
+mex :Yinspire_NeuralEntity_dump, 1, 1, %q{
   NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
   Properties p;
   e->dump(p);
@@ -94,7 +94,7 @@ mex :Yinspire_NeuralEntity_dump, 1, %q{
   lhs[0] = v;
 }
 
-mex :Yinspire_NeuralEntity_load, 2, %q{
+mex :Yinspire_NeuralEntity_load, 0, 2, %q{
   NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
   Properties p;
 
@@ -130,8 +130,10 @@ mex :Yinspire_NeuralEntity_load, 2, %q{
 # Generate code for functions and the dispatch code
 #
 definition_code = ""
-dispatch_code = ""
-$functions.each do |k, v|
+dispatch_code = "switch (fnn) {\n"
+$functions.each_with_index do |kv, i|
+  k, v = *kv
+
   definition_code << %{
     void
     fn_#{k}(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
@@ -141,13 +143,16 @@ $functions.each do |k, v|
   }
 
   dispatch_code << %{
-    if (strcmp(fn, #{k.to_s.inspect}) == 0)
-    {
-      fn_#{k}(nlhs, lhs, nrhs, rhs);
-      return;
-    }
+    case #{i}:
+      fn_#{k}(nlhs, lhs, nrhs-1, &rhs[1]);
+      break;
   }
 end
+dispatch_code << %[
+  default: throw string("invalid opcode");
+}
+]
+
 
 
 f = File.open('Yinspire.cc', 'w+')
@@ -231,7 +236,7 @@ f << %{
   void
   mexFunction (int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
   {
-    const char *fn = mexFunctionName();
+    int fnn = (int) mex_to_double(rhs[0]);
     try {
       #{dispatch_code}
     }
@@ -246,15 +251,23 @@ f << %{
 }
 f.close
 
-# compile
-`mkoctfile --mex -I../src -L../build/Release -lyinspirelib Yinspire.cc`
-
-`rm -rf build`
-Dir.mkdir('build')
-`cp Yinspire.mex build`
-Dir.chdir('build') do 
-  $functions.each_key do |k|
-    File.link "Yinspire.mex", "#{k}.mex"  
+Dir.chdir(ARGV.first) do 
+  $functions.each_with_index do |kv, i|
+    name, fdef = *kv
+    File.open("#{name}.m", 'w+') {|f|
+      lhs_args = (1..fdef.arity_lhs).map {|a| "lhs_#{a}"}
+      rhs_args = (1..fdef.arity_rhs).map {|a| "rhs_#{a}"}
+      lhs = if lhs_args.empty?
+             '' 
+            else
+              lhs_args.join(', ') + ' = '
+            end
+      rhs = rhs_args.join(', ')
+      f << "function #{lhs}#{name}(#{rhs})\n"
+      f << "% #{lhs}#{name}(#{rhs})\n"
+      f << "% #{fdef.help || 'No documentation available'}\n"
+      
+      f << "  #{lhs}Yinspire(#{ ([i.to_s] + rhs_args).join(', ') })\n"
+    }
   end
-  # TODO: generate help files
 end

@@ -1,7 +1,12 @@
 all: compile run
 
 compile:
-	ruby mex.rb
+	rm -rf build
+	mkdir -p build
+	ruby mex.rb build 
+	mkoctfile --mex -I../src -L../build/Release -lyinspirelib Yinspire.cc
+	cp Yinspire.mex build
+
 run:
 	octave -p build test.m
 
