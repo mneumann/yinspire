@@ -8,6 +8,8 @@ n2 = Yinspire_Simulator_num_entities(s)
 Yinspire_Simulator_load_yin(s, "../examples/nets/spiketrains_angle_180.yin")
 x = Yinspire_Simulator_run(s, 100.0)
 
+s1 = Yinspire_Simulator_create_entity(s, "Synapse_Default")
+
 ents = Yinspire_Simulator_entity_ids(s)
 e2 = Yinspire_Simulator_get_entity_by_id(s, ents{1})
 

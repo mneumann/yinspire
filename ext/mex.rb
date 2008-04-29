@@ -50,6 +50,11 @@ mex :Yinspire_Simulator_get_entity_by_id, 1, 2, %q{
   lhs[0] = ptr_to_mex(sim->get_entity(mex_to_string(rhs[1])));
 }, "Return a pointer to the Entity with the given id"
 
+mex :Yinspire_Simulator_create_entity, 1, 2, %q{
+  Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
+  lhs[0] = ptr_to_mex(sim->create_entity(mex_to_string(rhs[1])));
+}, "Create a NeuralEntity of the given type"
+
 mex :Yinspire_NeuralEntity_get_id, 1, 1, %q{
   NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
   lhs[0] = string_to_mex(e->get_id());
@@ -122,6 +127,8 @@ mex :Yinspire_NeuralEntity_load, 0, 2, %q{
   e->load(p);
 }
 
+# TODO: Connect, Disconnect, Stimulate!
+# Recorder.
 
 ####################################################
 ####################################################
