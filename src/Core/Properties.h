@@ -78,6 +78,16 @@ namespace Yinspire {
           properties[name] = prop; 
         }
 
+      void set(const string &name, real variable)
+      {
+        dump(variable, name);
+      }
+
+      void set(const string &name, bool variable)
+      {
+        dump(variable, name);
+      }
+
       /*
        * Erases all properties.
        */
