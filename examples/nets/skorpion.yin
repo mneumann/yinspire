@@ -1,4 +1,4 @@
-ENTITY InterR3 = Neuron_SRM01 {
+TEMPLATE Neuron < Neuron_SRM01 {
   abs_refr_duration = 0.0
   const_threshold = 1.0
   ref_weight = 0.25
@@ -6,467 +6,67 @@ ENTITY InterR3 = Neuron_SRM01 {
   tau_ref = 3.0
 }
 
-ENTITY InterR4 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY KommaL1 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY SensorL1 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY KommaL2 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY KommaL3 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY SensorL2 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY InterL1 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY KommaL4 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY SensorL3 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY InterL2 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY KommaR1 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY SensorL4 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY InterL3 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY KommaR2 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY SensorR1 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY InterL4 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY KommaR3 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY SensorR2 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY InterR1 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY KommaR4 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY SensorR3 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY InterR2 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY SensorR4 = Neuron_SRM01 {
-  abs_refr_duration = 0.0
-  const_threshold = 1.0
-  ref_weight = 0.25
-  tau_m = 1.15
-  tau_ref = 3.0
-}
-
-ENTITY e39 = Synapse_Default {
+TEMPLATE SynEx < Synapse_Default {
   delay = 0.7
   weight = 1.1
 }
 
-ENTITY e28 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e17 = Synapse_Default {
+TEMPLATE SynInh < Synapse_Default {
   delay = 0.2
   weight = -1.0
 }
 
-ENTITY e0 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
+ENTITY InterR3, InterR4, KommaL1, SensorL1, 
+       KommaL2, KommaL3, SensorL2, InterL1,
+       KommaL4, SensorL3, InterL2, KommaR1, 
+       SensorL4, InterL3, KommaR2, SensorR1,
+       InterL4, KommaR3, SensorR2, InterR1,
+       KommaR4, SensorR3, InterR2, SensorR4 = Neuron
 
-ENTITY e29 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
+ENTITY e0, e1, e2, e3, e4, e5, e6, e7, e8, e9,
+       e10, e11, e12, e13, e14, e15, 
+       e24, e25, e26, e27, e28, e29,
+       e30, e31, e32, e33, e34, e35, e36, e37, e38, e39 = SynEx
 
-ENTITY e18 = Synapse_Default {
-  delay = 0.2
-  weight = -1.0
-}
+ENTITY e16, e17, e18, e19, e20, e21, e22, e23 = SynInh
 
-ENTITY e1 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e30 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e19 = Synapse_Default {
-  delay = 0.2
-  weight = -1.0
-}
-
-ENTITY e2 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e31 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e20 = Synapse_Default {
-  delay = 0.2
-  weight = -1.0
-}
-
-ENTITY e3 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e32 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e21 = Synapse_Default {
-  delay = 0.2
-  weight = -1.0
-}
-
-ENTITY e10 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e4 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e33 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e22 = Synapse_Default {
-  delay = 0.2
-  weight = -1.0
-}
-
-ENTITY e11 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e5 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e34 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e23 = Synapse_Default {
-  delay = 0.2
-  weight = -1.0
-}
-
-ENTITY e12 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e6 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e35 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e24 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e13 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e7 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e36 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e25 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e14 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e8 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e37 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e26 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e15 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e9 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e38 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e27 = Synapse_Default {
-  delay = 0.7
-  weight = 1.1
-}
-
-ENTITY e16 = Synapse_Default {
-  delay = 0.2
-  weight = -1.0
-}
-
-CONNECT SensorL2 -> e39
-CONNECT e39 -> InterL1
-CONNECT SensorL3 -> e28
-CONNECT e28 -> InterL4
-CONNECT InterR2 -> e17
-CONNECT e17 -> KommaL3
-CONNECT SensorR1 -> e0
-CONNECT e0 -> KommaR1
-CONNECT SensorL2 -> e29
-CONNECT e29 -> InterL3
-CONNECT InterR3 -> e18
-CONNECT e18 -> KommaL2
-CONNECT SensorR2 -> e1
-CONNECT e1 -> KommaR2
-CONNECT SensorL1 -> e30
-CONNECT e30 -> InterL2
-CONNECT InterR4 -> e19
-CONNECT e19 -> KommaL1
-CONNECT SensorR3 -> e2
-CONNECT e2 -> KommaR3
-CONNECT SensorR1 -> e31
-CONNECT e31 -> InterL1
-CONNECT InterL1 -> e20
-CONNECT e20 -> KommaR4
-CONNECT SensorR4 -> e3
-CONNECT e3 -> KommaR4
-CONNECT SensorL1 -> e32
-CONNECT e32 -> InterR1
-CONNECT InterL2 -> e21
-CONNECT e21 -> KommaR3
-CONNECT SensorR3 -> e10
-CONNECT e10 -> InterR3
-CONNECT SensorL1 -> e4
-CONNECT e4 -> KommaL1
-CONNECT SensorR1 -> e33
-CONNECT e33 -> InterR2
-CONNECT InterL3 -> e22
-CONNECT e22 -> KommaR2
-CONNECT SensorR4 -> e11
-CONNECT e11 -> InterR4
-CONNECT SensorL2 -> e5
-CONNECT e5 -> KommaL2
-CONNECT SensorR2 -> e34
-CONNECT e34 -> InterR3
-CONNECT InterL4 -> e23
-CONNECT e23 -> KommaR1
-CONNECT SensorL1 -> e12
-CONNECT e12 -> InterL1
-CONNECT SensorL3 -> e6
-CONNECT e6 -> KommaL3
-CONNECT SensorR3 -> e35
-CONNECT e35 -> InterR4
-CONNECT SensorR2 -> e24
-CONNECT e24 -> InterR1
-CONNECT SensorL2 -> e13
-CONNECT e13 -> InterL2
-CONNECT SensorL4 -> e7
-CONNECT e7 -> KommaL4
-CONNECT SensorR4 -> e36
-CONNECT e36 -> InterL4
-CONNECT SensorR3 -> e25
-CONNECT e25 -> InterR2
-CONNECT SensorL3 -> e14
-CONNECT e14 -> InterL3
-CONNECT SensorR1 -> e8
-CONNECT e8 -> InterR1
-CONNECT SensorL4 -> e37
-CONNECT e37 -> InterL3
-CONNECT SensorR4 -> e26
-CONNECT e26 -> InterR3
-CONNECT SensorL4 -> e15
-CONNECT e15 -> InterL4
-CONNECT SensorR2 -> e9
-CONNECT e9 -> InterR2
-CONNECT SensorL3 -> e38
-CONNECT e38 -> InterL2
-CONNECT SensorL4 -> e27
-CONNECT e27 -> InterR4
-CONNECT InterR1 -> e16
-CONNECT e16 -> KommaL4
+CONNECT InterL1 -> e20 -> KommaR4
+CONNECT InterL2 -> e21 -> KommaR3
+CONNECT InterL3 -> e22 -> KommaR2
+CONNECT InterL4 -> e23 -> KommaR1
+CONNECT InterR1 -> e16 -> KommaL4
+CONNECT InterR2 -> e17 -> KommaL3
+CONNECT InterR3 -> e18 -> KommaL2
+CONNECT InterR4 -> e19 -> KommaL1
+CONNECT SensorL1 -> e30 -> InterL2
+CONNECT SensorL1 -> e32 -> InterR1
+CONNECT SensorL1 -> e4 -> KommaL1
+CONNECT SensorL1 -> e12 -> InterL1
+CONNECT SensorL2 -> e39 -> InterL1
+CONNECT SensorL2 -> e29 -> InterL3
+CONNECT SensorL2 -> e5 -> KommaL2
+CONNECT SensorL2 -> e13 -> InterL2
+CONNECT SensorL3 -> e28 -> InterL4
+CONNECT SensorL3 -> e6 -> KommaL3
+CONNECT SensorL3 -> e14 -> InterL3
+CONNECT SensorL3 -> e38 -> InterL2
+CONNECT SensorL4 -> e7 -> KommaL4
+CONNECT SensorL4 -> e37 -> InterL3
+CONNECT SensorL4 -> e15 -> InterL4
+CONNECT SensorL4 -> e27 -> InterR4
+CONNECT SensorR1 -> e0 -> KommaR1
+CONNECT SensorR1 -> e31 -> InterL1
+CONNECT SensorR1 -> e33 -> InterR2
+CONNECT SensorR1 -> e8 -> InterR1
+CONNECT SensorR2 -> e1 -> KommaR2
+CONNECT SensorR2 -> e34 -> InterR3
+CONNECT SensorR2 -> e24 -> InterR1
+CONNECT SensorR2 -> e9 -> InterR2
+CONNECT SensorR3 -> e2 -> KommaR3
+CONNECT SensorR3 -> e10 -> InterR3
+CONNECT SensorR3 -> e35 -> InterR4
+CONNECT SensorR3 -> e25 -> InterR2
+CONNECT SensorR4 -> e3 -> KommaR4
+CONNECT SensorR4 -> e11 -> InterR4
+CONNECT SensorR4 -> e36 -> InterL4
+CONNECT SensorR4 -> e26 -> InterR3
