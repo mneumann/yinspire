@@ -171,7 +171,9 @@ int main(int argc, char **argv)
     return 0;
   }
 
-  fprintf(stderr, "# LOG stop_at=%f\n", stop_at);
+  fprintf(stderr, "# LOG stop_at=");
+  fprint_real(stderr, stop_at);
+  fprintf(stderr, "\n");
 
   if (record_file)
   {
