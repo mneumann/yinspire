@@ -4,7 +4,6 @@
 #include "Core/Common.h"
 #include <string>
 #include <map>
-#include <stdio.h>
 
 #define PROP_LOAD(properties, var) \
   properties.load(var, #var)
@@ -120,7 +119,8 @@ namespace Yinspire {
             switch (i->second.type)
             {
               case Property_Real:
-                fprintf(f, "%f\n", i->second.value.real_value);
+                fprint_real(f, i->second.value.real_value);
+                fprintf(f, "\n");
                 break;
               case Property_Bool:
                 if (i->second.value.bool_value)

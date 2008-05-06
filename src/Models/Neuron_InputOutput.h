@@ -19,11 +19,9 @@ namespace Yinspire {
       virtual void
         process(real at) 
         {
-          Stimulus s;
-
           while (!stimuli_pq.empty() && stimuli_pq.top().at <= at)
           {
-            s = stimuli_pq.top();
+            Stimulus s = stimuli_pq.top();
             stimuli_pq.pop();
             if (recorder)
               recorder->record_fire(this, s.at, s.weight);

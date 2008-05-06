@@ -2,7 +2,6 @@
 #include "Core/NeuralEntity.h"
 #include "Core/Properties.h"
 #include "Dumpers/Dumper_Yin.h"
-#include <stdio.h>
 
 namespace Yinspire {
 
@@ -35,21 +34,40 @@ namespace Yinspire {
     fprintf(f, "CONNECT %s -> %s\n", self->get_id().c_str(), conn->get_id().c_str());
   }
 
+  struct dump_stimuli_info
+  {
+    FILE *f;
+    int i; 
+    NeuralEntity *entity;
+  };
+
   void Dumper_Yin::dump_stimuli(NeuralEntity *entity, void *data)
   {
-    FILE *f = (FILE*) data;
-    fprintf(f, "STIMULATE %s ! {\n", entity->get_id().c_str());
-    entity->each_stimulus(dump_stimulus, data);
-    fprintf(f, "}\n");
+    dump_stimuli_info info;
+    info.f = (FILE*) data;
+    info.i = 0;
+    info.entity = entity;
+
+    entity->each_stimulus(dump_stimulus, &info);
+
+    if (info.i > 0)
+      fprintf(info.f, "}\n");
   }
 
   void Dumper_Yin::dump_stimulus(const Stimulus& s, void *data)
   {
-    FILE *f = (FILE*) data;
-    if (isinf(s.weight))
-      fprintf(f, "%f\n", s.at);
-    else
-      fprintf(f, "%f @ %f\n", s.weight, s.at);
+    dump_stimuli_info *info = (dump_stimuli_info*) data;
+
+    if (info->i++ == 0)
+      fprintf(info->f, "STIMULATE %s ! {\n", info->entity->get_id().c_str());
+
+    if (!isinf(s.weight))
+    {
+      fprint_real(info->f, s.weight); 
+      fprintf(info->f, " @ ");
+    }
+    fprint_real(info->f, s.at); 
+    fprintf(info->f, "\n");
   }
 
 } /* namespace Yinspire */

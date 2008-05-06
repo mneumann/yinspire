@@ -5,6 +5,7 @@
 
 #include "Allocators/MemoryAllocator.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <cmath>
 #include <limits>
 #include <string>
@@ -25,7 +26,27 @@ namespace Yinspire
 
 #ifdef WIN32
   inline bool isinf(real n) { return !_finite(n) && !_isnan(n); }
+  inline bool isnan(real n) { return _isnan(n); }
 #endif
+
+  inline void fprint_real(FILE *f, real n)
+  {
+    if (isinf(n))
+    {
+      if (n < 0.0)
+        fprintf(f, "%s", "-Infinity");
+      else
+        fprintf(f, "%s", "Infinity");
+    }
+    else if (isnan(n))
+    {
+      fprintf(f, "%s", "NaN");
+    }
+    else
+    {
+      fprintf(f, "%g", n); 
+    }
+  }
 
   inline void fail(const string& msg1)
   {

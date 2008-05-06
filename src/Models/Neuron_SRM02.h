@@ -58,31 +58,56 @@ namespace Yinspire {
       virtual void
         process(real at)
         {
+          /*
+           * Sum up (and remove) all stimuli weights <= at
+           */
           real weight = stimuli_sum(at);
-          const real delta = at - last_fire_time - abs_refr_duration; 
+
+          /*
+           * Time since end of last absolute refractory period
+           */
+          real delta = at - last_fire_time - abs_refr_duration; 
 
           /*
            * Calculate new membrane potential
            */
-          mem_pot = weight + mem_pot * exp(-(at - last_spike_time)/tau_m);
+          real decay = exp(-(at - last_spike_time) / tau_m);
+          mem_pot = weight + mem_pot * decay;
+
+          /*
+           * Update last spike time
+           */
           last_spike_time = at;
 
+          /*
+           * Return if still in absolute refractory period
+           */
           if (delta < 0.0)
             return;
 
           /*
            * Calculate dynamic reset
            */
-          const real dynamic_reset = reset * exp(-delta/tau_ref);
+          real dynamic_reset = reset * exp(-delta/tau_ref);
 
           if (mem_pot >= const_threshold + dynamic_reset)
           {
-            fire(at, Infinity, dynamic_reset);
+            if (isinf(mem_pot))
+            {
+              mem_pot = 0;
+              reset = -u_reset;
+            }
+            else
+            {
+              reset = dynamic_reset + u_reset;
+            }
+
+            fire(at, Infinity);
           }
         }
 
       inline void
-        fire(real at, real weight, real dynamic_reset)
+        fire(real at, real weight)
         {
           if (abs_refr_duration > 0.0 &&
               at + abs_refr_duration < schedule_at)
@@ -90,17 +115,8 @@ namespace Yinspire {
             schedule(at + abs_refr_duration);
           }
 
-          if (isinf(mem_pot))
-          {
-            mem_pot = 0.0;
-            reset = u_reset;
-          }
-          else
-          {
-            reset = dynamic_reset + u_reset;
-          }
-
           last_fire_time = at;
+
           if (recorder)
             recorder->record_fire(this, at, weight);
           stimulate_synapses(at, weight);

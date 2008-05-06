@@ -2,10 +2,9 @@
 #define __YINSPIRE__YIN_PARSER__
 
 #include <string>
-#include <stdio.h>
+#include "Core/Common.h"
 #include "Loaders/YinTokenizer.h"
 #include "Loaders/YinVisitor.h"
-#include "Core/Common.h"
 #include "Core/Properties.h"
 #include "Core/Stimulus.h"
 #include "Algorithms/Array.h"

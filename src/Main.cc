@@ -1,5 +1,4 @@
 #include "Simulator.h"
-#include "Core/Recorder.h"
 
 using namespace Yinspire;
 using namespace std;
@@ -25,8 +24,12 @@ class MyRecorder : public Recorder
 
       fprintf(out, "%s\t!\t", origin ? origin->get_id().c_str() : "_SIMULATOR_"); 
       if (!isinf(weight))
-        fprintf(out, "%f\t@\t", weight);
-      fprintf(out, "%f\n", at);
+      {
+        fprint_real(out, weight);
+        fprintf(out, "\t@\t");
+      }
+      fprint_real(out, at);
+      fprintf(out, "\n");
     }
 };
 

@@ -21,6 +21,7 @@ namespace Yinspire {
         if (current > next_stop)
           break;
         schedule_pq.pop();
+        top->schedule_at = Infinity; 
         top->process(schedule_current_time = current);
       }
 

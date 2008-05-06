@@ -2,8 +2,6 @@
 #define __YINSPIRE__YIN_TOKENIZER__
 
 #include "Core/Common.h"
-#include <string>
-#include <stdio.h>
 
 namespace Yinspire {
 

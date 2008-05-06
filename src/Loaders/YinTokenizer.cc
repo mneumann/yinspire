@@ -1,5 +1,4 @@
 #include <ctype.h>
-#include <stdio.h>
 #include "Core/Common.h"
 #include "Loaders/YinTokenizer.h"
 

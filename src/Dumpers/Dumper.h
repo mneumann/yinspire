@@ -1,8 +1,8 @@
 #ifndef __YINSPIRE__DUMPER__
 #define __YINSPIRE__DUMPER__
 
+#include "Core/Common.h"
 #include "Core/NeuralNet.h"
-#include <stdio.h>
 
 namespace Yinspire {
 
