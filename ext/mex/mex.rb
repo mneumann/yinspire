@@ -9,10 +9,10 @@ mex :Yinspire_Simulator_new, 1, 0, %{
   lhs[0] = ptr_to_mex(sim); 
 }, "Create a new Simulator"
 
-mex :Yinspire_Simulator_delete, 0, 1, %{
+mex :Yinspire_Simulator_destroy, 0, 1, %{
   Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
   delete sim;
-}, "Delete a Simulator instance"
+}, "Destroy a Simulator instance"
 
 mex :Yinspire_Simulator_test, 1, 1, %{
   Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
@@ -50,9 +50,9 @@ mex :Yinspire_Simulator_get_entity_by_id, 1, 2, %q{
   lhs[0] = ptr_to_mex(sim->get_entity(mex_to_string(rhs[1])));
 }, "Return a pointer to the Entity with the given id"
 
-mex :Yinspire_Simulator_create_entity, 1, 2, %q{
+mex :Yinspire_Simulator_create_entity, 1, 3, %q{
   Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
-  lhs[0] = ptr_to_mex(sim->create_entity(mex_to_string(rhs[1])));
+  lhs[0] = ptr_to_mex(sim->create_entity(mex_to_string(rhs[1]), mex_to_string(rhs[2])));
 }, "Create a NeuralEntity of the given type"
 
 mex :Yinspire_NeuralEntity_get_id, 1, 1, %q{
