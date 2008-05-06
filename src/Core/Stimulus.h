@@ -22,6 +22,21 @@ namespace Yinspire {
       }
 
     typedef BinaryHeap<Stimulus, MemoryAllocator<Stimulus> > PQ;
+
+    Stimulus() {}
+    Stimulus(real _at, real _weight) : at(_at), weight(_weight) {}
+
+    void
+      output(FILE *f) const
+      {
+        if (!isinf(weight))
+        {
+          fprint_real(f, weight);
+          fprintf(f, "\t@\t");
+        }
+        fprint_real(f, at);
+        fprintf(f, "\n");
+      }
   };
 
 } /* namespace Yinspire */

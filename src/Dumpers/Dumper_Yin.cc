@@ -61,13 +61,7 @@ namespace Yinspire {
     if (info->i++ == 0)
       fprintf(info->f, "STIMULATE %s ! {\n", info->entity->get_id().c_str());
 
-    if (!isinf(s.weight))
-    {
-      fprint_real(info->f, s.weight); 
-      fprintf(info->f, " @ ");
-    }
-    fprint_real(info->f, s.at); 
-    fprintf(info->f, "\n");
+    s.output(info->f);
   }
 
 } /* namespace Yinspire */

@@ -23,13 +23,7 @@ class MyRecorder : public Recorder
       if (!out) return;
 
       fprintf(out, "%s\t!\t", origin ? origin->get_id().c_str() : "_SIMULATOR_"); 
-      if (!isinf(weight))
-      {
-        fprint_real(out, weight);
-        fprintf(out, "\t@\t");
-      }
-      fprint_real(out, at);
-      fprintf(out, "\n");
+      Stimulus(at, weight).output(out);
     }
 };
 
