@@ -115,9 +115,11 @@ namespace Yinspire {
         }
 
       NeuralEntity *
-        create_entity(const string& type)
+        create_entity(const string& type, const string &id)
         {
-          return factory.create(type);
+          NeuralEntity *n = factory.create(type, id);
+          net.add(n);
+          return n;
         }
 
       void

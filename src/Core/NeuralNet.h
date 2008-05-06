@@ -22,6 +22,14 @@ namespace Yinspire {
 
     public:
 
+      /* 
+       * Destructor
+       */
+      ~NeuralNet()
+      {
+        destroy_all();
+      }
+
       /*
        * Adds a NeuralEntity to the net.
        */
@@ -45,6 +53,21 @@ namespace Yinspire {
             return NULL;
           else
             return entities[id];
+        }
+
+      /*
+       * Destroy all NeuralEntities contained in the NeuralNet, assuming
+       * no other references exist.
+       */
+      void
+        destroy_all()
+        {
+          for (map<string, NeuralEntity*>::iterator i = entities.begin();
+              i != entities.end(); i++)
+          {
+            delete i->second;
+          }
+          entities.clear();
         }
 
       /*
