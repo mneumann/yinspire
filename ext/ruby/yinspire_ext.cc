@@ -60,6 +60,16 @@ Simulator_load_yin(VALUE self, VALUE filename)
 }
 
 static VALUE
+Simulator_dump_yin(VALUE self, VALUE filename)
+{
+  SIM_GET(self, sim);
+  TRY_BEGIN {
+    sim->dump_yin(StringValueCStr(filename));
+  } TRY_END;
+  return Qnil;
+}
+
+static VALUE
 Simulator_run(VALUE self, VALUE stop_at)
 {
   SIM_GET(self, sim);
@@ -209,6 +219,52 @@ NeuralEntity_load(VALUE self, VALUE h)
   return Qnil;
 }
 
+static VALUE
+NeuralEntity_connect(VALUE self, VALUE entity)
+{
+  NE_GET(self, ne);
+  NE_GET(entity, target);
+  TRY_BEGIN {
+    ne->connect(target);
+  } TRY_END;
+  return entity;
+}
+
+static VALUE
+NeuralEntity_disconnect(VALUE self, VALUE entity)
+{
+  NE_GET(self, ne);
+  NE_GET(entity, target);
+  TRY_BEGIN {
+    ne->disconnect(target);
+  } TRY_END;
+  return entity;
+}
+
+static VALUE
+NeuralEntity_stimulate(int argc, VALUE *argv, VALUE self)
+{
+  VALUE r_at, r_weight;
+  VALUE r_source = Qnil;
+  real at, weight;
+  NeuralEntity *source;
+
+  rb_scan_args(argc, argv, "21", &r_at, &r_weight, &r_source); 
+
+  NE_GET(self, ne);
+  at = NUM2DBL(r_at);
+  weight = NUM2DBL(r_weight);
+  if (r_source == Qnil)
+    source = NULL;
+  else 
+    Data_Get_Struct(r_source, NeuralEntity, source);
+
+  TRY_BEGIN {
+    ne->stimulate(at, weight, source);
+  } TRY_END;
+  return Qnil;
+}
+
 extern "C" void Init_Yinspire()
 {
   mYinspire = rb_define_module("Yinspire");
@@ -217,6 +273,7 @@ extern "C" void Init_Yinspire()
   rb_define_alloc_func(cSimulator, Simulator_s_alloc);
   rb_define_method(cSimulator, "destroy", (VALUE(*)(...))Simulator_destroy, 0);
   rb_define_method(cSimulator, "load_yin", (VALUE(*)(...))Simulator_load_yin, 1);
+  rb_define_method(cSimulator, "dump_yin", (VALUE(*)(...))Simulator_dump_yin, 1);
   rb_define_method(cSimulator, "run", (VALUE(*)(...))Simulator_run, 1);
   rb_define_method(cSimulator, "each_entity", (VALUE(*)(...))Simulator_each_entity, 0);
   rb_define_method(cSimulator, "get_entity", (VALUE(*)(...))Simulator_get_entity, 1);
@@ -228,4 +285,7 @@ extern "C" void Init_Yinspire()
   rb_define_method(cNeuralEntity, "type", (VALUE(*)(...))NeuralEntity_type, 0);
   rb_define_method(cNeuralEntity, "dump", (VALUE(*)(...))NeuralEntity_dump, 0);
   rb_define_method(cNeuralEntity, "load", (VALUE(*)(...))NeuralEntity_load, 1);
+  rb_define_method(cNeuralEntity, "connect", (VALUE(*)(...))NeuralEntity_connect, 1);
+  rb_define_method(cNeuralEntity, "disconnect", (VALUE(*)(...))NeuralEntity_disconnect, 1);
+  rb_define_method(cNeuralEntity, "stimulate", (VALUE(*)(...))NeuralEntity_stimulate, -1);
 }
