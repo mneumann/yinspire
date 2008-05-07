@@ -4,39 +4,39 @@ def mex(name, arity_lhs, arity_rhs, body, help=nil)
   $functions[name] = FDef.new(arity_lhs, arity_rhs, body, help)
 end
 
-mex :Yinspire_Simulator_new, 1, 0, %{
+mex :Simulator_new, 1, 0, %{
   Simulator *sim = new Simulator;
   lhs[0] = ptr_to_mex(sim); 
 }, "Create a new Simulator"
 
-mex :Yinspire_Simulator_destroy, 0, 1, %{
+mex :Simulator_destroy, 0, 1, %{
   Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
   delete sim;
 }, "Destroy a Simulator instance"
 
-mex :Yinspire_Simulator_test, 1, 1, %{
+mex :Simulator_test, 1, 1, %{
   Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
   lhs[0] = logical_to_mex(sim->test());
 }, "Run some tests"
 
-mex :Yinspire_Simulator_load_yin, 0, 2, %q{
+mex :Simulator_load_yin, 0, 2, %q{
   Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
   sim->load_yin(mex_to_string(rhs[1]).c_str());
 }, "Load a YIN file into the Simulator"
 
-mex :Yinspire_Simulator_run, 1, 2, %q{
+mex :Simulator_run, 1, 2, %q{
   Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
   double stop_at  = mex_to_double(rhs[1]);
   double end_time = sim->run(stop_at);
   lhs[0] = double_to_mex(end_time);
 }, "Run the simulation"
 
-mex :Yinspire_Simulator_num_entities, 1, 1, %q{
+mex :Simulator_num_entities, 1, 1, %q{
   Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
   lhs[0] = double_to_mex((double)sim->num_entities());
 }, "Return the number of entities"
 
-mex :Yinspire_Simulator_entity_ids, 1, 1, %q{
+mex :Simulator_entity_ids, 1, 1, %q{
   Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
   array_with_index c;
   c.array = mex_create_cell_array(sim->num_entities());
@@ -45,22 +45,29 @@ mex :Yinspire_Simulator_entity_ids, 1, 1, %q{
   lhs[0] = c.array;
 }, "Return the ids of all entities"
 
-mex :Yinspire_Simulator_get_entity_by_id, 1, 2, %q{
+mex :Simulator_get_entity, 1, 2, %q{
   Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
   lhs[0] = ptr_to_mex(sim->get_entity(mex_to_string(rhs[1])));
 }, "Return a pointer to the Entity with the given id"
 
-mex :Yinspire_Simulator_create_entity, 1, 3, %q{
+mex :Simulator_create_entity, 1, 3, %q{
   Simulator *sim  = (Simulator*) mex_to_ptr(rhs[0]);
-  lhs[0] = ptr_to_mex(sim->create_entity(mex_to_string(rhs[1]), mex_to_string(rhs[2])));
-}, "Create a NeuralEntity of the given type"
+  NeuralEntity *n = sim->create_entity(mex_to_string(rhs[1]), mex_to_string(rhs[2]));
+  sim->add_entity(n);
+  lhs[0] = ptr_to_mex(n);
+}, "Create a NeuralEntity of the given type and id, and attach it to the net"
 
-mex :Yinspire_NeuralEntity_get_id, 1, 1, %q{
+mex :NeuralEntity_id, 1, 1, %q{
   NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
   lhs[0] = string_to_mex(e->get_id());
 }, "Return the id of the entity"
 
-mex :Yinspire_NeuralEntity_dump, 1, 1, %q{
+mex :NeuralEntity_type, 1, 1, %q{
+  NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
+  lhs[0] = string_to_mex(e->type());
+}, "Return the type of the entity"
+
+mex :NeuralEntity_dump, 1, 1, %q{
   NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
   Properties p;
   e->dump(p);
@@ -99,7 +106,7 @@ mex :Yinspire_NeuralEntity_dump, 1, 1, %q{
   lhs[0] = v;
 }
 
-mex :Yinspire_NeuralEntity_load, 0, 2, %q{
+mex :NeuralEntity_load, 0, 2, %q{
   NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
   Properties p;
 
@@ -127,8 +134,25 @@ mex :Yinspire_NeuralEntity_load, 0, 2, %q{
   e->load(p);
 }
 
-# TODO: Connect, Disconnect, Stimulate!
-# Recorder.
+mex :NeuralEntity_connect, 0, 2, %q{
+  NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
+  NeuralEntity *target  = (NeuralEntity*) mex_to_ptr(rhs[1]);
+
+  e->connect(target);
+}, "Connect"
+
+mex :NeuralEntity_disconnect, 0, 2, %q{
+  NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
+  NeuralEntity *target  = (NeuralEntity*) mex_to_ptr(rhs[1]);
+
+  e->disconnect(target);
+}, "Disconnect"
+
+mex :NeuralEntity_stimulate, 0, 4, %q{
+  NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
+  e->stimulate(mex_to_double(rhs[1]), mex_to_double(rhs[2]), (NeuralEntity*) mex_to_ptr(rhs[1]));
+}, "Stimulate"
+
 
 ####################################################
 ####################################################
@@ -258,23 +282,25 @@ f << %{
 }
 f.close
 
-Dir.chdir(ARGV.first) do 
+Dir.chdir(ARGV.shift) do 
   $functions.each_with_index do |kv, i|
     name, fdef = *kv
-    File.open("#{name}.m", 'w+') {|f|
-      lhs_args = (1..fdef.arity_lhs).map {|a| "lhs_#{a}"}
-      rhs_args = (1..fdef.arity_rhs).map {|a| "rhs_#{a}"}
-      lhs = if lhs_args.empty?
-             '' 
-            else
-              lhs_args.join(', ') + ' = '
-            end
-      rhs = rhs_args.join(', ')
-      f << "function #{lhs}#{name}(#{rhs})\n"
-      f << "% #{lhs}#{name}(#{rhs})\n"
-      f << "% #{fdef.help || 'No documentation available'}\n"
-      
-      f << "  #{lhs}Yinspire(#{ ([i.to_s] + rhs_args).join(', ') })\n"
-    }
+    ARGV.each do |prefix|
+      File.open("#{prefix}#{name}.m", 'w+') {|f|
+        lhs_args = (1..fdef.arity_lhs).map {|a| "lhs_#{a}"}
+        rhs_args = (1..fdef.arity_rhs).map {|a| "rhs_#{a}"}
+        lhs = if lhs_args.empty?
+               '' 
+              else
+                lhs_args.join(', ') + ' = '
+              end
+        rhs = rhs_args.join(', ')
+        f << "function #{lhs}#{prefix}#{name}(#{rhs})\n"
+        f << "% #{lhs}#{prefix}#{name}(#{rhs})\n"
+        f << "% #{fdef.help || 'No documentation available'}\n"
+        
+        f << "  #{lhs}Yinspire(#{ ([i.to_s] + rhs_args).join(', ') })\n"
+      }
+    end
   end
 end

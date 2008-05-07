@@ -1,16 +1,14 @@
 ROOT_DIR=../..
-INSTALL_DIR=${ROOT_DIR}/build/mex
 
-all: compile run
+generate:
+	mkdir -p m
+	ruby mex.rb m "" Yinspire_
 
 compile:
-	mkdir -p ${INSTALL_DIR}
-	ruby mex.rb ${INSTALL_DIR}
 	mkoctfile --mex -I${ROOT_DIR}/src -L${ROOT_DIR}/build/Release -lyinspirelib Yinspire.cc
-	cp Yinspire.mex ${INSTALL_DIR}
 
-run:
-	octave -p ${INSTALL_DIR} test.m
+test:
+	octave -p m test.m
 
 clean:
-	rm -rf Yinspire.cc Yinspire.o Yinspire.mex
+	rm -rf Yinspire.o Yinspire.mex
