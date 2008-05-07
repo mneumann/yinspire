@@ -1,6 +1,9 @@
 /*
  * Ruby interface for Yinspire
  *
+ * NOTE: Recorder, Simulator and NeuralEntity
+ * are not garbage collected. Use method #destroy.
+ *
  * Copyright (c) 2008 by Michael Neumann
  */
 
@@ -8,14 +11,15 @@
 #include "Simulator.h"
 
 static VALUE mYinspire;
+static VALUE cRecorder;
 static VALUE cSimulator;
 static VALUE cNeuralEntity;
+static ID id_record_fire;
 
 using namespace Yinspire;
 
-#define SIM_GET(self, sim) \
-  Simulator *sim; \
-  Data_Get_Struct(self, Simulator, sim)
+#define TO_STR(c) rb_str_new((c).c_str(), (c).size())
+#define TO_SYM(c) ID2SYM(rb_intern((c).c_str()))
 
 #define TRY_BEGIN try
 #define TRY_END        \
@@ -23,14 +27,62 @@ using namespace Yinspire;
     rb_raise(rb_eRuntimeError, _ex.c_str()); \
   }
 
+#define REC_WRAP(n) ((n) ? Data_Wrap_Struct(cRecorder, NULL, NULL, n) : Qnil)
+
+#define REC_GET(self, rec) \
+  Recorder *rec = NULL; \
+  if (self != Qnil) Data_Get_Struct(self, Recorder, rec)
+
+#define SIM_GET(self, sim) \
+  Simulator *sim = NULL; \
+  if (self != Qnil) Data_Get_Struct(self, Simulator, sim)
+
 #define NE_WRAP(n) ((n) ? Data_Wrap_Struct(cNeuralEntity, NULL, NULL, n) : Qnil)
 
 #define NE_GET(self, ne) \
-  NeuralEntity *ne; \
-  Data_Get_Struct(self, NeuralEntity, ne)
+  NeuralEntity *ne = NULL; \
+  if (self != Qnil) Data_Get_Struct(self, NeuralEntity, ne)
 
-#define TO_STR(c) rb_str_new((c).c_str(), (c).size())
-#define TO_SYM(c) ID2SYM(rb_intern((c).c_str()))
+class RubyRecorder : public Recorder
+{
+  public:
+
+    VALUE obj;
+
+  public:
+
+    RubyRecorder() : obj(Qnil) {}
+
+    virtual void
+      record_fire(NeuralEntity *origin, real at, real weight)
+      {
+        if (obj != Qnil)
+        {
+          rb_funcall(obj, id_record_fire, 3, 
+              NE_WRAP(origin), rb_float_new(at), rb_float_new(weight));
+        }
+      }
+};
+
+static VALUE
+Recorder_s_alloc(VALUE klass)
+{
+  RubyRecorder *rec = new RubyRecorder;
+  VALUE obj = Data_Wrap_Struct(klass, NULL, NULL, rec);
+  rec->obj = obj;
+  return obj;
+}
+
+static VALUE
+Recorder_destroy(VALUE self)
+{
+  REC_GET(self, rec);
+  TRY_BEGIN {
+    delete rec;
+  } TRY_END;
+  DATA_PTR(self) = NULL;
+  return Qnil;
+}
 
 static VALUE
 Simulator_s_alloc(VALUE klass)
@@ -122,6 +174,18 @@ Simulator_add_entity(VALUE self, VALUE entity)
 
   TRY_BEGIN {
     sim->add_entity(ne);
+  } TRY_END;
+  return Qnil;
+}
+
+static VALUE
+Simulator_set_default_recorder(VALUE self, VALUE recorder)
+{
+  SIM_GET(self, sim);
+  REC_GET(recorder, rec);
+
+  TRY_BEGIN {
+    sim->set_default_recorder(rec);
   } TRY_END;
   return Qnil;
 }
@@ -265,9 +329,36 @@ NeuralEntity_stimulate(int argc, VALUE *argv, VALUE self)
   return Qnil;
 }
 
+static VALUE
+NeuralEntity_get_recorder(VALUE self)
+{
+  NE_GET(self, ne);
+  TRY_BEGIN {
+    return REC_WRAP(ne->get_recorder());
+  } TRY_END;
+}
+
+static VALUE
+NeuralEntity_set_recorder(VALUE self, VALUE recorder)
+{
+  NE_GET(self, ne);
+  REC_GET(recorder, rec);
+  TRY_BEGIN {
+    ne->set_recorder(rec);
+  } TRY_END;
+  return Qnil;
+}
+
+
 extern "C" void Init_yinspire_ext()
 {
+  id_record_fire = rb_intern("record_fire");
+
   mYinspire = rb_define_module("Yinspire");
+
+  cRecorder = rb_define_class_under(mYinspire, "Recorder", rb_cObject);
+  rb_define_alloc_func(cRecorder, Recorder_s_alloc);
+  rb_define_method(cRecorder, "destroy", (VALUE(*)(...))Recorder_destroy, 0);
 
   cSimulator = rb_define_class_under(mYinspire, "Simulator", rb_cObject);
   rb_define_alloc_func(cSimulator, Simulator_s_alloc);
@@ -279,6 +370,7 @@ extern "C" void Init_yinspire_ext()
   rb_define_method(cSimulator, "get_entity", (VALUE(*)(...))Simulator_get_entity, 1);
   rb_define_method(cSimulator, "create_entity", (VALUE(*)(...))Simulator_create_entity, 2);
   rb_define_method(cSimulator, "add_entity", (VALUE(*)(...))Simulator_add_entity, 1);
+  rb_define_method(cSimulator, "default_recorder=", (VALUE(*)(...))Simulator_set_default_recorder, 1);
 
   cNeuralEntity = rb_define_class_under(mYinspire, "NeuralEntity", rb_cObject);
   rb_define_method(cNeuralEntity, "id", (VALUE(*)(...))NeuralEntity_id, 0);
@@ -288,4 +380,6 @@ extern "C" void Init_yinspire_ext()
   rb_define_method(cNeuralEntity, "connect", (VALUE(*)(...))NeuralEntity_connect, 1);
   rb_define_method(cNeuralEntity, "disconnect", (VALUE(*)(...))NeuralEntity_disconnect, 1);
   rb_define_method(cNeuralEntity, "stimulate", (VALUE(*)(...))NeuralEntity_stimulate, -1);
+  rb_define_method(cNeuralEntity, "recorder", (VALUE(*)(...))NeuralEntity_get_recorder, 0);
+  rb_define_method(cNeuralEntity, "recorder=", (VALUE(*)(...))NeuralEntity_set_recorder, 1);
 }

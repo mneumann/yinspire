@@ -3,6 +3,14 @@ require 'yinspire_ext'
 module Yinspire
   Infinity = 1.0/0.0
 
+  class Recorder
+    def initialize
+    end
+
+    def record_fire(origin, at, weight)
+    end
+  end
+
   class Simulator
     attr_reader :current_time
 
@@ -17,6 +25,12 @@ module Yinspire
       end
     end
 
+    def register(object)
+      # Store a reference to prevent GC of recorder
+      (@registered_objects ||= []) << object
+      object
+    end
+
     alias __old_run run
 
     def run_for(n)
@@ -27,6 +41,8 @@ module Yinspire
       old_current_time, @current_time = @current_time, __old_run(stop_at)
       @current_time != old_current_time
     end
+
+    alias [] get_entity
   end
 
   class NeuralEntity
