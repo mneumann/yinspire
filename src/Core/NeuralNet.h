@@ -36,20 +36,23 @@ namespace Yinspire {
       void
         add(NeuralEntity *entity)
         {
-          if (entities.count(entity->get_id()) == 0)
+          const string& id = entity->get_id();
+          map<string, NeuralEntity*>::iterator i = entities.find(id);
+          if (i == entities.end()) 
           {
-            entities[entity->get_id()] = entity;
+            entities[id] = entity;
           }
           else
           {
-            fail("Duplicate NeuralEntity id: ", entity->get_id());
+            fail("Duplicate NeuralEntity id: ", id);
           }
         }
 
       NeuralEntity *
         get(const string& id)
         {
-          if (entities.count(id) == 0)
+          map<string, NeuralEntity*>::iterator i = entities.find(id);
+          if (i == entities.end())
             return NULL;
           else
             return entities[id];
