@@ -265,7 +265,7 @@ NeuralEntity_stimulate(int argc, VALUE *argv, VALUE self)
   return Qnil;
 }
 
-extern "C" void Init_Yinspire()
+extern "C" void Init_yinspire_ext()
 {
   mYinspire = rb_define_module("Yinspire");
 
