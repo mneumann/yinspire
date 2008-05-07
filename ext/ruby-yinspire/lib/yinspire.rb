@@ -16,6 +16,7 @@ module Yinspire
 
     def initialize
       @current_time = 0.0
+      @registered_recorders = []
       if block_given?
         begin
           yield self
@@ -25,10 +26,32 @@ module Yinspire
       end
     end
 
-    def register(object)
+    # TODO: new_entitiy -> create_entity (== new_entity+add)
+    
+    def register_recorder(recorder)
       # Store a reference to prevent GC of recorder
-      (@registered_objects ||= []) << object
-      object
+      @registered_recorders << recorder
+      recorder
+    end
+
+    def create_recorder(klass, *args)
+      register_recorder(klass.new(*args))
+    end
+
+    alias __old_destroy destroy
+    def destroy
+      @registered_recorders.each do |rec|
+        rec.destroy
+      end
+      @registered_recorders.clear
+      __old_destroy
+    end
+
+    alias __old_create_entity create_entity
+    def create_entity(type, id)
+      ent = __old_create_entity(type, id)
+      add_entity(ent)
+      ent
     end
 
     alias __old_run run
