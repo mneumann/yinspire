@@ -1,12 +1,23 @@
 s = Yinspire_Simulator_new
 Yinspire_Simulator_test(s)
 
+rec = Recorder_new
+
+Simulator_set_default_recorder(s, rec)
+
 n1 = Yinspire_Simulator_num_entities(s)
 Yinspire_Simulator_load_yin(s, "../../examples/nets/skorpion.yin")
 n2 = Yinspire_Simulator_num_entities(s)
 
 Yinspire_Simulator_load_yin(s, "../../examples/nets/spiketrains_angle_180.yin")
-x = Yinspire_Simulator_run(s, 100.0)
+x = Yinspire_Simulator_run(s, 10.0)
+
+data = Recorder_get_data(rec)
+
+Recorder_clear(rec)
+
+data2 = Recorder_get_data(rec)
+
 
 s1 = Yinspire_Simulator_create_entity(s, "Synapse_Default", "s1")
 #s3 = Yinspire_Simulator_create_entity(s, "Synapse_Default", "s1")
