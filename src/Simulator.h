@@ -29,11 +29,11 @@ namespace Yinspire {
 
     public:
 
-      Simulator(Recorder *recorder=NULL)
+      Simulator(Recorder *recorder=NULL, bool register_wrapper=false)
       { 
         factory.set_default_recorder(recorder);
         factory.set_default_scheduler(&scheduler);
-        RegisterTypes(factory);
+        RegisterTypes(factory, register_wrapper);
         loader_yin = new Loader_Yin(&factory, &net);
       }
 
@@ -46,6 +46,12 @@ namespace Yinspire {
         set_default_recorder(Recorder *recorder)
         {
           factory.set_default_recorder(recorder);
+        }
+
+      NeuralFactory &
+        get_factory()
+        {
+          return factory;
         }
 
       real
