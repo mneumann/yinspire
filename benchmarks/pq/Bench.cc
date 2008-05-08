@@ -8,7 +8,7 @@ struct ET_FLOAT
 {
   float priority;
 
-  bool operator ()(ET_FLOAT &a, ET_FLOAT &b) { return (a.priority > b.priority); }
+  inline bool operator ()(const ET_FLOAT &a, const ET_FLOAT &b) const { return (a.priority > b.priority); }
   static const char* element_type() { return "float"; }
   static inline bool less(const ET_FLOAT &a, const ET_FLOAT &b) { return a.priority < b.priority; }
 };
@@ -18,7 +18,7 @@ struct ET_DOUBLE
 {
   double priority;
 
-  bool operator ()(ET_DOUBLE &a, ET_DOUBLE &b) { return (a.priority > b.priority); }
+  inline bool operator ()(const ET_DOUBLE &a, const ET_DOUBLE &b) const { return (a.priority > b.priority); }
   static const char* element_type() { return "double"; }
   static inline bool less(const ET_DOUBLE &a, const ET_DOUBLE &b) { return a.priority < b.priority; }
 };
@@ -29,7 +29,7 @@ struct ET_STIMULI
   float priority;
   float weight;
 
-  inline bool operator ()(ET_STIMULI &a, ET_STIMULI &b) { return (a.priority > b.priority); }
+  inline bool operator ()(const ET_STIMULI &a, const ET_STIMULI &b) const { return (a.priority > b.priority); }
   static const char* element_type() { return "Stimuli/float"; }
   static inline bool less(const ET_STIMULI &a, const ET_STIMULI &b) { return (a.priority < b.priority); }
 };

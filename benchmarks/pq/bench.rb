@@ -113,13 +113,12 @@ def bench_algorithm(algorithm, prefix, repeat=nil, distributions=nil, queue_size
   system "gnuplot #{prefix}.plot"
 end 
 
-Dir.mkdir('work') rescue nil
+if __FILE__ == $0
+  Dir.mkdir('work') rescue nil
 
-qs = (14..22).map {|x| 2**x}
-#bench_algorithm("BinaryHeap STIMULI", "work/bh", 2, ["Random"], qs)
-#bench_algorithm("StlPq STIMULI", "work/stl", 2, ["Random"], qs)
-#bench_algorithm("BinaryHeap STIMULI", "work/test5", 2, ["Random"], [2**18, 2**19, 2**20])
-#bench_algorithm("PairingHeap STIMULI", "work/pairing", 1, ["Random"], [2**10, 2**14, 2**18])
-#bench_algorithm("BinaryHeap STIMULI", "work/binary", 1, ["Random"], [2**10, 2**14, 2**18])
-#bench_algorithm("BinaryHeap STIMULI", "work/binary", 1, ["Random"], [2**10, 2**14, 2**18])
-bench_algorithm("CalendarQueue STIMULI", "work/cq3", 1, ["Random"], [2**10, 2**14, 2**18, 2**20, 2**21])
+  qs = (10..20).map {|x| 2**x}
+
+  ALGORITHMS.each do |algo|
+    bench_algorithm(algo, "work/#{algo.tr(' ', '_')}", 2, DISTRIBUTIONS, qs)
+  end
+end
