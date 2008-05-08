@@ -7,6 +7,30 @@
 using namespace Yinspire;
 using namespace std;
 
+struct FireTime
+{
+  NeuralEntity *origin;
+  real at;
+  real weight;
+};
+
+class MexRecorder : public Recorder
+{
+  public:
+
+    Array<FireTime> fire_times;
+  
+    virtual void
+      record_fire(NeuralEntity *origin, real at, real weight)
+      {
+        FireTime f;
+        f.origin = origin;
+        f.at = at;
+        f.weight = weight;
+        fire_times.push(f);
+      }
+};
+
 mxArray *mex_create_cell_array(int n)
 {
   return mxCreateCellArray(1, &n);
@@ -92,11 +116,31 @@ void fill_array_with_entities(NeuralEntity *entity, void *data)
     }
   
     void
+    fn_Simulator_set_default_recorder(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
+    {
+      
+  Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
+  MexRecorder *rec = (MexRecorder*) mex_to_ptr(rhs[1]);
+  sim->set_default_recorder(rec);
+
+    }
+  
+    void
     fn_NeuralEntity_type(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
     {
       
   NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
   lhs[0] = string_to_mex(e->type());
+
+    }
+  
+    void
+    fn_NeuralEntity_set_recorder(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
+    {
+      
+  NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
+  MexRecorder *rec = (MexRecorder*) mex_to_ptr(rhs[1]);
+  e->set_recorder(rec);
 
     }
   
@@ -162,6 +206,15 @@ void fill_array_with_entities(NeuralEntity *entity, void *data)
     }
   
     void
+    fn_Recorder_new(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
+    {
+      
+  MexRecorder *rec = new MexRecorder;
+  lhs[0] = ptr_to_mex(rec); 
+
+    }
+  
+    void
     fn_Simulator_entity_ids(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
     {
       
@@ -216,6 +269,15 @@ void fill_array_with_entities(NeuralEntity *entity, void *data)
     }
   
     void
+    fn_Recorder_destroy(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
+    {
+      
+  MexRecorder *rec = (MexRecorder*) mex_to_ptr(rhs[0]);
+  delete rec;
+
+    }
+  
+    void
     fn_Simulator_get_entity(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
     {
       
@@ -241,6 +303,15 @@ void fill_array_with_entities(NeuralEntity *entity, void *data)
       
   Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
   lhs[0] = logical_to_mex(sim->test());
+
+    }
+  
+    void
+    fn_Recorder_clear(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
+    {
+      
+  MexRecorder *rec = (MexRecorder*) mex_to_ptr(rhs[0]);
+  rec->fire_times.clear();
 
     }
   
@@ -276,6 +347,24 @@ void fill_array_with_entities(NeuralEntity *entity, void *data)
     }
   
     void
+    fn_Recorder_get_data(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
+    {
+      
+  MexRecorder *rec = (MexRecorder*) mex_to_ptr(rhs[0]);
+
+  mxArray *v = mxCreateCellMatrix(3, rec->fire_times.size()); 
+  for (int i = 0; i < rec->fire_times.size(); i++)
+  {
+    FireTime &f = rec->fire_times[i];
+    mxSetCell(v, i*3+0, ptr_to_mex(f.origin));
+    mxSetCell(v, i*3+1, double_to_mex(f.at));
+    mxSetCell(v, i*3+2, double_to_mex(f.weight));
+  }
+  lhs[0] = v;
+
+    }
+  
+    void
     fn_NeuralEntity_id(int nlhs, mxArray *lhs[], int nrhs, const mxArray *rhs[])
     {
       
@@ -301,58 +390,82 @@ void fill_array_with_entities(NeuralEntity *entity, void *data)
       break;
   
     case 2:
-      fn_NeuralEntity_type(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_Simulator_set_default_recorder(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 3:
-      fn_Simulator_num_entities(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_NeuralEntity_type(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 4:
-      fn_NeuralEntity_dump(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_NeuralEntity_set_recorder(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 5:
-      fn_Simulator_new(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_Simulator_num_entities(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 6:
-      fn_Simulator_entity_ids(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_NeuralEntity_dump(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 7:
-      fn_NeuralEntity_load(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_Simulator_new(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 8:
-      fn_Simulator_destroy(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_Recorder_new(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 9:
-      fn_Simulator_get_entity(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_Simulator_entity_ids(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 10:
-      fn_NeuralEntity_connect(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_NeuralEntity_load(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 11:
-      fn_Simulator_test(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_Simulator_destroy(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 12:
-      fn_Simulator_create_entity(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_Recorder_destroy(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 13:
-      fn_NeuralEntity_disconnect(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_Simulator_get_entity(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 14:
-      fn_Simulator_load_yin(nlhs, lhs, nrhs-1, &rhs[1]);
+      fn_NeuralEntity_connect(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   
     case 15:
+      fn_Simulator_test(nlhs, lhs, nrhs-1, &rhs[1]);
+      break;
+  
+    case 16:
+      fn_Recorder_clear(nlhs, lhs, nrhs-1, &rhs[1]);
+      break;
+  
+    case 17:
+      fn_Simulator_create_entity(nlhs, lhs, nrhs-1, &rhs[1]);
+      break;
+  
+    case 18:
+      fn_NeuralEntity_disconnect(nlhs, lhs, nrhs-1, &rhs[1]);
+      break;
+  
+    case 19:
+      fn_Simulator_load_yin(nlhs, lhs, nrhs-1, &rhs[1]);
+      break;
+  
+    case 20:
+      fn_Recorder_get_data(nlhs, lhs, nrhs-1, &rhs[1]);
+      break;
+  
+    case 21:
       fn_NeuralEntity_id(nlhs, lhs, nrhs-1, &rhs[1]);
       break;
   

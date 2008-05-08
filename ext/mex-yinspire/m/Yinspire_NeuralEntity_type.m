@@ -1,4 +1,4 @@
 function lhs_1 = Yinspire_NeuralEntity_type(rhs_1)
 % lhs_1 = Yinspire_NeuralEntity_type(rhs_1)
 % Return the type of the entity
-  lhs_1 = Yinspire(2, rhs_1)
+  lhs_1 = Yinspire(3, rhs_1)

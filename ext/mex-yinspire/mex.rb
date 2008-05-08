@@ -153,6 +153,46 @@ mex :NeuralEntity_stimulate, 0, 4, %q{
   e->stimulate(mex_to_double(rhs[1]), mex_to_double(rhs[2]), (NeuralEntity*) mex_to_ptr(rhs[1]));
 }, "Stimulate"
 
+mex :NeuralEntity_set_recorder, 0, 2, %q{
+  NeuralEntity *e  = (NeuralEntity*) mex_to_ptr(rhs[0]);
+  MexRecorder *rec = (MexRecorder*) mex_to_ptr(rhs[1]);
+  e->set_recorder(rec);
+}, "Set Recorder"
+
+mex :Recorder_new, 1, 0, %q{
+  MexRecorder *rec = new MexRecorder;
+  lhs[0] = ptr_to_mex(rec); 
+}, "Create new Recorder instance"
+
+mex :Recorder_destroy, 0, 1, %q{
+  MexRecorder *rec = (MexRecorder*) mex_to_ptr(rhs[0]);
+  delete rec;
+}, "Destroy Recorder instance"
+
+mex :Recorder_clear, 0, 1, %q{
+  MexRecorder *rec = (MexRecorder*) mex_to_ptr(rhs[0]);
+  rec->fire_times.clear();
+}, "Clear all recorded fire times"
+
+mex :Recorder_get_data, 1, 1, %q{
+  MexRecorder *rec = (MexRecorder*) mex_to_ptr(rhs[0]);
+
+  mxArray *v = mxCreateCellMatrix(3, rec->fire_times.size()); 
+  for (int i = 0; i < rec->fire_times.size(); i++)
+  {
+    FireTime &f = rec->fire_times[i];
+    mxSetCell(v, i*3+0, ptr_to_mex(f.origin));
+    mxSetCell(v, i*3+1, double_to_mex(f.at));
+    mxSetCell(v, i*3+2, double_to_mex(f.weight));
+  }
+  lhs[0] = v;
+}, "Retrieve all recorded fire times"
+
+mex :Simulator_set_default_recorder, 0, 2, %q{
+  Simulator *sim = (Simulator*) mex_to_ptr(rhs[0]);
+  MexRecorder *rec = (MexRecorder*) mex_to_ptr(rhs[1]);
+  sim->set_default_recorder(rec);
+}, "Set default recorder"
 
 ####################################################
 ####################################################
@@ -196,6 +236,30 @@ f << <<HEADER
 
 using namespace Yinspire;
 using namespace std;
+
+struct FireTime
+{
+  NeuralEntity *origin;
+  real at;
+  real weight;
+};
+
+class MexRecorder : public Recorder
+{
+  public:
+
+    Array<FireTime> fire_times;
+  
+    virtual void
+      record_fire(NeuralEntity *origin, real at, real weight)
+      {
+        FireTime f;
+        f.origin = origin;
+        f.at = at;
+        f.weight = weight;
+        fire_times.push(f);
+      }
+};
 
 mxArray *mex_create_cell_array(int n)
 {
