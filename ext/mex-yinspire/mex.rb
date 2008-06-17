@@ -117,7 +117,7 @@ mex :NeuralEntity_load, 0, 2, %q{
     const char *key = mxGetFieldNameByNumber(v, i);
     mxArray *value = mxGetFieldByNumber(v, 0, i);
 
-    if (mxIsLogicalScalar(value))
+    if (mxIsLogical(value) && mxGetNumberOfElements(value) == 1)
     {
       p.dump((bool)mxIsLogicalScalarTrue(value), key);
     }
@@ -228,7 +228,7 @@ dispatch_code << %[
 
 f = File.open('Yinspire.cc', 'w+')
 f << <<HEADER 
-#include "mex.h"
+#include <mex.h>
 #include "Simulator.h"
 //#include "matrix.h"
 #include <string.h>
@@ -284,9 +284,10 @@ mxArray *string_to_mex(const string &str)
 
 string mex_to_string(const mxArray *v)
 {
-  char *ptr = mxGetChars(v);
   int len = mxGetN(v);
-  return string(ptr, len);
+  string str(len+1, 0);
+  mxGetString(v, (char*)str.c_str(), len);
+  return str;
 }
 
 mxArray *logical_to_mex(int i)
