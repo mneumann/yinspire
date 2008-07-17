@@ -25,7 +25,8 @@ set (SRCS
   ${SRC_DIR}/Dumpers/Dumper_Yin.cc
   ${SRC_DIR}/Loaders/Loader_Yin.cc
   ${SRC_DIR}/Loaders/YinParser.cc
-  ${SRC_DIR}/Loaders/YinTokenizer.cc)
+  ${SRC_DIR}/Loaders/YinTokenizer.cc
+  ${SRC_DIR}/Simulator.cc)
 
 if (YINSPIRE_DOUBLE_PRECISION)
   add_definitions(-DYINSPIRE_DOUBLE_PRECISION)
