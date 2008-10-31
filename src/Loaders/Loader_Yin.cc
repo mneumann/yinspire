@@ -4,15 +4,15 @@
 
 namespace Yinspire {
 
-  void Loader_Yin::on_template(string& id, string& type, Properties &p)
+  void Loader_Yin::on_template(string& new_type, string& type, Properties &p)
   {
-    if (templates.count(id) == 0)
+    if (templates.count(new_type) == 0)
     {
-      templates[id] = pair<string, Properties>(type, p);
+      templates[new_type] = pair<string, Properties>(type, p);
     }
     else
     {
-      fail("duplicate template name: ", id);
+      fail("duplicate template name: ", new_type);
     }
   }
 

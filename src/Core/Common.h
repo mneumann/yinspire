@@ -58,6 +58,21 @@ namespace Yinspire
     throw(msg1 + msg2);
   }
 
+  inline void debug(const string& debugfile, const string& msg)
+  {
+    FILE *fh = fopen(debugfile.c_str(), "a+");
+    if (fh)
+    {
+      fprintf(fh, "%s\n", msg.c_str());
+      fclose(fh);
+    }
+  }
+
+  inline void debug(const string& msg)
+  {
+    debug("debug.log", msg);
+  }
+
 };
 
 #endif
