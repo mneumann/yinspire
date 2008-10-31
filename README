@@ -1,0 +1,15 @@
+---------------------------------------------------------
+Yinspire++ - An efficient spiking neural net simulator
+---------------------------------------------------------
+
+COPYRIGHT
+
+  Copyright (c) 2007, 2008 by Michael Neumann (mneumann@ntecs.de).
+  All rights reserved.
+
+ABOUT
+
+  Yinspire++ is a very fast simulator for spiking neural nets written
+  in C++. It's a complete rewrite of an existing simulator called Inspire, 
+  which was developed at the University of Karlsruhe. Interfaces for
+  Ruby and Matlab exist (see directory ext/).
