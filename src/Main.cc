@@ -1,4 +1,5 @@
 #include "Simulator.h"
+#include <string.h>
 
 using namespace Yinspire;
 using namespace std;

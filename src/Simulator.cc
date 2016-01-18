@@ -3,6 +3,7 @@
 #include "Dumpers/Dumper_Dot.h"
 #include "RegisterTypes.h"
 #include "Test.h"
+#include <string.h>
 
 namespace Yinspire {
 
