@@ -36,6 +36,7 @@ void usage()
    "    --record FILE           Record fires to this file\n"
    "    --dump FILE             Dump net after simulation\n"
    "    --dump-dot FILE         Dump net after simulation in dot format\n"
+   "    --dump-gml FILE         Dump net after simulation in GML format\n"
    "    --version               Show version\n"
    "    --help                  Show this message\n");
 }
@@ -48,7 +49,7 @@ void version()
 #else
    "yinspire++ (version %s)\n"
 #endif
-   "    Copyright (c) 2007, 2008 by Michael Neumann (mneumann@ntecs.de).\n"
+   "    Copyright (c) 2007, 2008, 2016 by Michael Neumann (mneumann@ntecs.de).\n"
    "    Released under the Ruby license.\n", YINSPIRE_VERSION);
 }
 
@@ -87,6 +88,7 @@ int main(int argc, char **argv)
   char *record_file = NULL;
   char *dump_file = NULL;
   char *dump_dot = NULL;
+  char *dump_gml = NULL;
   real stop_at = Infinity;
 
   for (i = 1; i < argc; i++)
@@ -154,6 +156,19 @@ int main(int argc, char **argv)
         return 1;
       }
     }
+    else if (arg == "--dump-gml")
+    {
+      if (++i < argc)
+      {
+        dump_gml = argv[i];
+      }
+      else
+      {
+        fprintf(stderr, "Missing argument for --dump-gml\n");
+        usage();
+        return 1;
+      }
+    }
     else if (arg.find("--") == 0)
     {
       fprintf(stderr, "Invalid argument %s\n\n", arg.c_str());
@@ -212,6 +227,12 @@ int main(int argc, char **argv)
   {
     fprintf(stderr, "# LOG Dump (dot) to %s\n", dump_dot);
     sim.dump_dot(dump_dot);
+  }
+
+  if (dump_gml)
+  {
+    fprintf(stderr, "# LOG Dump (gml) to %s\n", dump_gml);
+    sim.dump_gml(dump_gml);
   }
 
   return 0;

@@ -23,6 +23,7 @@ set (SRCS
   ${SRC_DIR}/Core/Scheduler.cc
   ${SRC_DIR}/Dumpers/Dumper_Dot.cc
   ${SRC_DIR}/Dumpers/Dumper_Yin.cc
+  ${SRC_DIR}/Dumpers/Dumper_GML.cc
   ${SRC_DIR}/Loaders/Loader_Yin.cc
   ${SRC_DIR}/Loaders/YinParser.cc
   ${SRC_DIR}/Loaders/YinTokenizer.cc

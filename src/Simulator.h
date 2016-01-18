@@ -56,6 +56,12 @@ namespace Yinspire {
       void
         dump_dot(const char *filename);
 
+      void
+        dump_gml(FILE *fh);
+
+      void
+        dump_gml(const char *filename);
+
       bool
         test();
 

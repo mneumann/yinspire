@@ -20,6 +20,14 @@ namespace Yinspire {
 
     public:
 
+      inline NeuralEntity *get_pre_neuron() const {
+          return pre_neuron;
+      }
+
+      inline NeuralEntity *get_post_neuron() const {
+          return post_neuron;
+      }
+
       /*
        * Constructor.
        */

@@ -21,6 +21,14 @@ namespace Yinspire {
 
     public:
 
+      inline real get_weight() const {
+          return weight;
+      }
+
+      inline real get_delay() const {
+          return delay;
+      }
+
       Synapse_Base() :
         weight(0.0),
         delay(0.0) {}

@@ -1,6 +1,7 @@
 #include "Simulator.h"
 #include "Dumpers/Dumper_Yin.h"
 #include "Dumpers/Dumper_Dot.h"
+#include "Dumpers/Dumper_GML.h"
 #include "RegisterTypes.h"
 #include "Test.h"
 #include <string.h>
@@ -70,6 +71,19 @@ namespace Yinspire {
   {
     FILE *fh = open_out(filename);
     dump_dot(fh);
+    close_inout(fh);
+  }
+
+  void Simulator::dump_gml(FILE *fh)
+  {
+    Dumper_GML dumper(&net);
+    dumper.dump(fh);
+  }
+
+  void Simulator::dump_gml(const char *filename)
+  {
+    FILE *fh = open_out(filename);
+    dump_gml(fh);
     close_inout(fh);
   }
 
